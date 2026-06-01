@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Lab Simulator</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* LAB GRID */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:
+    linear-gradient(#00f7ff11 1px, transparent 1px),
+    linear-gradient(90deg,#00f7ff11 1px, transparent 1px);
+  background-size:50px 50px;
+  animation: drift 8s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-100px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* PANEL */
+.panel {
+  border:1px solid #00f7ff;
+  padding:10px;
+  margin:10px;
+  box-shadow:0 0 15px #00f7ff33;
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* BAR */
+.bar {
+  width:80%;
+  height:20px;
+  border:1px solid #00f7ff;
+}
+
+.fill {
+  height:100%;
+  width:60%;
+  background:#00f7ff;
+  transition:0.3s;
+}
+
+/* OUTPUT */
+#out {
+  font-size:12px;
+  height:120px;
+  overflow:auto;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">🧪⚛️ Quantum Lab Simulator</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<div class="panel">
+<h3>🧬 Quantum Circuit Builder</h3>
+
+<button onclick="add('H')">H</button>
+<button onclick="add('X')">X</button>
+<button onclick="add('Z')">Z</button>
+<button onclick="add('CX')">CX</button>
+<button onclick="run()">RUN EXPERIMENT</button>
+
+<p id="circuit">Circuit: []</p>
+</div>
+
+<div class="panel">
+<h3>📊 Experiment Results</h3>
+
+<div class="bar">
+  <div class="fill" id="fidelity"></div>
+</div>
+
+<p id="status">Awaiting experiment...</p>
+</div>
+
+<div class="panel">
+<h3>📡 Lab Output Log</h3>
+<div id="out"></div>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Build quantum circuits and run experiments.</p>
+
+<h3>🏆 Rules</h3>
+<p>Stable circuits = high fidelity</p>
+<p>Noise reduces accuracy</p>
+
+<h3>💀 Win Condition</h3>
+<p>Achieve >90% fidelity experiment</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2,2)
+
+qc.h(0)
+qc.cx(0,1)
+qc.measure_all()
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let circuit=[];
+let fidelity=70;
+
+function log(msg){
+  let o=document.getElementById("out");
+  o.innerHTML="> "+msg+"<br>"+o.innerHTML;
+}
+
+/* ADD GATE */
+function add(g){
+  circuit.push(g);
+  document.getElementById("circuit").innerText=
+    "Circuit: "+JSON.stringify(circuit);
+}
+
+/* RUN EXPERIMENT */
+function run(){
+
+  let noise=Math.random()*30;
+
+  let score=100 - noise;
+
+  // circuit complexity bonus
+  score += circuit.length*2;
+
+  if(circuit.includes("CX")) score += 10;
+
+  if(score>100) score=100;
+
+  fidelity=score;
+
+  document.getElementById("fidelity").style.width=fidelity+"%";
+
+  if(fidelity>85){
+    document.getElementById("status").innerText="⚛ HIGH FIDELITY EXPERIMENT";
+    log("Experiment successful");
+  } else if(fidelity>50){
+    document.getElementById("status").innerText="Moderate stability";
+    log("Noisy experiment run");
+  } else {
+    document.getElementById("status").innerText="💥 EXPERIMENT FAILED";
+    log("Quantum decoherence collapse");
+  }
+}
+
+</script>
+
+</body>
+</html>
