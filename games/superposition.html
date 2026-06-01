@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Superposition Level 4</title>
+<title>Superposition Level 5</title>
 
 <style>
 body {
@@ -13,50 +13,50 @@ body {
   overflow: hidden;
 }
 
-/* BACKGROUND FIELD */
-#bg {
+/* QUANTUM FIELD */
+#field {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, #00f7ff22 1px, transparent 1px);
-  background-size: 30px 30px;
-  animation: move 6s linear infinite;
+  background:
+    radial-gradient(circle at 20% 20%, #00f7ff22 1px, transparent 2px),
+    radial-gradient(circle at 80% 60%, #ff00ff22 1px, transparent 2px);
+  background-size: 50px 50px;
+  animation: drift 6s linear infinite;
   z-index: -1;
 }
 
-@keyframes move {
+@keyframes drift {
   from { transform: translateY(0); }
   to { transform: translateY(-120px); }
 }
 
-/* MAIN LAYOUT */
+/* LAYOUT */
 .container {
   display: flex;
-  gap: 10px;
-  padding: 10px;
 }
 
-/* LEFT PANEL */
+/* LEFT */
 .left {
-  width: 60%;
+  width: 65%;
   text-align: center;
 }
 
 /* RIGHT PANEL */
 .right {
-  width: 40%;
+  width: 35%;
   padding: 10px;
   border-left: 1px solid #00f7ff55;
+  height: 100vh;
   overflow-y: auto;
-  height: 95vh;
 }
 
-/* BLOCH SPHERE */
+/* 3D BLOCH SPHERE (FAKE WEBGL STYLE) */
 .scene {
-  width: 220px;
-  height: 220px;
+  width: 240px;
+  height: 240px;
   margin: auto;
-  perspective: 800px;
+  perspective: 1000px;
 }
 
 .sphere {
@@ -66,11 +66,13 @@ body {
   border: 2px solid #00f7ff;
   position: relative;
   transform-style: preserve-3d;
+  transition: transform 0.05s;
 }
 
+/* QUANTUM STATE VECTOR */
 .vector {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background: #ff00ff;
   border-radius: 50%;
   position: absolute;
@@ -78,125 +80,125 @@ body {
   left: 50%;
 }
 
-/* PROBABILITY BAR */
+/* PROBABILITY */
 .bar {
   width: 80%;
-  height: 20px;
+  height: 18px;
   border: 1px solid white;
-  margin: 10px auto;
   display: flex;
+  margin: 10px auto;
 }
 
 .p0 { background: #00f7ff; width: 50%; transition: 0.2s; }
 .p1 { background: #ff00ff; width: 50%; transition: 0.2s; }
 
-/* HISTOGRAM */
-.hist {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  height: 120px;
-  gap: 20px;
+/* PHASE DISPLAY */
+.phase {
+  font-size: 12px;
+  color: #aaa;
 }
 
-.bar0, .bar1 {
+/* BUTTONS */
+button {
+  padding: 10px;
+  margin: 5px;
+  background: #00f7ff;
+  border: none;
+  cursor: pointer;
+}
+
+/* GRAPH */
+.graph {
+  height: 120px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+}
+
+.g0, .g1 {
   width: 40px;
   transition: 0.3s;
 }
 
-.bar0 { background: #00f7ff; }
-.bar1 { background: #ff00ff; }
-
-/* QISKIT BOX */
-.code {
-  background: #000;
-  border: 1px solid #00f7ff;
-  padding: 10px;
-  font-size: 12px;
-  margin-top: 10px;
-  color: #00f7ff;
-  overflow-x: auto;
-}
-
-/* BUTTON */
-button {
-  padding: 10px;
-  background: #00f7ff;
-  border: none;
-  cursor: pointer;
-  margin: 5px;
-}
+.g0 { background: #00f7ff; }
+.g1 { background: #ff00ff; }
 </style>
 </head>
 
 <body>
 
-<div id="bg"></div>
-
-<h1 style="text-align:center;">⚛️ Superposition Level 4</h1>
+<div id="field"></div>
 
 <div class="container">
 
-<!-- LEFT SIDE -->
+<!-- LEFT -->
 <div class="left">
 
-  <div class="scene">
-    <div class="sphere" id="sphere">
-      <div class="vector" id="vector"></div>
-    </div>
+<h1>⚛️ Superposition Level 5</h1>
+
+<div class="scene">
+  <div class="sphere" id="sphere">
+    <div class="vector" id="vector"></div>
   </div>
+</div>
 
-  <div class="bar">
-    <div id="p0" class="p0"></div>
-    <div id="p1" class="p1"></div>
-  </div>
+<div class="bar">
+  <div id="p0" class="p0"></div>
+  <div id="p1" class="p1"></div>
+</div>
 
-  <p>|0⟩: <span id="prob0">50</span>% | |1⟩: <span id="prob1">50</span>%</p>
+<p>|0⟩: <span id="prob0">50</span>% | |1⟩: <span id="prob1">50</span>%</p>
 
-  <div class="hist">
-    <div id="h0" class="bar0" style="height:60px;"></div>
-    <div id="h1" class="bar1" style="height:60px;"></div>
-  </div>
+<p class="phase">Phase φ: <span id="phi">0</span></p>
 
-  <button onclick="measure()">MEASURE</button>
+<div class="graph">
+  <div id="g0" class="g0" style="height:60px;"></div>
+  <div id="g1" class="g1" style="height:60px;"></div>
+</div>
 
-  <h2 id="result"></h2>
-  <h3>Score: <span id="score">0</span></h3>
+<button onclick="measure()">MEASURE</button>
+
+<h2 id="result"></h2>
+<h3>Score: <span id="score">0</span></h3>
 
 </div>
 
-<!-- RIGHT SIDE -->
+<!-- RIGHT -->
 <div class="right">
 
-  <h3>🎮 How to Play</h3>
-  <p>Drag mouse to rotate qubit state.</p>
-  <p>Changing angle changes probability.</p>
-  <p>Press MEASURE to collapse state.</p>
+<h3>🎮 How to Play</h3>
+<p>Drag mouse → control quantum state</p>
+<p>Angle controls probability + phase</p>
+<p>Measure collapses wavefunction</p>
 
-  <h3>🏆 Game Rules</h3>
-  <p>✔ Win if result = |1⟩</p>
-  <p>✔ Lose if result = |0⟩</p>
-  <p>✔ Score increases on win</p>
-  <p>✔ Score decreases on loss</p>
+<h3>🏆 Rules</h3>
+<p>Win = |1⟩</p>
+<p>Lose = |0⟩</p>
+<p>Score increases on win streak</p>
 
-  <h3>📊 Quantum Logic</h3>
-  <p>|ψ⟩ = cos²(θ/2)|0⟩ + sin²(θ/2)|1⟩</p>
+<h3>🧪 Quantum Model</h3>
+<p>|ψ⟩ = α|0⟩ + β|1⟩</p>
+<p>α = cos(θ/2)</p>
+<p>β = sin(θ/2)e^(iφ)</p>
 
-  <h3>🧪 Qiskit Code (Reference)</h3>
+<h3>⚛️ Qiskit Reference</h3>
 
-  <div class="code">
-from qiskit import QuantumCircuit<br>
-qc = QuantumCircuit(1,1)<br>
-qc.h(0)<br>
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+qc = QuantumCircuit(1,1)
+qc.h(0)
 qc.measure(0,0)
-  </div>
+</pre>
 
 </div>
 
 </div>
 
 <script>
+
 let theta = 0;
+let phi = 0;
 let score = 0;
 
 /* MOUSE CONTROL */
@@ -207,11 +209,14 @@ document.addEventListener("mouseup", ()=>drag=false);
 
 document.addEventListener("mousemove", (e)=>{
   if(!drag) return;
-  theta = e.clientX / window.innerWidth * Math.PI * 2;
+
+  theta = (e.clientX / window.innerWidth) * Math.PI * 2;
+  phi = (e.clientY / window.innerHeight) * Math.PI * 2;
+
   update();
 });
 
-/* UPDATE SYSTEM */
+/* QUANTUM ENGINE */
 function update(){
 
   let p1 = Math.pow(Math.sin(theta/2),2);
@@ -223,21 +228,24 @@ function update(){
   document.getElementById("prob0").innerText = a;
   document.getElementById("prob1").innerText = b;
 
+  document.getElementById("phi").innerText = phi.toFixed(2);
+
   document.getElementById("p0").style.width = a + "%";
   document.getElementById("p1").style.width = b + "%";
 
-  document.getElementById("h0").style.height = (a*1.2) + "px";
-  document.getElementById("h1").style.height = (b*1.2) + "px";
+  document.getElementById("g0").style.height = (a*1.2) + "px";
+  document.getElementById("g1").style.height = (b*1.2) + "px";
 
   document.getElementById("sphere").style.transform =
-    `rotateY(${theta*180/Math.PI}deg)`;
+    `rotateX(${phi*180/Math.PI}deg) rotateY(${theta*180/Math.PI}deg)`;
 
   document.getElementById("vector").style.transform =
-    `translate(${Math.sin(theta)*70}px, ${Math.cos(theta)*70}px)`;
+    `translate(${Math.sin(theta)*80}px, ${Math.cos(phi)*80}px)`;
 }
 
-/* MEASUREMENT */
+/* MEASURE */
 function measure(){
+
   let p1 = Math.pow(Math.sin(theta/2),2);
   let r = Math.random();
 
@@ -252,8 +260,9 @@ function measure(){
   document.getElementById("score").innerText = score;
 }
 
-setInterval(update, 50);
+setInterval(update, 40);
 update();
+
 </script>
 
 </body>
