@@ -87,5 +87,26 @@ function quantumCoinFlip() {
     let qubit = createQubit();
     qubit = hadamard();
 
+   
     return measure(qubit) === 0 ? "HEADS" : "TAILS";
+}
+
+/* ==========================
+   QUANTUM COIN GAME
+=========================== */
+
+function runQuantumCoin() {
+
+    let qubit = createQubit();
+
+    // Apply Hadamard gate
+    qubit = hadamard();
+
+    // Measure result
+    let result = measure(qubit);
+
+    let text = result === 0 ? "HEADS 🪙" : "TAILS 🪙";
+
+    document.getElementById("result")
+        .innerText = text;
 }
