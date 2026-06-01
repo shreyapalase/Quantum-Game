@@ -8,75 +8,6 @@
 <title>Quantum Arcade</title>
 
 <link rel="stylesheet" href="assets/css/home.css">
-
-<style>
-/* extra safety styles */
-
-body{
-    margin:0;
-    font-family:Arial;
-    background:#050816;
-    color:white;
-}
-
-.page{
-    padding:120px 40px;
-}
-
-.hidden{
-    display:none;
-}
-
-/* NAVBAR */
-.navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:20px 8%;
-
-    position:fixed;
-    top:0;
-    width:100%;
-
-    background:rgba(0,0,0,0.4);
-    backdrop-filter:blur(10px);
-    z-index:1000;
-}
-
-.logo{
-    font-size:1.4rem;
-    color:#00d4ff;
-    font-weight:bold;
-}
-
-.menu button{
-    margin-left:10px;
-    padding:10px 15px;
-    border:none;
-    background:#00d4ff;
-    cursor:pointer;
-    border-radius:8px;
-    font-weight:bold;
-}
-
-/* CARDS */
-.card{
-    background:rgba(255,255,255,0.05);
-    padding:20px;
-    margin:10px;
-    border-radius:10px;
-    border:1px solid rgba(255,255,255,0.1);
-    display:inline-block;
-    min-width:200px;
-}
-
-.card:hover{
-    box-shadow:0 0 20px rgba(0,212,255,0.3);
-}
-
-</style>
-
 </head>
 
 <body>
@@ -99,121 +30,53 @@ body{
 <!-- HOME -->
 <section id="home" class="page">
 
-    <h1>⚛ Quantum Arcade</h1>
-
-    <p>30 Interactive Quantum Computing Games</p>
-
-    <h3>Learn Quantum Through Play</h3>
+    <h1>Quantum Arcade</h1>
+    <p>30 Interactive Quantum Games</p>
 
 </section>
 
 <!-- GAMES -->
 <section id="games" class="page hidden">
 
-    <h1>🎮 Games Library</h1>
+    <h1>Games Library</h1>
 
-    <p>Select a game to start</p>
-
-   <div class="card" onclick="showSection('coinGame')">
-    01. Quantum Coin Flip
+    <div class="card" onclick="showSection('coinGame')">
+        01. Quantum Coin Flip
     </div>
+
     <div class="card">02. Quantum Dice</div>
     <div class="card">03. Qubit Explorer</div>
-    <div class="card">04. Bloch Sphere</div>
-    <div class="card">05. Memory Game</div>
-    <div class="card">06. Random Generator</div>
-    <div class="card">07. State Builder</div>
-    <div class="card">08. Measurement Challenge</div>
-    <div class="card">09. Card Draw</div>
-    <div class="card">10. Guess Game</div>
 
-    <div class="card">11. Superposition Race</div>
-    <div class="card">12. Quantum Maze</div>
-    <div class="card">13. Path Finder</div>
-    <div class="card">14. Entanglement Match</div>
-    <div class="card">15. Bell States</div>
-    <div class="card">16. Battleship</div>
-    <div class="card">17. Escape Room</div>
-    <div class="card">18. Interference Puzzle</div>
-    <div class="card">19. Music Lab</div>
-    <div class="card">20. Pattern Finder</div>
-
-    <div class="card">21. Teleportation Quest</div>
-    <div class="card">22. Grover Search</div>
-    <div class="card">23. Deutsch-Jozsa</div>
-    <div class="card">24. Simon’s Game</div>
-    <div class="card">25. Quantum Crypto</div>
-    <div class="card">26. Error Correction</div>
-    <div class="card">27. QAOA Puzzle</div>
-    <div class="card">28. Variational Circuit</div>
-    <div class="card">29. Quantum AI Lab</div>
-    <div class="card">30. Final Boss</div>
-
-    <br><br>
-
-    <button onclick="showSection('home')">
-        ⬅ Back to Home
-    </button>
+    <button onclick="showSection('home')">Back Home</button>
 
 </section>
 
 <!-- ABOUT -->
 <section id="about" class="page hidden">
 
-    <h1>ℹ About Quantum Arcade</h1>
+    <h1>About Quantum Arcade</h1>
 
-    <p>
-        Quantum Arcade is a 30-game interactive platform
-        designed to teach quantum computing using games,
-        visualization, and simulations.
-    </p>
+    <p>30 quantum games learning platform.</p>
 
-    <p>
-        Built using HTML, CSS, JavaScript and Qiskit-style logic.
-    </p>
-
-    <br>
-
-    <button onclick="showSection('home')">
-        ⬅ Back to Home
-    </button>
-
-    <!-- QUANTUM COIN GAME -->
-<section id="coinGame" class="page hidden">
-
-    <h1>⚛ Quantum Coin Flip</h1>
-
-    <p>Simulating Hadamard + Measurement</p>
-
-    <div class="game-box">
-
-        <h2 id="result">Click to Run Quantum Circuit</h2>
-
-        <button onclick="runQuantumCoin()">
-            Run Quantum Coin
-        </button>
-
-        <button onclick="showSection('games')">
-            ⬅ Back to Games
-        </button>
-
-    </div>
+    <button onclick="showSection('home')">Back Home</button>
 
 </section>
+
+<!-- GAME -->
+<section id="coinGame" class="page hidden">
+
+    <h1>Quantum Coin Flip</h1>
+
+    <h2 id="result">Click Run</h2>
+
+    <button onclick="runQuantumCoin()">Run Quantum Coin</button>
+
+    <button onclick="showSection('games')">Back to Games</button>
 
 </section>
 
 <!-- JS -->
-<script>
-function showSection(section){
-
-    document.querySelectorAll(".page")
-    .forEach(p => p.classList.add("hidden"));
-
-    document.getElementById(section)
-    .classList.remove("hidden");
-}
-</script>
+<script src="assets/js/main.js"></script>
 
 </body>
 </html>
