@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Wave Painter</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* CANVAS FIELD */
+canvas {
+  display:block;
+  background:#000;
+  cursor:crosshair;
+}
+
+/* UI PANEL */
+#ui {
+  position:fixed;
+  top:10px;
+  left:10px;
+  background:#000000aa;
+  padding:10px;
+  border:1px solid #00f7ff;
+}
+
+/* BUTTON */
+button {
+  padding:8px;
+  background:#00f7ff;
+  border:none;
+  margin:5px;
+  cursor:pointer;
+}
+
+/* STATUS */
+#result {
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="c"></canvas>
+
+<div id="ui">
+
+<h3>🎨 Wave Painter</h3>
+
+<button onclick="mode='amp'">Amplitude</button>
+<button onclick="mode='phase'">Phase</button>
+<button onclick="measure()">Measure</button>
+<button onclick="clearCanvas()">Clear</button>
+
+<h3 id="result">Draw quantum wavefunction</h3>
+
+</div>
+
+<script>
+
+let canvas=document.getElementById("c");
+let ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let mode="amp";
+let waves=[];
+
+/* DRAW */
+let drawing=false;
+
+canvas.onmousedown=()=>drawing=true;
+canvas.onmouseup=()=>drawing=false;
+
+canvas.onmousemove=(e)=>{
+
+  if(!drawing) return;
+
+  let x=e.clientX;
+  let y=e.clientY;
+
+  let amp = mode==="amp"?1:0.3;
+  let color = mode==="phase"?"#ff00ff":"#00f7ff";
+
+  waves.push({x,y,amp,color});
+
+  draw();
+};
+
+/* DRAW FUNCTION */
+function draw(){
+
+  ctx.fillStyle="rgba(0,0,0,0.2)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  for(let w of waves){
+
+    ctx.beginPath();
+    ctx.arc(w.x,w.y,5+w.amp*10,0,Math.PI*2);
+
+    ctx.fillStyle=w.color;
+    ctx.fill();
+
+    // interference glow
+    ctx.shadowBlur=20;
+    ctx.shadowColor=w.color;
+  }
+}
+
+/* MEASUREMENT */
+function measure(){
+
+  if(waves.length===0) return;
+
+  let index=Math.floor(Math.random()*waves.length);
+  let w=waves[index];
+
+  document.getElementById("result").innerText=
+    "⚛ Measured at ("+w.x+","+w.y+")";
+}
+
+/* CLEAR */
+function clearCanvas(){
+  waves=[];
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+</script>
+
+</body>
+</html>
