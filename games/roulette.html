@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Measurement Roulette</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* BACKGROUND FIELD */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background: radial-gradient(circle,#00f7ff22 2px,transparent 3px);
+  background-size:60px 60px;
+  animation: drift 8s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-120px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* MAIN ROULETTE */
+.wheel {
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  border:3px solid #00f7ff;
+  margin:auto;
+  position:relative;
+  animation: spin 6s linear infinite;
+  box-shadow:0 0 30px #00f7ff55;
+}
+
+@keyframes spin {
+  0% {transform:rotate(0deg);}
+  100% {transform:rotate(360deg);}
+}
+
+/* STATES */
+.segment {
+  position:absolute;
+  width:50%;
+  height:50%;
+  text-align:center;
+  font-size:12px;
+}
+
+.s0 { top:0; left:50%; background:#00f7ff33; }
+.s1 { top:50%; left:50%; background:#ff004433; }
+.s2 { top:50%; left:0; background:#00ff8833; }
+.s3 { top:0; left:0; background:#aa00ff33; }
+
+/* POINTER */
+.pointer {
+  width:0;
+  height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-bottom:20px solid #fff;
+  margin:auto;
+}
+
+/* SLIDER */
+input[type=range] {
+  width:60%;
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* RESULT */
+#result {
+  font-size:20px;
+  margin-top:10px;
+}
+
+/* HISTOGRAM */
+.hist {
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  height:120px;
+  gap:10px;
+}
+
+.h {
+  width:30px;
+  background:#00f7ff;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">⚛️ Quantum Measurement Roulette</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Control Quantum State Probability</h3>
+
+<div class="wheel">
+  <div class="segment s0">SAFE</div>
+  <div class="segment s1">RISK</div>
+  <div class="segment s2">BONUS</div>
+  <div class="segment s3">LOSS</div>
+</div>
+
+<div class="pointer"></div>
+
+<br>
+
+<p>Quantum Bias Control</p>
+<input type="range" id="bias" min="0" max="100" value="50">
+
+<br>
+
+<button onclick="measure()">MEASURE STATE</button>
+
+<h3 id="result">Ready for collapse</h3>
+
+<h3>Score: <span id="score">0</span></h3>
+
+<div class="hist">
+  <div id="h0" class="h" style="height:60px;"></div>
+  <div id="h1" class="h" style="height:60px;background:#ff0044;"></div>
+  <div id="h2" class="h" style="height:60px;background:#00ff88;"></div>
+  <div id="h3" class="h" style="height:60px;background:#aa00ff;"></div>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Adjust quantum bias slider.</p>
+<p>Click measure to collapse wave function.</p>
+<p>Outcomes are probabilistic states.</p>
+
+<h3>🏆 Rules</h3>
+<p>✔ SAFE = +1</p>
+<p>✔ BONUS = +3</p>
+<p>✔ RISK = -1</p>
+<p>✔ LOSS = -3</p>
+
+<h3>💀 Win Condition</h3>
+<p>Score ≥ 10</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2,2)
+qc.h(0)
+qc.measure([0,1],[0,1])
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let score=0;
+
+let stats={s0:1,s1:1,s2:1,s3:1};
+
+function measure(){
+
+  let bias=document.getElementById("bias").value;
+
+  let r=Math.random()*100;
+
+  let state;
+
+  if(r<bias*0.4) state=0;
+  else if(r<bias*0.7) state=1;
+  else if(r<bias*0.9) state=2;
+  else state=3;
+
+  if(state===0){
+    score+=1;
+    document.getElementById("result").innerText="SAFE STATE";
+  }
+  if(state===1){
+    score-=1;
+    document.getElementById("result").innerText="RISK STATE";
+  }
+  if(state===2){
+    score+=3;
+    document.getElementById("result").innerText="BONUS STATE!";
+  }
+  if(state===3){
+    score-=3;
+    document.getElementById("result").innerText="DECOHERENCE LOSS!";
+  }
+
+  stats["s"+state]++;
+
+  document.getElementById("score").innerText=score;
+
+  updateHist();
+
+}
+
+/* HISTOGRAM */
+function updateHist(){
+
+  let total=stats.s0+stats.s1+stats.s2+stats.s3;
+
+  document.getElementById("h0").style.height=(stats.s0/total)*120+"px";
+  document.getElementById("h1").style.height=(stats.s1/total)*120+"px";
+  document.getElementById("h2").style.height=(stats.s2/total)*120+"px";
+  document.getElementById("h3").style.height=(stats.s3/total)*120+"px";
+
+}
+
+updateHist();
+
+</script>
+
+</body>
+</html>
