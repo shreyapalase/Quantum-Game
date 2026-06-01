@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum AI Strategist</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* BACKGROUND */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background: radial-gradient(circle,#00f7ff22 2px,transparent 3px);
+  background-size:60px 60px;
+  animation: drift 10s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-150px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* AI BRAIN */
+.brain {
+  width:200px;
+  height:200px;
+  margin:auto;
+  border-radius:50%;
+  border:2px solid #00f7ff;
+  box-shadow:0 0 30px #00f7ff55;
+  animation: pulse 2s infinite;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+
+@keyframes pulse {
+  0% {box-shadow:0 0 10px #00f7ff55;}
+  50% {box-shadow:0 0 30px #ff00ff55;}
+  100% {box-shadow:0 0 10px #00f7ff55;}
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* BAR */
+.bar {
+  width:60%;
+  height:20px;
+  border:1px solid #00f7ff;
+  margin:auto;
+}
+
+.fill {
+  height:100%;
+  width:50%;
+  background:#ff00ff;
+  transition:0.3s;
+}
+
+/* TEXT */
+#result {
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">🤖⚛️ Quantum AI Strategist</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Defeat Quantum AI Prediction System</h3>
+
+<div class="brain" id="brain">AI</div>
+
+<br>
+
+<p>Quantum Move</p>
+
+<button onclick="playerMove(0)">|0⟩</button>
+<button onclick="playerMove(1)">|1⟩</button>
+<button onclick="playerMove(2)">SUPERPOSITION</button>
+
+<br>
+
+<div class="bar">
+  <div class="fill" id="aiBar"></div>
+</div>
+
+<h3 id="result">AI analyzing...</h3>
+
+<h3>Score: <span id="score">0</span></h3>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>AI predicts your quantum choice.</p>
+<p>Break prediction pattern to win.</p>
+
+<h3>🏆 Rules</h3>
+<p>Correct AI prediction = AI gains point</p>
+<p>AI wrong prediction = player wins point</p>
+
+<h3>💀 Win Condition</h3>
+<p>First to 10 points wins</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+import numpy as np
+
+qc = QuantumCircuit(1,1)
+
+qc.h(0)
+qc.ry(theta,0)
+qc.measure(0,0)
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let playerScore=0;
+let aiScore=0;
+
+let history=[0,0,0];
+
+function aiPredict(){
+
+  let sum=history[0]+history[1]+history[2]+1;
+
+  let p0=history[0]/sum;
+  let p1=history[1]/sum;
+  let p2=history[2]/sum;
+
+  let r=Math.random();
+
+  if(r<p0) return 0;
+  if(r<p0+p1) return 1;
+  return 2;
+}
+
+function playerMove(move){
+
+  history[move]++;
+
+  let aiGuess=aiPredict();
+
+  if(aiGuess===move){
+    aiScore++;
+    document.getElementById("result").innerText="AI predicted correctly!";
+  } else {
+    playerScore++;
+    document.getElementById("result").innerText="AI failed prediction!";
+  }
+
+  updateUI();
+}
+
+function updateUI(){
+
+  document.getElementById("score").innerText=
+    "P:"+playerScore+" | AI:"+aiScore;
+
+  document.getElementById("aiBar").style.width=
+    (aiScore/(playerScore+aiScore+1))*100+"%";
+
+  if(aiScore>playerScore){
+    document.getElementById("brain").innerText="AI DOMINANT";
+  } else {
+    document.getElementById("brain").innerText="LEARNING...";
+  }
+}
+
+</script>
+
+</body>
+</html>
