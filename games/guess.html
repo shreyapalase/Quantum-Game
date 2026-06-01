@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum State Guess</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* FORENSIC GRID */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:
+    radial-gradient(circle at 30% 40%, #00f7ff22 2px, transparent 3px),
+    radial-gradient(circle at 70% 60%, #ff00ff22 2px, transparent 3px);
+  background-size:70px 70px;
+  animation: drift 10s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-100px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* CARD */
+.card {
+  border:1px solid #00f7ff;
+  padding:10px;
+  margin:10px;
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* BAR */
+.bar {
+  width:80%;
+  height:20px;
+  border:1px solid #00f7ff;
+}
+
+.fill {
+  height:100%;
+  width:0%;
+  background:#00f7ff;
+}
+
+/* RESULT */
+#result {
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">🧠⚛️ Quantum State Guess Engine</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<div class="card">
+<h3>🔍 Measurement Data</h3>
+<p id="data">Click "Generate State"</p>
+</div>
+
+<div class="card">
+<h3>🎯 Your Guess</h3>
+
+<button onclick="guess('|0⟩')">|0⟩</button>
+<button onclick="guess('|1⟩')">|1⟩</button>
+<button onclick="guess('|+⟩')">|+⟩</button>
+<button onclick="guess('|−⟩')">|−⟩</button>
+
+<button onclick="generate()">NEW STATE</button>
+
+</div>
+
+<div class="card">
+<h3 id="result">Awaiting guess...</h3>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Infer hidden quantum state from measurements.</p>
+
+<h3>🏆 Rules</h3>
+<p>Correct guess = score</p>
+<p>Close probability = partial score</p>
+
+<h3>💀 Win Condition</h3>
+<p>Reach 10 correct identifications</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1,1)
+
+qc.h(0)
+qc.measure(0,0)
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let hidden="";
+let shots=[];
+let score=0;
+
+/* GENERATE STATE */
+function generate(){
+
+  let states=["|0⟩","|1⟩","|+⟩","|−⟩"];
+
+  hidden=states[Math.floor(Math.random()*states.length)];
+
+  shots=[];
+
+  for(let i=0;i<10;i++){
+    if(hidden==="|0⟩") shots.push(Math.random()<0.9?0:1);
+    if(hidden==="|1⟩") shots.push(Math.random()<0.9?1:0);
+    if(hidden==="|+⟩") shots.push(Math.random()<0.5?0:1);
+    if(hidden==="|−⟩") shots.push(Math.random()<0.5?1:0);
+  }
+
+  document.getElementById("data").innerText=
+    "Samples: "+shots.join(",");
+
+}
+
+/* GUESS */
+function guess(g){
+
+  if(!hidden){
+    document.getElementById("result").innerText="Generate state first";
+    return;
+  }
+
+  if(g===hidden){
+    score++;
+    document.getElementById("result").innerText="✅ Correct state!";
+  } else {
+    document.getElementById("result").innerText=
+      "❌ Wrong. Hidden was "+hidden;
+  }
+
+  hidden="";
+
+}
+
+</script>
+
+</body>
+</html>
