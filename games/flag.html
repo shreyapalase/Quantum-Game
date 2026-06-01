@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Entangled Flag Arena</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* ENERGY FIELD BACKGROUND */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:
+    radial-gradient(circle at 30% 50%, #00f7ff22 2px, transparent 3px),
+    radial-gradient(circle at 70% 50%, #ff004422 2px, transparent 3px);
+  background-size:60px 60px;
+  animation: drift 10s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-120px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.zone {
+  width:50%;
+  height:100vh;
+  text-align:center;
+  padding-top:20px;
+  position:relative;
+}
+
+/* ZONES */
+.left {
+  border-right:1px solid #00f7ff33;
+}
+
+.right {
+  border-left:1px solid #ff004433;
+}
+
+/* FLAG */
+.flag {
+  width:80px;
+  height:80px;
+  border-radius:10px;
+  margin:auto;
+  margin-top:100px;
+  background:linear-gradient(45deg,#00f7ff,#ff0044);
+  box-shadow:0 0 30px #ffffff55;
+  transition:0.5s;
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+.right button {
+  background:#ff0044;
+}
+
+/* BARS */
+.bar {
+  width:60%;
+  height:20px;
+  border:1px solid #00f7ff;
+  margin:auto;
+}
+
+.right .bar {
+  border-color:#ff0044;
+}
+
+.fill {
+  height:100%;
+  width:50%;
+  background:#00f7ff;
+}
+
+.right .fill {
+  background:#ff0044;
+}
+
+/* RESULT */
+#result {
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">🚩⚛️ Entangled Flag Arena</h1>
+
+<div class="container">
+
+<!-- PLAYER ZONE -->
+<div class="zone left">
+
+<h2>Player Universe</h2>
+
+<div class="flag" id="flag"></div>
+
+<br>
+
+<button onclick="attack()">ATTACK ENTANGLEMENT</button>
+
+<div class="bar">
+  <div class="fill" id="pbar"></div>
+</div>
+
+<h3 id="pscore">0</h3>
+
+</div>
+
+<!-- AI ZONE -->
+<div class="zone right">
+
+<h2>AI Universe</h2>
+
+<div class="flag"></div>
+
+<br>
+
+<button onclick="aiAttack()">AI RESPONSE</button>
+
+<div class="bar">
+  <div class="fill" id="abar"></div>
+</div>
+
+<h3 id="ascore">0</h3>
+
+</div>
+
+</div>
+
+<h3 style="text-align:center;" id="result">Entangled State Stable</h3>
+
+<script>
+
+let p=0;
+let a=0;
+
+let entangle=50;
+let flagPos=50;
+
+/* PLAYER ATTACK */
+function attack(){
+
+  let r=Math.random();
+
+  if(r>0.5){
+    p+=2;
+    flagPos+=10;
+    entangle+=5;
+  } else {
+    p-=1;
+    entangle-=10;
+  }
+
+  update();
+}
+
+/* AI ATTACK */
+function aiAttack(){
+
+  let r=Math.random();
+
+  if(r>0.5){
+    a+=2;
+    flagPos-=10;
+    entangle+=3;
+  } else {
+    a-=1;
+    entangle-=8;
+  }
+
+  update();
+}
+
+/* UPDATE SYSTEM */
+function update(){
+
+  document.getElementById("pscore").innerText=p;
+  document.getElementById("ascore").innerText=a;
+
+  document.getElementById("pbar").style.width=
+    Math.min(100,p*5)+"%";
+
+  document.getElementById("abar").style.width=
+    Math.min(100,a*5)+"%";
+
+  document.getElementById("flag").style.left=flagPos+"px";
+
+  // entanglement logic
+  if(entangle>80){
+    document.getElementById("result").innerText=
+      "⚠ HIGH ENTANGLEMENT INSTABILITY";
+  }
+
+  if(entangle<20){
+    document.getElementById("result").innerText=
+      "💥 DECOHERENCE: FLAG COLLAPSING";
+  }
+
+  if(p>10 && flagPos>80){
+    document.getElementById("result").innerText=
+      "🏆 PLAYER CAPTURED ENTANGLED FLAG";
+  }
+
+  if(a>10 && flagPos<20){
+    document.getElementById("result").innerText=
+      "💀 AI CAPTURED ENTANGLED FLAG";
+  }
+}
+
+</script>
+
+</body>
+</html>
