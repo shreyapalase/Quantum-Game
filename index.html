@@ -8,65 +8,52 @@
 
 <body>
 
-<div id="bg-animation"></div>
+<h1 class="title">⚛️ Quantum Arcade</h1>
 
-<header>
-  <h1>⚛️ Quantum Arcade</h1>
-  <p>30 Quantum Games • Learn by Playing Reality</p>
-</header>
-
-<!-- HOME -->
 <div id="home" class="grid">
-
-
 
   <div class="card" onclick="openGame('superposition')">⚡ Superposition</div>
   <div class="card" onclick="openGame('entanglement')">🔗 Entanglement</div>
-  <div class="card" onclick="openGame('quantum_maze')">🧭 Maze</div>
+  <div class="card" onclick="openGame('maze')">🧭 Quantum Maze</div>
+  <div class="card" onclick="openGame('roulette')">🎲 Measurement Roulette</div>
+  <div class="card" onclick="openGame('dice')">🎰 Quantum Dice</div>
 
+  <div class="card" onclick="openGame('bloch')">🌐 Bloch Sphere</div>
+  <div class="card" onclick="openGame('teleport')">🚀 Teleportation</div>
+  <div class="card" onclick="openGame('circuit')">🧪 Circuit Builder</div>
+  <div class="card" onclick="openGame('lock')">🔐 Quantum Lock</div>
+  <div class="card" onclick="openGame('wave')">🌊 Wave Interference</div>
 
-  <div class="card" onclick="openGame('measurement_roulette')">🎲 Measurement Roulette</div>
-  <div class="card" onclick="openGame('quantum_dice')">🎰 Quantum Dice</div>
+  <div class="card" onclick="openGame('memory')">🧠 Quantum Memory</div>
+  <div class="card" onclick="openGame('war')">⚔️ Probability War</div>
+  <div class="card" onclick="openGame('runner')">🏃 Uncertainty Runner</div>
+  <div class="card" onclick="openGame('collapse')">💥 State Collapse</div>
+  <div class="card" onclick="openGame('ai')">🤖 Quantum AI</div>
 
-  <div class="card" onclick="openGame('bloch_sphere')">🌐 Bloch Sphere Explorer</div>
-  <div class="card" onclick="openGame('teleportation')">🚀 Quantum Teleportation</div>
-  <div class="card" onclick="openGame('qiskit_builder')">🧪 Circuit Builder</div>
-  <div class="card" onclick="openGame('quantum_lock')">🔐 Quantum Lock</div>
-  <div class="card" onclick="openGame('wave_interference')">🌊 Wave Interference</div>
+  <div class="card" onclick="openGame('chess')">♟️ Quantum Chess</div>
+  <div class="card" onclick="openGame('mirror')">🪞 Mirror Universe</div>
+  <div class="card" onclick="openGame('flag')">🚩 Entangled Flag</div>
+  <div class="card" onclick="openGame('rps')">✊ Quantum RPS</div>
+  <div class="card" onclick="openGame('gate')">🔧 Gate Puzzle</div>
 
-  <div class="card" onclick="openGame('quantum_memory')">🧠 Quantum Memory</div>
-  <div class="card" onclick="openGame('probability_war')">⚔️ Probability War</div>
-  <div class="card" onclick="openGame('uncertainty_runner')">🏃 Uncertainty Runner</div>
-  <div class="card" onclick="openGame('state_collapse')">💥 State Collapse</div>
-  <div class="card" onclick="openGame('quantum_ai')">🤖 Quantum AI Duel</div>
+  <div class="card" onclick="openGame('escape')">🚪 Qubit Escape</div>
+  <div class="card" onclick="openGame('error')">🛠️ Error Correction</div>
+  <div class="card" onclick="openGame('tycoon')">🏭 Quantum Tycoon</div>
+  <div class="card" onclick="openGame('builder')">📊 Probability Builder</div>
+  <div class="card" onclick="openGame('race')">🏁 Superposition Race</div>
 
-  <div class="card" onclick="openGame('quantum_chess')">♟️ Quantum Chess</div>
-  <div class="card" onclick="openGame('mirror_universe')">🪞 Mirror Universe</div>
-  <div class="card" onclick="openGame('entangled_flag')">🚩 Entangled Flag</div>
-  <div class="card" onclick="openGame('quantum_rps')">✊ Quantum RPS</div>
-  <div class="card" onclick="openGame('gate_puzzle')">🔧 Gate Puzzle</div>
-
-  <div class="card" onclick="openGame('qubit_escape')">🚪 Qubit Escape Room</div>
-  <div class="card" onclick="openGame('error_correction')">🛠️ Error Correction</div>
-  <div class="card" onclick="openGame('quantum_tycoon')">🏭 Quantum Tycoon</div>
-  <div class="card" onclick="openGame('probability_builder')">📊 Probability Builder</div>
-  <div class="card" onclick="openGame('superposition_race')">🏁 Superposition Race</div>
-
-  <div class="card" onclick="openGame('wave_painter')">🎨 Wave Painter</div>
-  <div class="card" onclick="openGame('collapse_timing')">⏱️ Collapse Timing</div>
-  <div class="card" onclick="openGame('quantum_lab')">🧫 Quantum Lab</div>
-  <div class="card" onclick="openGame('state_guess')">🔮 State Guessing</div>
-  <div class="card" onclick="openGame('final_boss')">👑 Quantum Final Boss</div>
+  <div class="card" onclick="openGame('painter')">🎨 Wave Painter</div>
+  <div class="card" onclick="openGame('timing')">⏱️ Collapse Timing</div>
+  <div class="card" onclick="openGame('lab')">🧫 Quantum Lab</div>
+  <div class="card" onclick="openGame('guess')">🔮 State Guess</div>
+  <div class="card" onclick="openGame('boss')">👑 Final Boss</div>
 
 </div>
 
-<!-- GAME CONTAINER -->
+<!-- GAME VIEW -->
 <div id="gameContainer" class="hidden">
-
-  <button onclick="exitGame()" class="exit">⟵ Exit Arcade</button>
-
+  <button class="exit" onclick="exitGame()">⟵ Exit</button>
   <iframe id="gameFrame"></iframe>
-
 </div>
 
 <script src="script.js"></script>
