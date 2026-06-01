@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Memory Simulator</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* BACKGROUND */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background: radial-gradient(circle,#00f7ff22 2px,transparent 3px);
+  background-size:60px 60px;
+  animation: drift 12s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-150px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* MEMORY CORE */
+.memory {
+  width:200px;
+  height:200px;
+  border-radius:20px;
+  margin:auto;
+  border:2px solid #00f7ff;
+  position:relative;
+  box-shadow:0 0 25px #00f7ff55;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+}
+
+/* BAR */
+.bar {
+  width:60%;
+  height:20px;
+  border:1px solid #fff;
+  margin:auto;
+  margin-top:10px;
+}
+
+.fill {
+  height:100%;
+  width:100%;
+  background:#00f7ff;
+  transition:0.3s;
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* HISTOGRAM */
+.hist {
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  height:120px;
+  gap:20px;
+}
+
+.h {
+  width:80px;
+  background:#00f7ff;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">🧠⚛️ Quantum Memory System</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Maintain Quantum State Stability</h3>
+
+<div class="memory" id="mem">|0⟩</div>
+
+<div class="bar">
+  <div class="fill" id="fill"></div>
+</div>
+
+<br>
+
+<button onclick="setState(0)">LOCK |0⟩</button>
+<button onclick="setState(1)">LOCK |1⟩</button>
+<button onclick="setState(2)">SUPERPOSITION</button>
+
+<button onclick="refresh()">REFRESH (Error Correction)</button>
+
+<h3 id="result">Memory Stable</h3>
+
+<h3>Score: <span id="score">0</span></h3>
+
+<div class="hist">
+  <div id="h0" class="h" style="height:60px;"></div>
+  <div id="h1" class="h" style="height:60px;background:#ff00ff;"></div>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Lock quantum state into memory.</p>
+<p>Prevent decoherence over time.</p>
+
+<h3>🏆 Rules</h3>
+<p>Stable memory = +2/sec</p>
+<p>Decoherence = -3</p>
+<p>Refresh restores stability</p>
+
+<h3>💀 Win Condition</h3>
+<p>Score ≥ 20</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1,1)
+
+qc.h(0)
+qc.ry(theta,0)
+qc.measure(0,0)
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let score=0;
+let state=0;
+let stability=100;
+
+let stats={s0:1,s1:1};
+
+function setState(s){
+  state=s;
+
+  if(s===0) document.getElementById("mem").innerText="|0⟩";
+  if(s===1) document.getElementById("mem").innerText="|1⟩";
+  if(s===2) document.getElementById("mem").innerText="|+⟩";
+
+  stability=100;
+}
+
+function refresh(){
+  stability=100;
+  score+=1;
+  document.getElementById("result").innerText="ERROR CORRECTION APPLIED";
+}
+
+function decay(){
+
+  stability-=Math.random()*3;
+
+  if(stability<0) stability=0;
+
+  document.getElementById("fill").style.width=stability+"%";
+
+  if(stability<30){
+    document.getElementById("result").innerText="DECOHERENCE WARNING";
+    score-=1;
+  } else {
+    score+=0.2;
+  }
+
+  document.getElementById("score").innerText=Math.floor(score);
+
+  updateHist();
+}
+
+/* HISTOGRAM */
+function updateHist(){
+
+  if(state===0) stats.s0++;
+  if(state===1) stats.s1++;
+
+  let total=stats.s0+stats.s1;
+
+  document.getElementById("h0").style.height=
+    (stats.s0/total)*120+"px";
+
+  document.getElementById("h1").style.height=
+    (stats.s1/total)*120+"px";
+}
+
+setInterval(decay,500);
+
+</script>
+
+</body>
+</html>
