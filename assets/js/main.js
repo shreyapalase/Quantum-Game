@@ -1,31 +1,39 @@
+/* ==========================
+   QUANTUM ARCADE SPA ENGINE
+=========================== */
+
+/* Show / Hide Pages */
+function showSection(sectionId) {
+
+    const sections = document.querySelectorAll(".page");
+
+    sections.forEach(sec => {
+        sec.classList.add("hidden");
+    });
+
+    document.getElementById(sectionId)
+        .classList.remove("hidden");
+
+}
+
+/* ==========================
+   OPTIONAL: SMOOTH CARD EFFECTS
+=========================== */
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    const cards = document.querySelectorAll(".game-card");
+    const cards = document.querySelectorAll(".card");
 
     cards.forEach(card => {
 
         card.addEventListener("mouseenter", () => {
-            card.style.transform =
-                "translateY(-10px) scale(1.03)";
+            card.style.transform = "scale(1.05)";
         });
 
         card.addEventListener("mouseleave", () => {
-            card.style.transform =
-                "translateY(0px) scale(1)";
+            card.style.transform = "scale(1)";
         });
 
     });
 
 });
-
-function toggleMenu() {
-
-    const menu = document.getElementById("dropdown");
-
-    if (menu.style.display === "flex") {
-        menu.style.display = "none";
-    } else {
-        menu.style.display = "flex";
-        menu.style.flexDirection = "column";
-    }
-}
