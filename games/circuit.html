@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Circuit Builder</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* BACKGROUND */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background: radial-gradient(circle,#00f7ff22 2px,transparent 3px);
+  background-size:55px 55px;
+  animation: drift 10s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-150px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  padding:10px;
+  text-align:center;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* CIRCUIT GRID */
+.circuit {
+  display:grid;
+  grid-template-columns:repeat(5,80px);
+  gap:10px;
+  justify-content:center;
+  margin-top:20px;
+}
+
+/* CELL */
+.cell {
+  width:80px;
+  height:80px;
+  border:1px solid #00f7ff33;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.cell:hover {
+  box-shadow:0 0 15px #00f7ff;
+}
+
+/* GATES */
+.h { background:#003344; }
+.x { background:#330000; }
+.z { background:#222200; }
+.cx { background:#220033; }
+.m { background:#003322; }
+
+/* BUTTONS */
+button {
+  padding:8px;
+  margin:5px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+}
+
+/* HISTOGRAM */
+.hist {
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  height:120px;
+  gap:20px;
+}
+
+.hbar {
+  width:80px;
+  background:#00f7ff;
+}
+
+/* RESULT */
+#result {
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">⚛️ Quantum Circuit Builder</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Build Quantum Circuit</h3>
+
+<div>
+<button onclick="selectGate('H')">H</button>
+<button onclick="selectGate('X')">X</button>
+<button onclick="selectGate('Z')">Z</button>
+<button onclick="selectGate('CX')">CX</button>
+<button onclick="selectGate('M')">M</button>
+</div>
+
+<div class="circuit" id="circuit"></div>
+
+<br>
+
+<button onclick="runCircuit()">RUN CIRCUIT</button>
+
+<h3 id="result">Select gates and build circuit</h3>
+
+<h3>Score: <span id="score">0</span></h3>
+
+<div class="hist">
+  <div id="h0" class="hbar" style="height:60px;"></div>
+  <div id="h1" class="hbar" style="height:60px;background:#ff00ff;"></div>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Select gate → click grid → build circuit</p>
+<p>Run circuit to collapse quantum state</p>
+
+<h3>🏆 Rules</h3>
+<p>Correct superposition = +3</p>
+<p>Entanglement = +5</p>
+<p>Bad circuit = -2</p>
+
+<h3>💀 Win Condition</h3>
+<p>Score ≥ 15</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2,2)
+
+qc.h(0)
+qc.cx(0,1)
+qc.measure([0,1],[0,1])
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let selected="H";
+let score=0;
+
+let stats={0:1,1:1};
+
+const circuit=document.getElementById("circuit");
+
+/* BUILD GRID */
+for(let i=0;i<10;i++){
+  let div=document.createElement("div");
+  div.className="cell";
+  div.dataset.index=i;
+  div.innerText=".";
+
+  div.onclick=()=>{
+    div.innerText=selected;
+    div.className="cell "+selected.toLowerCase();
+  };
+
+  circuit.appendChild(div);
+}
+
+/* SELECT GATE */
+function selectGate(g){
+  selected=g;
+}
+
+/* RUN CIRCUIT */
+function runCircuit(){
+
+  let cells=document.querySelectorAll(".cell");
+
+  let hCount=0;
+  let cxCount=0;
+
+  cells.forEach(c=>{
+    if(c.innerText==="H") hCount++;
+    if(c.innerText==="CX") cxCount++;
+  });
+
+  let prob0=0.5 + hCount*0.05;
+  let prob1=1-prob0;
+
+  let r=Math.random();
+
+  if(r<prob0){
+    stats[0]++;
+    score+=3;
+    document.getElementById("result").innerText="STATE |0⟩ dominant";
+  } else {
+    stats[1]++;
+    score+=5;
+    document.getElementById("result").innerText="ENTANGLED / |1⟩ outcome";
+  }
+
+  document.getElementById("score").innerText=score;
+
+  updateHist();
+}
+
+/* HISTOGRAM */
+function updateHist(){
+
+  let total=stats[0]+stats[1];
+
+  document.getElementById("h0").style.height=(stats[0]/total)*120+"px";
+  document.getElementById("h1").style.height=(stats[1]/total)*120+"px";
+}
+
+updateHist();
+
+</script>
+
+</body>
+</html>
