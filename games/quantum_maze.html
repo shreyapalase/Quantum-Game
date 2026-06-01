@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Maze Challenge</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+}
+
+/* BACKGROUND */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background: radial-gradient(circle,#00f7ff22 2px,transparent 3px);
+  background-size:45px 45px;
+  animation: drift 6s linear infinite;
+  z-index:-1;
+}
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-120px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* MAZE GRID */
+.grid {
+  display:grid;
+  grid-template-columns:repeat(5,70px);
+  grid-gap:8px;
+  justify-content:center;
+  margin-top:20px;
+}
+
+.cell {
+  width:70px;
+  height:70px;
+  border:1px solid #00f7ff55;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  position:relative;
+}
+
+.start { background:#003344; }
+.end { background:#004400; }
+.trap { background:#440000; }
+
+/* particle */
+.particle {
+  width:10px;
+  height:10px;
+  background:#ff00ff;
+  border-radius:50%;
+  position:absolute;
+  animation:pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%{transform:scale(1);}
+  50%{transform:scale(1.4);}
+  100%{transform:scale(1);}
+}
+
+/* bars */
+.bar {
+  width:70%;
+  height:18px;
+  border:1px solid #fff;
+  display:flex;
+  margin:auto;
+}
+
+.p0 {background:#00f7ff;width:50%;}
+.p1 {background:#ff00ff;width:50%;}
+
+/* histogram */
+.hist {
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  height:120px;
+  gap:10px;
+}
+
+.h { width:30px; background:#00f7ff; }
+
+/* buttons */
+button {
+  padding:10px;
+  margin:5px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">⚛️ Quantum Maze Challenge</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Mission: Reach END without hitting TRAPS</h3>
+
+<div class="bar">
+  <div id="p0" class="p0"></div>
+  <div id="p1" class="p1"></div>
+</div>
+
+<p>|Safe Path|: <span id="prob0">50</span>% | |Risk Path|: <span id="prob1">50</span>%</p>
+
+<div class="grid" id="grid"></div>
+
+<button onclick="move()">NEXT STEP (Quantum Move)</button>
+
+<h2 id="result"></h2>
+
+<h3>Histogram (Visited Paths)</h3>
+<div class="hist">
+  <div id="h0" class="h" style="height:60px;"></div>
+  <div id="h1" class="h" style="height:60px;background:#ff00ff;"></div>
+</div>
+
+<h3>Score: <span id="score">0</span></h3>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Each move splits into quantum superposition paths.</p>
+<p>Click NEXT STEP to evolve particle.</p>
+<p>Measurement collapses path choice.</p>
+
+<h3>🏆 Rules</h3>
+<p>✔ Safe path → +1 score</p>
+<p>✔ Trap → -2 score</p>
+<p>✔ Reach END → WIN</p>
+
+<h3>💀 Lose Condition</h3>
+<p>Score < -3 OR hit too many traps</p>
+
+<h3>🧪 Qiskit Logic</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1,1)
+qc.h(0)
+qc.measure(0,0)
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let score = 0;
+let position = 0;
+
+let safeCount = 1;
+let riskCount = 1;
+
+/* BUILD MAZE */
+const grid = document.getElementById("grid");
+
+const layout = [
+ "S","0","T","0","E",
+ "0","T","0","T","0",
+ "0","0","0","T","0",
+ "T","0","T","0","0",
+ "0","0","0","0","0"
+];
+
+layout.forEach((c,i)=>{
+
+  let cell = document.createElement("div");
+  cell.className = "cell";
+
+  if(c==="S") cell.classList.add("start");
+  if(c==="E") cell.classList.add("end");
+  if(c==="T") cell.classList.add("trap");
+
+  cell.innerText = c;
+
+  grid.appendChild(cell);
+});
+
+/* MOVE FUNCTION */
+function move(){
+
+  let riskProb = Math.random();
+  let safeProb = 1 - riskProb;
+
+  document.getElementById("prob0").innerText = Math.round(safeProb*100);
+  document.getElementById("prob1").innerText = Math.round(riskProb*100);
+
+  let roll = Math.random();
+
+  if(roll < safeProb){
+    position += 1;
+    safeCount++;
+    document.getElementById("result").innerText = "SAFE MOVE ✔";
+    score++;
+  } else {
+    position += 2;
+    riskCount++;
+    document.getElementById("result").innerText = "TRAP HIT 💀";
+    score -= 2;
+  }
+
+  updateHist();
+
+  document.getElementById("score").innerText = score;
+
+  if(score >= 5){
+    document.getElementById("result").innerText = "YOU WIN 🎉 MAZE COMPLETED";
+  }
+
+  if(score < -3){
+    document.getElementById("result").innerText = "GAME OVER 💥";
+  }
+}
+
+/* HISTOGRAM */
+function updateHist(){
+
+  let total = safeCount + riskCount;
+
+  document.getElementById("h0").style.height = (safeCount/total)*120 + "px";
+  document.getElementById("h1").style.height = (riskCount/total)*120 + "px";
+}
+
+</script>
+
+</body>
+</html>
