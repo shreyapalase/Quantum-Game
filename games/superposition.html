@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Superposition Level 5</title>
+<title>Entanglement Quantum Lab</title>
 
 <style>
 body {
@@ -10,17 +10,14 @@ body {
   background: black;
   color: #00f7ff;
   font-family: monospace;
-  overflow: hidden;
 }
 
-/* QUANTUM FIELD */
-#field {
+/* BACKGROUND */
+#bg {
   position: fixed;
   width: 100%;
   height: 100%;
-  background:
-    radial-gradient(circle at 20% 20%, #00f7ff22 1px, transparent 2px),
-    radial-gradient(circle at 80% 60%, #ff00ff22 1px, transparent 2px);
+  background: radial-gradient(circle, #00f7ff22 2px, transparent 3px);
   background-size: 50px 50px;
   animation: drift 6s linear infinite;
   z-index: -1;
@@ -28,7 +25,7 @@ body {
 
 @keyframes drift {
   from { transform: translateY(0); }
-  to { transform: translateY(-120px); }
+  to { transform: translateY(-100px); }
 }
 
 /* LAYOUT */
@@ -36,159 +33,158 @@ body {
   display: flex;
 }
 
-/* LEFT */
 .left {
-  width: 65%;
+  width: 60%;
   text-align: center;
+  padding: 10px;
 }
 
-/* RIGHT PANEL */
 .right {
-  width: 35%;
-  padding: 10px;
+  width: 40%;
+  padding: 15px;
   border-left: 1px solid #00f7ff55;
   height: 100vh;
   overflow-y: auto;
 }
 
-/* 3D BLOCH SPHERE (FAKE WEBGL STYLE) */
-.scene {
-  width: 240px;
-  height: 240px;
-  margin: auto;
-  perspective: 1000px;
-}
-
-.sphere {
-  width: 100%;
-  height: 100%;
+/* CORE */
+.core {
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   border: 2px solid #00f7ff;
+  margin: auto;
   position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.05s;
+  box-shadow: 0 0 25px #00f7ff33;
 }
 
-/* QUANTUM STATE VECTOR */
-.vector {
-  width: 14px;
-  height: 14px;
-  background: #ff00ff;
-  border-radius: 50%;
+.link {
   position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #00f7ff, #ff00ff);
   top: 50%;
-  left: 50%;
 }
 
-/* PROBABILITY */
-.bar {
-  width: 80%;
-  height: 18px;
-  border: 1px solid white;
+/* SLIDERS */
+input {
+  width: 70%;
+}
+
+/* HISTOGRAM */
+.hist {
   display: flex;
-  margin: 10px auto;
-}
-
-.p0 { background: #00f7ff; width: 50%; transition: 0.2s; }
-.p1 { background: #ff00ff; width: 50%; transition: 0.2s; }
-
-/* PHASE DISPLAY */
-.phase {
-  font-size: 12px;
-  color: #aaa;
-}
-
-/* BUTTONS */
-button {
-  padding: 10px;
-  margin: 5px;
-  background: #00f7ff;
-  border: none;
-  cursor: pointer;
-}
-
-/* GRAPH */
-.graph {
-  height: 120px;
-  display: flex;
-  align-items: flex-end;
   justify-content: center;
-  gap: 10px;
+  align-items: flex-end;
+  gap: 12px;
+  height: 140px;
 }
 
-.g0, .g1 {
+.bar {
   width: 40px;
   transition: 0.3s;
 }
 
-.g0 { background: #00f7ff; }
-.g1 { background: #ff00ff; }
+.b00 { background: #00f7ff; }
+.b11 { background: #ff00ff; }
+.b01 { background: #ffcc00; }
+.b10 { background: #ff4444; }
+
+/* STATUS */
+#status {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+button {
+  padding: 10px;
+  background: #00f7ff;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+}
+
+/* EXPLANATION */
+#explain {
+  color: #aaa;
+  font-size: 12px;
+  margin-top: 5px;
+}
 </style>
 </head>
 
 <body>
 
-<div id="field"></div>
+<div id="bg"></div>
+
+<h1 style="text-align:center;">⚛️ Entanglement Quantum Lab</h1>
 
 <div class="container">
 
-<!-- LEFT -->
+<!-- LEFT PANEL -->
 <div class="left">
 
-<h1>⚛️ Superposition Level 5</h1>
-
-<div class="scene">
-  <div class="sphere" id="sphere">
-    <div class="vector" id="vector"></div>
+  <div class="core">
+    <div class="link"></div>
   </div>
+
+  <h3>Quantum Controls</h3>
+
+  <p>🔥 Noise</p>
+  <input type="range" id="noise" min="0" max="100" value="10">
+
+  <p>⚡ Entanglement Strength</p>
+  <input type="range" id="strength" min="0" max="100" value="90">
+
+  <p>🌊 Phase Disturbance</p>
+  <input type="range" id="phase" min="0" max="100" value="20">
+
+  <button onclick="runMeasurement()">RUN MEASUREMENT</button>
+
+  <h2 id="status">STABLE ⚛️</h2>
+
+  <p id="explain">System ready...</p>
+
+  <h3>Histogram</h3>
+
+  <div class="hist">
+    <div id="b00" class="bar b00" style="height:60px;"></div>
+    <div id="b11" class="bar b11" style="height:60px;"></div>
+    <div id="b01" class="bar b01" style="height:60px;"></div>
+    <div id="b10" class="bar b10" style="height:60px;"></div>
+  </div>
+
+  <h3>Score: <span id="score">0</span></h3>
+
 </div>
 
-<div class="bar">
-  <div id="p0" class="p0"></div>
-  <div id="p1" class="p1"></div>
-</div>
-
-<p>|0⟩: <span id="prob0">50</span>% | |1⟩: <span id="prob1">50</span>%</p>
-
-<p class="phase">Phase φ: <span id="phi">0</span></p>
-
-<div class="graph">
-  <div id="g0" class="g0" style="height:60px;"></div>
-  <div id="g1" class="g1" style="height:60px;"></div>
-</div>
-
-<button onclick="measure()">MEASURE</button>
-
-<h2 id="result"></h2>
-<h3>Score: <span id="score">0</span></h3>
-
-</div>
-
-<!-- RIGHT -->
+<!-- RIGHT PANEL -->
 <div class="right">
 
 <h3>🎮 How to Play</h3>
-<p>Drag mouse → control quantum state</p>
-<p>Angle controls probability + phase</p>
-<p>Measure collapses wavefunction</p>
+<p>Adjust Noise, Strength, Phase to control quantum system.</p>
+<p>Run measurement to collapse entangled qubits.</p>
+<p>Observe result distribution and stability.</p>
 
 <h3>🏆 Rules</h3>
-<p>Win = |1⟩</p>
-<p>Lose = |0⟩</p>
-<p>Score increases on win streak</p>
+<p>✔ 00 / 11 = GOOD ENTANGLEMENT</p>
+<p>✔ 01 / 10 = DECOHERENCE ERROR</p>
 
-<h3>🧪 Quantum Model</h3>
-<p>|ψ⟩ = α|0⟩ + β|1⟩</p>
-<p>α = cos(θ/2)</p>
-<p>β = sin(θ/2)e^(iφ)</p>
+<h3>🏁 Win Condition</h3>
+<p>Maintain mostly 00 or 11 outcomes</p>
 
-<h3>⚛️ Qiskit Reference</h3>
+<h3>💀 Loss Condition</h3>
+<p>When 01 / 10 dominates system becomes unstable</p>
+
+<h3>🧪 Qiskit Code</h3>
 
 <pre style="color:#00f7ff;font-size:11px;">
 from qiskit import QuantumCircuit
-qc = QuantumCircuit(1,1)
+
+qc = QuantumCircuit(2,2)
 qc.h(0)
-qc.measure(0,0)
+qc.cx(0,1)
+qc.measure([0,1],[0,1])
 </pre>
 
 </div>
@@ -197,71 +193,92 @@ qc.measure(0,0)
 
 <script>
 
-let theta = 0;
-let phi = 0;
 let score = 0;
+let history = { "00":1, "11":1, "01":1, "10":1 };
 
-/* MOUSE CONTROL */
-let drag = false;
+function runMeasurement(){
 
-document.addEventListener("mousedown", ()=>drag=true);
-document.addEventListener("mouseup", ()=>drag=false);
+  let noise = +document.getElementById("noise").value;
+  let strength = +document.getElementById("strength").value;
+  let phase = +document.getElementById("phase").value;
 
-document.addEventListener("mousemove", (e)=>{
-  if(!drag) return;
+  // stability model
+  let stability = strength - (noise * 0.8) - (phase * 0.5);
 
-  theta = (e.clientX / window.innerWidth) * Math.PI * 2;
-  phi = (e.clientY / window.innerHeight) * Math.PI * 2;
+  let r = Math.random() * 100;
+  let result = "";
 
-  update();
-});
+  if(stability > 70){
+    result = (r < 50) ? "00" : "11";
+  }
+  else if(stability > 40){
+    result = (r < 30) ? "00" :
+             (r < 60) ? "11" :
+             (r < 80) ? "01" : "10";
+  }
+  else {
+    result = (r < 25) ? "01" :
+             (r < 50) ? "10" :
+             (r < 75) ? "00" : "11";
+  }
 
-/* QUANTUM ENGINE */
-function update(){
+  history[result]++;
 
-  let p1 = Math.pow(Math.sin(theta/2),2);
-  let p0 = 1 - p1;
-
-  let a = Math.round(p0*100);
-  let b = Math.round(p1*100);
-
-  document.getElementById("prob0").innerText = a;
-  document.getElementById("prob1").innerText = b;
-
-  document.getElementById("phi").innerText = phi.toFixed(2);
-
-  document.getElementById("p0").style.width = a + "%";
-  document.getElementById("p1").style.width = b + "%";
-
-  document.getElementById("g0").style.height = (a*1.2) + "px";
-  document.getElementById("g1").style.height = (b*1.2) + "px";
-
-  document.getElementById("sphere").style.transform =
-    `rotateX(${phi*180/Math.PI}deg) rotateY(${theta*180/Math.PI}deg)`;
-
-  document.getElementById("vector").style.transform =
-    `translate(${Math.sin(theta)*80}px, ${Math.cos(phi)*80}px)`;
+  updateHistogram();
+  updateStatus(stability, result);
+  updateScore(result);
 }
 
-/* MEASURE */
-function measure(){
+/* HISTOGRAM */
+function updateHistogram(){
 
-  let p1 = Math.pow(Math.sin(theta/2),2);
-  let r = Math.random();
+  let total =
+    history["00"] + history["11"] +
+    history["01"] + history["10"];
 
-  if(r < p1){
-    document.getElementById("result").innerText = "WIN 🎉 |1⟩";
+  document.getElementById("b00").style.height = (history["00"]/total)*120 + "px";
+  document.getElementById("b11").style.height = (history["11"]/total)*120 + "px";
+  document.getElementById("b01").style.height = (history["01"]/total)*120 + "px";
+  document.getElementById("b10").style.height = (history["10"]/total)*120 + "px";
+}
+
+/* STATUS + EXPLANATION */
+function updateStatus(stability, result){
+
+  let good = history["00"] + history["11"];
+  let bad  = history["01"] + history["10"];
+
+  let statusText = "";
+
+  if(stability > 70 && good > bad){
+    statusText = "🟢 STRONG ENTANGLEMENT (STABLE)";
+  }
+  else if(stability > 40){
+    statusText = "🟡 WEAK ENTANGLEMENT (FLUCTUATING)";
+  }
+  else {
+    statusText = "🔴 DECOHERENCE (BROKEN SYSTEM)";
+  }
+
+  document.getElementById("status").innerText = statusText;
+
+  document.getElementById("explain").innerText =
+    "Last result: " + result +
+    " | Stability: " + Math.round(stability) +
+    " | Noise, Phase affecting coherence";
+}
+
+/* SCORE */
+function updateScore(result){
+
+  if(result === "00" || result === "11"){
     score++;
   } else {
-    document.getElementById("result").innerText = "LOSE 💀 |0⟩";
-    score = Math.max(0, score-1);
+    score--;
   }
 
   document.getElementById("score").innerText = score;
 }
-
-setInterval(update, 40);
-update();
 
 </script>
 
