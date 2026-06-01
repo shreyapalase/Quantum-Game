@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,110 +8,187 @@
 <title>Quantum Arcade</title>
 
 <link rel="stylesheet" href="assets/css/home.css">
+
+<style>
+/* extra safety styles */
+
+body{
+    margin:0;
+    font-family:Arial;
+    background:#050816;
+    color:white;
+}
+
+.page{
+    padding:120px 40px;
+}
+
+.hidden{
+    display:none;
+}
+
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px 8%;
+
+    position:fixed;
+    top:0;
+    width:100%;
+
+    background:rgba(0,0,0,0.4);
+    backdrop-filter:blur(10px);
+    z-index:1000;
+}
+
+.logo{
+    font-size:1.4rem;
+    color:#00d4ff;
+    font-weight:bold;
+}
+
+.menu button{
+    margin-left:10px;
+    padding:10px 15px;
+    border:none;
+    background:#00d4ff;
+    cursor:pointer;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+/* CARDS */
+.card{
+    background:rgba(255,255,255,0.05);
+    padding:20px;
+    margin:10px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.1);
+    display:inline-block;
+    min-width:200px;
+}
+
+.card:hover{
+    box-shadow:0 0 20px rgba(0,212,255,0.3);
+}
+
+</style>
+
 </head>
 
 <body>
 
-<canvas id="quantumCanvas"></canvas>
-
+<!-- NAVBAR -->
 <nav class="navbar">
 
-    <div class="logo">
-        ⚛ Quantum Arcade
-    </div>
+    <div class="logo">⚛ Quantum Arcade</div>
 
-    <!-- RIGHT SIDE MENU -->
     <div class="menu">
 
-        <button class="menu-btn" onclick="toggleMenu()">
-            ☰ Menu
-        </button>
-
-        <div id="dropdown" class="dropdown">
-
-            <a href="index.html">Home</a>
-            <a href="games.html">Games</a>
-            <a href="about.html">About</a>
-
-        </div>
+        <button onclick="showSection('home')">Home</button>
+        <button onclick="showSection('games')">Games</button>
+        <button onclick="showSection('about')">About</button>
 
     </div>
 
 </nav>
 
-<section class="hero">
+<!-- HOME -->
+<section id="home" class="page">
 
-    <div class="hero-content">
+    <h1>⚛ Quantum Arcade</h1>
 
-        <h1>
-            30 Interactive Quantum Games
-        </h1>
+    <p>30 Interactive Quantum Computing Games</p>
 
-        <p>
-            Learn Quantum Computing Through Play,
-            Visualization, and Real Qiskit Circuits.
-        </p>
-
-        <div class="buttons">
-            <button class="primary-btn">
-                Explore Games
-            </button>
-
-            <button class="secondary-btn">
-                GitHub
-            </button>
-        </div>
-
-    </div>
+    <h3>Learn Quantum Through Play</h3>
 
 </section>
 
-<section class="stats">
+<!-- GAMES -->
+<section id="games" class="page hidden">
 
-    <div class="card">
-        <h2>30</h2>
-        <p>Games</p>
-    </div>
+    <h1>🎮 Games Library</h1>
 
-    <div class="card">
-        <h2>100+</h2>
-        <p>Visualizations</p>
-    </div>
+    <p>Select a game to start</p>
 
-    <div class="card">
-        <h2>Qiskit</h2>
-        <p>Powered</p>
-    </div>
+    <div class="card">01. Quantum Coin Flip</div>
+    <div class="card">02. Quantum Dice</div>
+    <div class="card">03. Qubit Explorer</div>
+    <div class="card">04. Bloch Sphere</div>
+    <div class="card">05. Memory Game</div>
+    <div class="card">06. Random Generator</div>
+    <div class="card">07. State Builder</div>
+    <div class="card">08. Measurement Challenge</div>
+    <div class="card">09. Card Draw</div>
+    <div class="card">10. Guess Game</div>
+
+    <div class="card">11. Superposition Race</div>
+    <div class="card">12. Quantum Maze</div>
+    <div class="card">13. Path Finder</div>
+    <div class="card">14. Entanglement Match</div>
+    <div class="card">15. Bell States</div>
+    <div class="card">16. Battleship</div>
+    <div class="card">17. Escape Room</div>
+    <div class="card">18. Interference Puzzle</div>
+    <div class="card">19. Music Lab</div>
+    <div class="card">20. Pattern Finder</div>
+
+    <div class="card">21. Teleportation Quest</div>
+    <div class="card">22. Grover Search</div>
+    <div class="card">23. Deutsch-Jozsa</div>
+    <div class="card">24. Simon’s Game</div>
+    <div class="card">25. Quantum Crypto</div>
+    <div class="card">26. Error Correction</div>
+    <div class="card">27. QAOA Puzzle</div>
+    <div class="card">28. Variational Circuit</div>
+    <div class="card">29. Quantum AI Lab</div>
+    <div class="card">30. Final Boss</div>
+
+    <br><br>
+
+    <button onclick="showSection('home')">
+        ⬅ Back to Home
+    </button>
 
 </section>
 
-<section class="featured">
+<!-- ABOUT -->
+<section id="about" class="page hidden">
 
-    <h2>Featured Games</h2>
+    <h1>ℹ About Quantum Arcade</h1>
 
-    <div class="game-grid">
+    <p>
+        Quantum Arcade is a 30-game interactive platform
+        designed to teach quantum computing using games,
+        visualization, and simulations.
+    </p>
 
-        <div class="game-card">
-            <h3>Quantum Coin</h3>
-            <p>Superposition</p>
-        </div>
+    <p>
+        Built using HTML, CSS, JavaScript and Qiskit-style logic.
+    </p>
 
-        <div class="game-card">
-            <h3>Quantum Maze</h3>
-            <p>Interference</p>
-        </div>
+    <br>
 
-        <div class="game-card">
-            <h3>Teleportation Quest</h3>
-            <p>Entanglement</p>
-        </div>
-
-    </div>
+    <button onclick="showSection('home')">
+        ⬅ Back to Home
+    </button>
 
 </section>
 
-<script src="assets/js/quantum-bg.js"></script>
-<script src="assets/js/main.js"></script>
+<!-- JS -->
+<script>
+function showSection(section){
+
+    document.querySelectorAll(".page")
+    .forEach(p => p.classList.add("hidden"));
+
+    document.getElementById(section)
+    .classList.remove("hidden");
+}
+</script>
 
 </body>
 </html>
