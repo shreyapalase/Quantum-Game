@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Probability Builder</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* FIELD BACKGROUND */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:
+    radial-gradient(circle at 20% 40%, #00f7ff22 2px, transparent 3px),
+    radial-gradient(circle at 70% 60%, #ff00ff22 2px, transparent 3px);
+  background-size:60px 60px;
+  animation: drift 8s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-120px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* SLIDERS */
+.slider {
+  width:60%;
+}
+
+/* HISTOGRAM */
+.hist {
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  height:150px;
+  gap:10px;
+}
+
+.bar {
+  width:60px;
+  background:#00f7ff;
+  transition:0.3s;
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* RESULT */
+#result {
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">🎲⚛️ Quantum Probability Builder</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Design Probability Field</h3>
+
+<p>A: <input type="range" id="a" class="slider" min="0" max="100" value="30"></p>
+<p>B: <input type="range" id="b" class="slider" min="0" max="100" value="30"></p>
+<p>C: <input type="range" id="c" class="slider" min="0" max="100" value="40"></p>
+
+<br>
+
+<button onclick="collapse()">COLLAPSE SYSTEM</button>
+<button onclick="aiAttack()">AI DISTORT FIELD</button>
+
+<h3 id="result">Build stable probability distribution</h3>
+
+<div class="hist">
+  <div class="bar" id="hA"></div>
+  <div class="bar" id="hB" style="background:#ff00ff;"></div>
+  <div class="bar" id="hC" style="background:#00ff88;"></div>
+</div>
+
+<h3>Entropy: <span id="e">0</span></h3>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Design probability distributions for quantum outcomes.</p>
+
+<h3>🏆 Rules</h3>
+<p>Stable distribution = high score</p>
+<p>AI distortion = entropy increase</p>
+
+<h3>💀 Win Condition</h3>
+<p>Maintain low entropy after 10 collapses</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+import numpy as np
+
+qc = QuantumCircuit(1,1)
+
+qc.ry(theta,0)
+qc.measure(0,0)
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let entropy=0;
+
+function normalize(a,b,c){
+  let s=a+b+c;
+  return [a/s,b/s,c/s];
+}
+
+/* COLLAPSE */
+function collapse(){
+
+  let a=parseInt(document.getElementById("a").value);
+  let b=parseInt(document.getElementById("b").value);
+  let c=parseInt(document.getElementById("c").value);
+
+  let probs=normalize(a,b,c);
+
+  let r=Math.random();
+
+  let result;
+
+  if(r<probs[0]) result="A";
+  else if(r<probs[0]+probs[1]) result="B";
+  else result="C";
+
+  entropy += Math.abs(probs[0]-probs[1])*10;
+
+  document.getElementById("result").innerText=
+    "Collapsed to: "+result;
+
+  update();
+}
+
+/* AI DISTORTION */
+function aiAttack(){
+
+  let a=document.getElementById("a");
+  let b=document.getElementById("b");
+  let c=document.getElementById("c");
+
+  a.value = Math.max(0, parseInt(a.value) + (Math.random()*20-10));
+  b.value = Math.max(0, parseInt(b.value) + (Math.random()*20-10));
+  c.value = Math.max(0, parseInt(c.value) + (Math.random()*20-10));
+
+  entropy += 5;
+
+  document.getElementById("result").innerText=
+    "⚠ AI DISTORTED PROBABILITY FIELD";
+
+  update();
+}
+
+/* UPDATE */
+function update(){
+
+  let a=parseInt(document.getElementById("a").value);
+  let b=parseInt(document.getElementById("b").value);
+  let c=parseInt(document.getElementById("c").value);
+
+  let max=100;
+
+  document.getElementById("hA").style.height=(a/max)*150+"px";
+  document.getElementById("hB").style.height=(b/max)*150+"px";
+  document.getElementById("hC").style.height=(c/max)*150+"px";
+
+  document.getElementById("e").innerText=Math.floor(entropy);
+
+  if(entropy>50){
+    document.getElementById("result").innerText=
+      "💥 SYSTEM UNSTABLE (HIGH ENTROPY)";
+  }
+}
+
+</script>
+
+</body>
+</html>
