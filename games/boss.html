@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Final Boss</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* COSMIC FIELD */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:
+    radial-gradient(circle at 30% 40%, #00f7ff22, transparent 40%),
+    radial-gradient(circle at 70% 60%, #ff00ff22, transparent 40%);
+  animation: drift 8s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:scale(1);}
+  to {transform:scale(1.1);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* BOSS CORE */
+.boss {
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  margin:auto;
+  background:radial-gradient(circle,#00f7ff55,#000);
+  box-shadow:0 0 40px #00f7ff;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {transform:scale(1);}
+  50% {transform:scale(1.2);}
+  100% {transform:scale(1);}
+}
+
+/* BUTTONS */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* BAR */
+.bar {
+  width:80%;
+  height:25px;
+  border:1px solid #00f7ff;
+  margin:auto;
+}
+
+.fill {
+  height:100%;
+  width:70%;
+  background:#00f7ff;
+  transition:0.3s;
+}
+
+/* TEXT */
+#log {
+  font-size:12px;
+  height:120px;
+  overflow:auto;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">👑⚛️ FINAL BOSS: DECOHERENCE ENTITY</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<div class="boss" id="boss"></div>
+
+<h3>Entropy: <span id="entropy">70</span>%</h3>
+
+<div class="bar">
+  <div class="fill" id="bar"></div>
+</div>
+
+<br>
+
+<button onclick="H()">H Stabilize</button>
+<button onclick="X()">X Flip</button>
+<button onclick="Z()">Z Phase</button>
+<button onclick="resetPulse()">RESET PULSE</button>
+
+<h3 id="status">Entity stabilizing...</h3>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Stabilize quantum entity by reducing entropy.</p>
+
+<h3>🏆 Rules</h3>
+<p>Wrong action increases chaos</p>
+<p>Correct response reduces entropy</p>
+
+<h3>💀 Win Condition</h3>
+<p>Reduce entropy below 10%</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1,1)
+
+qc.h(0)
+qc.x(0)
+qc.z(0)
+qc.measure(0,0)
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let entropy=70;
+
+/* UPDATE */
+function update(){
+
+  if(entropy>100) entropy=100;
+  if(entropy<0) entropy=0;
+
+  document.getElementById("entropy").innerText=Math.floor(entropy);
+  document.getElementById("bar").style.width=entropy+"%";
+
+  if(entropy<10){
+    document.getElementById("status").innerText=
+      "🏆 ENTITY COLLAPSED — YOU WIN!";
+  } else if(entropy>80){
+    document.getElementById("status").innerText=
+      "💥 CHAOS DOMINATING SYSTEM";
+  } else {
+    document.getElementById("status").innerText=
+      "Entity unstable...";
+  }
+}
+
+/* ACTIONS */
+function H(){
+  entropy -= 8;
+  update();
+}
+
+function X(){
+  entropy += Math.random()*10;
+  update();
+}
+
+function Z(){
+  entropy += Math.random()*6 - 3;
+  update();
+}
+
+function resetPulse(){
+  entropy -= 15;
+  update();
+}
+
+setInterval(()=>{
+  entropy += Math.random()*2;
+  update();
+},1500);
+
+</script>
+
+</body>
+</html>
