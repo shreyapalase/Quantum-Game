@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Entanglement Control Game</title>
+<title>Entanglement Control Lab</title>
 
 <style>
 body {
@@ -10,10 +10,9 @@ body {
   background: black;
   color: #00f7ff;
   font-family: monospace;
-  text-align: center;
 }
 
-/* FIELD */
+/* BACKGROUND */
 #bg {
   position: fixed;
   width: 100%;
@@ -29,39 +28,36 @@ body {
   to { transform: translateY(-100px); }
 }
 
-/* MAIN */
-.card {
-  width: 80%;
-  margin: auto;
-  margin-top: 20px;
-  border: 2px solid #00f7ff;
-  padding: 20px;
+/* LAYOUT */
+.container {
+  display: flex;
 }
 
-/* SLIDERS */
-input {
+.left {
   width: 60%;
+  text-align: center;
+  padding: 10px;
 }
 
-/* QUANTUM CORE */
+.right {
+  width: 40%;
+  padding: 15px;
+  border-left: 1px solid #00f7ff55;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* CORE VISUAL */
 .core {
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   border: 2px solid #00f7ff;
   margin: auto;
   position: relative;
-  box-shadow: 0 0 20px #00f7ff33;
-  animation: pulse 2s infinite;
+  box-shadow: 0 0 25px #00f7ff33;
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 5px #00f7ff33; }
-  50% { box-shadow: 0 0 30px #00f7ff99; }
-  100% { box-shadow: 0 0 5px #00f7ff33; }
-}
-
-/* LINK */
 .link {
   position: absolute;
   width: 100%;
@@ -70,10 +66,52 @@ input {
   top: 50%;
 }
 
+/* SLIDERS */
+input {
+  width: 70%;
+}
+
+/* HISTOGRAM */
+.hist {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 15px;
+  height: 140px;
+}
+
+.bar {
+  width: 40px;
+  transition: 0.3s;
+}
+
+.b00 { background: #00f7ff; }
+.b11 { background: #ff00ff; }
+.b01 { background: #ffcc00; }
+.b10 { background: #ff4444; }
+
 /* STATUS */
 #status {
   font-size: 20px;
   margin-top: 10px;
+}
+
+button {
+  padding: 10px;
+  background: #00f7ff;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+}
+
+/* CODE BOX */
+.code {
+  background: #000;
+  border: 1px solid #00f7ff;
+  padding: 10px;
+  font-size: 11px;
+  margin-top: 10px;
+  overflow-x: auto;
 }
 </style>
 </head>
@@ -82,69 +120,143 @@ input {
 
 <div id="bg"></div>
 
-<h1>⚛️ Entanglement Control Game</h1>
+<h1 style="text-align:center;">⚛️ Entanglement Quantum Lab</h1>
 
-<div class="card">
+<div class="container">
 
-<div class="core">
-  <div class="link"></div>
+<!-- LEFT -->
+<div class="left">
+
+  <div class="core">
+    <div class="link"></div>
+  </div>
+
+  <h3>Control Quantum System</h3>
+
+  <p>🔥 Noise</p>
+  <input type="range" id="noise" min="0" max="100" value="10">
+
+  <p>⚡ Entanglement Strength</p>
+  <input type="range" id="strength" min="0" max="100" value="90">
+
+  <p>🌊 Phase Disturbance</p>
+  <input type="range" id="phase" min="0" max="100" value="20">
+
+  <button onclick="runMeasurement()">RUN MEASUREMENT</button>
+
+  <h2 id="status">STABLE ⚛️</h2>
+
+  <h3>Result Counts</h3>
+
+  <div class="hist">
+    <div id="b00" class="bar b00" style="height:60px;"></div>
+    <div id="b11" class="bar b11" style="height:60px;"></div>
+    <div id="b01" class="bar b01" style="height:60px;"></div>
+    <div id="b10" class="bar b10" style="height:60px;"></div>
+  </div>
+
+  <h3>Score: <span id="score">0</span></h3>
+
 </div>
 
-<h3>Quantum Stability Controls</h3>
+<!-- RIGHT -->
+<div class="right">
 
-<p>🔥 Noise (Decoherence)</p>
-<input type="range" min="0" max="100" value="10" id="noise">
+  <h3>🎮 How to Play</h3>
+  <p>Adjust quantum parameters (Noise, Strength, Phase).</p>
+  <p>Run measurement to collapse entangled state.</p>
+  <p>Observe result distribution over time.</p>
 
-<p>⚡ Entanglement Strength</p>
-<input type="range" min="0" max="100" value="90" id="strength">
+  <h3>🏆 Rules</h3>
+  <p>✔ Strong entanglement → mostly 00 or 11</p>
+  <p>✔ Noise breaks correlation → 01 / 10 increases</p>
+  <p>✔ Goal: maintain strong entanglement stability</p>
 
-<p>🌊 Phase Disturbance</p>
-<input type="range" min="0" max="100" value="20" id="phase">
+  <h3>🏁 Win Condition</h3>
+  <p>Maintain >70% (00 + 11 outcomes)</p>
 
-<h2 id="status">STABLE ⚛️</h2>
-<h3>Time Stable: <span id="time">0</span>s</h3>
+  <h3>💀 Loss Condition</h3>
+  <p>If (01 + 10) dominates → decoherence</p>
+
+  <h3>🧪 Qiskit Reference</h3>
+
+  <div class="code">
+from qiskit import QuantumCircuit<br>
+qc = QuantumCircuit(2,2)<br>
+qc.h(0)<br>
+qc.cx(0,1)<br>
+qc.measure([0,1],[0,1])
+  </div>
+
+</div>
 
 </div>
 
 <script>
 
-let stability = 100;
-let time = 0;
-let alive = true;
+let score = 0;
+let counts = { "00":1, "11":1, "01":1, "10":1 };
 
-function updateSystem(){
+function runMeasurement(){
 
   let noise = +document.getElementById("noise").value;
   let strength = +document.getElementById("strength").value;
   let phase = +document.getElementById("phase").value;
 
-  // quantum stability formula (simulated)
-  stability = strength - (noise * 0.6) - (phase * 0.3);
+  // entanglement probability model
+  let ent = strength - noise*0.7 - phase*0.4;
 
-  if(stability < 20){
-    document.getElementById("status").innerText = "DECOHERENCE 💥 LOST";
-    alive = false;
+  let r = Math.random()*100;
+
+  let result;
+
+  if(ent > 70){
+    result = (r < 50) ? "00" : "11";
+  } else if(ent > 40){
+    result = (r < 25) ? "00" :
+             (r < 50) ? "11" :
+             (r < 75) ? "01" : "10";
   } else {
-    document.getElementById("status").innerText = "STABLE ⚛️";
+    result = (r < 25) ? "01" :
+             (r < 50) ? "10" :
+             (r < 75) ? "00" : "11";
   }
 
+  counts[result]++;
+
+  updateHistogram();
+  evaluate(ent);
 }
 
-setInterval(()=>{
+/* HISTOGRAM UPDATE */
+function updateHistogram(){
 
-  if(!alive) return;
+  let total = counts["00"] + counts["11"] + counts["01"] + counts["10"];
 
-  updateSystem();
+  document.getElementById("b00").style.height = (counts["00"]/total)*120 + "px";
+  document.getElementById("b11").style.height = (counts["11"]/total)*120 + "px";
+  document.getElementById("b01").style.height = (counts["01"]/total)*120 + "px";
+  document.getElementById("b10").style.height = (counts["10"]/total)*120 + "px";
+}
 
-  time++;
-  document.getElementById("time").innerText = time;
+/* GAME STATE */
+function evaluate(ent){
 
-  if(time > 10 && stability > 30){
-    document.getElementById("status").innerText = "YOU WIN 🎉 STABLE ENTANGLEMENT";
-    alive = false;
+  let good = counts["00"] + counts["11"];
+  let bad = counts["01"] + counts["10"];
+
+  if(good > bad){
+    document.getElementById("status").innerText =
+      "STABLE ENTANGLEMENT ⚛️";
+    score++;
+  } else {
+    document.getElementById("status").innerText =
+      "DECOHERENCE 💥";
+    score = Math.max(0, score-1);
   }
 
-}, 1000);
+  document.getElementById("score").innerText = score;
+}
 
 </script>
 
