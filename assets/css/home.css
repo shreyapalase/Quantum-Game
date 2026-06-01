@@ -1,276 +1,68 @@
-/* ==========================
-   GLOBAL STYLES
-=========================== */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #050816;
-    color: white;
+/* GLOBAL */
+body{
+    margin:0;
+    font-family:Arial;
+    background:#050816;
+    color:white;
 }
 
-/* ==========================
-   PAGE SECTIONS
-=========================== */
-.page {
-    padding: 120px 40px;
-    min-height: 100vh;
-}
-
-.hidden {
-    display: none;
-}
-
-/* ==========================
-   NAVBAR
-=========================== */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 8%;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-}
-
-.logo {
-    font-size: 1.4rem;
-    color: #00d4ff;
-    font-weight: bold;
-}
-
-/* MENU BUTTONS */
-.menu button {
-    margin-left: 10px;
-    padding: 10px 15px;
-    border: none;
-    background: #00d4ff;
-    cursor: pointer;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: transform 0.2s;
-}
-
-.menu button:hover {
-    transform: scale(1.05);
-}
-
-/* ==========================
-   HOME SECTION
-=========================== */
-#home h1 {
-    font-size: 3rem;
-    color: #00d4ff;
-    margin-bottom: 10px;
-}
-
-#home p {
-    font-size: 1.2rem;
-    color: #aaa;
-}
-
-#home h3 {
-    font-size: 1.5rem;
-    color: #8b5cf6;
-}
-
-/* ==========================
-   GAMES SECTION
-=========================== */
-#games h1 {
-    font-size: 2.5rem;
-    color: #00d4ff;
-}
-
-#games p {
-    font-size: 1.1rem;
-    color: #aaa;
-    margin-bottom: 20px;
-}
-
-/* CARDS GRID */
-.card {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 20px;
-    margin: 10px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    display: inline-block;
-    min-width: 200px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-}
-
-/* ==========================
-   ABOUT SECTION
-=========================== */
-#about h1 {
-    font-size: 2.5rem;
-    color: #00d4ff;
-    margin-bottom: 20px;
-}
-
-#about p {
-    font-size: 1.1rem;
-    color: #aaa;
-    margin-bottom: 10px;
-}
-
-/* ==========================
-   BUTTONS
-=========================== */
-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    background: #00d4ff;
-    cursor: pointer;
-    font-weight: bold;
-    color: black;
-    transition: transform 0.2s, background 0.2s;
-}
-
-button:hover {
-    transform: scale(1.05);
-    background: #8b5cf6;
-}
-
-/* ==========================
-   RESPONSIVE GRID
-=========================== */
-@media (min-width: 768px) {
-    .cards-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-    }
-}
-
-@media (max-width: 767px) {
-    .page {
-        padding: 140px 20px;
-    }
-
-    .menu button {
-        padding: 8px 12px;
-    }
-
-    .card {
-        min-width: 150px;
-        padding: 15px;
-        margin: 8px;
-    }
-}
-/* ==========================
-   QUANTUM PAGE TRANSITIONS
-=========================== */
-
-/* EXIT EFFECT */
-.fade-out{
-    animation: fadeOut 0.2s ease forwards;
-}
-
-@keyframes fadeOut{
-    from{
-        opacity:1;
-        transform: scale(1);
-        filter: blur(0px);
-    }
-    to{
-        opacity:0;
-        transform: scale(0.98);
-        filter: blur(6px);
-    }
-}
-
-/* ENTER EFFECT */
-.fade-in{
-    animation: fadeIn 0.6s ease forwards;
-}
-
-@keyframes fadeIn{
-    from{
-        opacity:0;
-        transform: scale(1.05);
-        filter: blur(10px);
-    }
-    to{
-        opacity:1;
-        transform: scale(1);
-        filter: blur(0px);
-    }
-}
-
-/* QUANTUM GLOW FOR ACTIVE SECTION */
+/* PAGE SYSTEM */
 .page{
-    transition: all 0.3s ease;
-}
-.menu button {
-    position: relative;
-    overflow: hidden;
+    padding:120px 30px;
 }
 
-/* glowing pulse effect */
-.menu button::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-
-    background: rgba(0, 212, 255, 0.4);
-    border-radius: 50%;
-
-    transform: translate(-50%, -50%);
+.hidden{
+    display:none;
 }
 
-.menu button:active::after {
-    width: 200px;
-    height: 200px;
-    transition: 0.4s;
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 8%;
+    position:fixed;
+    top:0;
+    width:100%;
+    background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(10px);
 }
 
-.game-box{
-    margin-top:40px;
-    padding:40px;
-    border-radius:20px;
-
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.1);
-
-    text-align:center;
-}
-
-.game-box h2{
-    font-size:2rem;
+.logo{
     color:#00d4ff;
-    margin-bottom:20px;
+    font-weight:bold;
 }
 
-.game-box button{
+.menu button{
+    margin-left:10px;
+    padding:10px 15px;
+    border:none;
+    background:#00d4ff;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+/* CARDS */
+.card{
+    background:rgba(255,255,255,0.05);
+    padding:20px;
     margin:10px;
-    padding:12px 25px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.1);
+    display:inline-block;
+    cursor:pointer;
+}
+
+.card:hover{
+    box-shadow:0 0 20px rgba(0,212,255,0.4);
+}
+
+/* GAME BOX */
+button{
+    margin-top:20px;
+    padding:10px 20px;
     border:none;
     border-radius:10px;
-    cursor:pointer;
-
     background:#00d4ff;
-    font-weight:bold;
-    transition:0.3s;
-}
-
-.game-box button:hover{
-    transform:scale(1.05);
-    background:#8b5cf6;
+    cursor:pointer;
 }
