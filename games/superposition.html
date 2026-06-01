@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Superposition Game</title>
+
+  <style>
+    body {
+      background: black;
+      color: #00f7ff;
+      font-family: monospace;
+      text-align: center;
+      padding-top: 80px;
+    }
+
+    h1 {
+      text-shadow: 0 0 20px #00f7ff;
+    }
+
+    button {
+      padding: 15px 25px;
+      font-size: 18px;
+      background: #00f7ff;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+
+    #state {
+      font-size: 40px;
+      margin: 30px;
+    }
+
+    .box {
+      border: 1px solid #00f7ff;
+      width: 300px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00f7ff33;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <h1>⚡ Superposition Game</h1>
+  <p>Qubit is in superposition |0⟩ + |1⟩</p>
+
+  <div id="state">|ψ⟩</div>
+
+  <button onclick="measure()">Measure Qubit</button>
+
+</div>
+
+<script>
+function measure() {
+  let result = Math.random() > 0.5 ? "|0⟩" : "|1⟩";
+  document.getElementById("state").innerText = result;
+}
+</script>
+
+</body>
+</html>
