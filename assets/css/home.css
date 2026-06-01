@@ -171,3 +171,47 @@ button:hover {
         margin: 8px;
     }
 }
+/* ==========================
+   QUANTUM PAGE TRANSITIONS
+=========================== */
+
+/* EXIT EFFECT */
+.fade-out{
+    animation: fadeOut 0.2s ease forwards;
+}
+
+@keyframes fadeOut{
+    from{
+        opacity:1;
+        transform: scale(1);
+        filter: blur(0px);
+    }
+    to{
+        opacity:0;
+        transform: scale(0.98);
+        filter: blur(6px);
+    }
+}
+
+/* ENTER EFFECT */
+.fade-in{
+    animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform: scale(1.05);
+        filter: blur(10px);
+    }
+    to{
+        opacity:1;
+        transform: scale(1);
+        filter: blur(0px);
+    }
+}
+
+/* QUANTUM GLOW FOR ACTIVE SECTION */
+.page{
+    transition: all 0.3s ease;
+}
