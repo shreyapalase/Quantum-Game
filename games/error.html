@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Error Correction Lab</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* GLITCH FIELD BACKGROUND */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      #00f7ff11,
+      #00f7ff11 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  animation: flicker 1.5s infinite;
+  z-index:-1;
+}
+
+@keyframes flicker {
+  0% {opacity:0.8;}
+  50% {opacity:0.4;}
+  100% {opacity:0.8;}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* QUBIT DISPLAY */
+.qubit {
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  margin:auto;
+  border:2px solid #00f7ff;
+  box-shadow:0 0 25px #00f7ff55;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  transition:0.2s;
+}
+
+/* GLITCH EFFECT */
+.glitch {
+  animation: glitch 0.2s infinite;
+}
+
+@keyframes glitch {
+  0% {transform:translate(0);}
+  25% {transform:translate(2px,-2px);}
+  50% {transform:translate(-2px,2px);}
+  75% {transform:translate(2px,2px);}
+  100% {transform:translate(0);}
+}
+
+/* BUTTONS */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* BARS */
+.bar {
+  width:60%;
+  height:20px;
+  border:1px solid #00f7ff;
+  margin:auto;
+}
+
+.fill {
+  height:100%;
+  width:100%;
+  background:#00f7ff;
+  transition:0.2s;
+}
+
+/* TEXT */
+#result {
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">🧯⚛️ Quantum Error Correction Lab</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Repair the Quantum State</h3>
+
+<div class="qubit" id="qubit">|0⟩</div>
+
+<br>
+
+<button onclick="applyX()">X Correction</button>
+<button onclick="applyZ()">Z Correction</button>
+<button onclick="applyH()">H Correction</button>
+
+<br>
+
+<div class="bar">
+  <div class="fill" id="fidelity"></div>
+</div>
+
+<h3 id="result">System Stable</h3>
+
+<h3>Score: <span id="score">0</span></h3>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Detect quantum errors and fix them using correct gates.</p>
+
+<h3>🏆 Rules</h3>
+<p>X error → apply X correction</p>
+<p>Z error → apply Z correction</p>
+<p>Wrong correction = instability increase</p>
+
+<h3>💀 Win Condition</h3>
+<p>Maintain fidelity > 80%</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1,1)
+
+qc.x(0)
+qc.z(0)
+qc.h(0)
+qc.measure(0,0)
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let state=0; // 0 clean, 1 bit flip, 2 phase flip
+let fidelity=100;
+let score=0;
+
+function randomError(){
+
+  let r=Math.random();
+
+  if(r<0.4) state=1;
+  else if(r<0.8) state=2;
+  else state=0;
+
+  let q=document.getElementById("qubit");
+
+  if(state!==0){
+    q.classList.add("glitch");
+  } else {
+    q.classList.remove("glitch");
+  }
+}
+
+setInterval(randomError,1500);
+
+/* CORRECTIONS */
+function applyX(){
+
+  if(state===1){
+    fidelity+=10;
+    score+=2;
+    state=0;
+    document.getElementById("result").innerText="Bit-flip corrected";
+  } else {
+    fidelity-=8;
+    document.getElementById("result").innerText="Wrong correction!";
+  }
+
+  update();
+}
+
+function applyZ(){
+
+  if(state===2){
+    fidelity+=10;
+    score+=2;
+    state=0;
+    document.getElementById("result").innerText="Phase error corrected";
+  } else {
+    fidelity-=8;
+    document.getElementById("result").innerText="Wrong correction!";
+  }
+
+  update();
+}
+
+function applyH(){
+
+  fidelity-=3;
+  document.getElementById("result").innerText="Basis rotation applied";
+  update();
+}
+
+function update(){
+
+  if(fidelity>100) fidelity=100;
+  if(fidelity<0) fidelity=0;
+
+  document.getElementById("fidelity").style.width=fidelity+"%";
+  document.getElementById("score").innerText=score;
+
+  if(fidelity<30){
+    document.getElementById("result").innerText="💥 SYSTEM DECOHERING";
+  }
+
+  if(fidelity>80){
+    document.getElementById("result").innerText="✅ HIGH STABILITY ACHIEVED";
+  }
+}
+
+</script>
+
+</body>
+</html>
