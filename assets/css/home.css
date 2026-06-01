@@ -240,3 +240,37 @@ button:hover {
     height: 200px;
     transition: 0.4s;
 }
+
+.game-box{
+    margin-top:40px;
+    padding:40px;
+    border-radius:20px;
+
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+
+    text-align:center;
+}
+
+.game-box h2{
+    font-size:2rem;
+    color:#00d4ff;
+    margin-bottom:20px;
+}
+
+.game-box button{
+    margin:10px;
+    padding:12px 25px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+
+    background:#00d4ff;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.game-box button:hover{
+    transform:scale(1.05);
+    background:#8b5cf6;
+}
