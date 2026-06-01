@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Wave Interference</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* BACKGROUND */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background: radial-gradient(circle,#00f7ff22 2px,transparent 3px);
+  background-size:60px 60px;
+  animation: drift 10s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-150px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* CANVAS */
+canvas {
+  background:#001a22;
+  border:1px solid #00f7ff;
+  box-shadow:0 0 20px #00f7ff55;
+}
+
+/* SLIDERS */
+input[type=range] {
+  width:60%;
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* RESULT */
+#result {
+  font-size:18px;
+}
+
+/* HISTOGRAM */
+.hist {
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  height:120px;
+  gap:20px;
+}
+
+.h {
+  width:80px;
+  background:#00f7ff;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">🌊⚛️ Quantum Wave Interference Engine</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Control Wave Interference</h3>
+
+<canvas id="canvas" width="400" height="200"></canvas>
+
+<br>
+
+<p>Phase Shift (φ)</p>
+<input type="range" id="phase" min="0" max="360" value="0">
+
+<p>Amplitude Control</p>
+<input type="range" id="amp" min="10" max="100" value="50">
+
+<br>
+
+<button onclick="simulate()">RUN INTERFERENCE</button>
+
+<h3 id="result">Stable Wave Field</h3>
+
+<h3>Score: <span id="score">0</span></h3>
+
+<div class="hist">
+  <div id="h0" class="h" style="height:60px;"></div>
+  <div id="h1" class="h" style="height:60px;background:#ff00ff;"></div>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Adjust phase difference between two waves.</p>
+<p>Observe interference pattern.</p>
+<p>Align constructive peaks for score.</p>
+
+<h3>🏆 Rules</h3>
+<p>Constructive peak = +3</p>
+<p>Destructive collapse = -2</p>
+
+<h3>💀 Win Condition</h3>
+<p>Score ≥ 15</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+import numpy as np
+
+qc = QuantumCircuit(1,1)
+
+qc.h(0)
+qc.p(phase,0)
+qc.measure(0,0)
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let score=0;
+let stats={good:1,bad:1};
+
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+
+function draw(){
+
+  let phase=document.getElementById("phase").value;
+  let amp=document.getElementById("amp").value;
+
+  ctx.clearRect(0,0,400,200);
+
+  ctx.strokeStyle="#00f7ff";
+  ctx.beginPath();
+
+  for(let x=0;x<400;x++){
+
+    let y1=Math.sin((x/20)+(phase*Math.PI/180))*amp;
+    let y2=Math.sin((x/20))*amp;
+
+    let y=y1+y2;
+
+    ctx.lineTo(x,100+y);
+  }
+
+  ctx.stroke();
+}
+
+function simulate(){
+
+  let phase=document.getElementById("phase").value;
+
+  let alignment=Math.cos(phase*Math.PI/180);
+
+  if(alignment>0.5){
+    score+=3;
+    stats.good++;
+    document.getElementById("result").innerText="CONSTRUCTIVE INTERFERENCE";
+  }
+  else{
+    score-=2;
+    stats.bad++;
+    document.getElementById("result").innerText="DESTRUCTIVE INTERFERENCE";
+  }
+
+  document.getElementById("score").innerText=score;
+  updateHist();
+}
+
+function updateHist(){
+
+  let total=stats.good+stats.bad;
+
+  document.getElementById("h0").style.height=
+    (stats.good/total)*120+"px";
+
+  document.getElementById("h1").style.height=
+    (stats.bad/total)*120+"px";
+}
+
+setInterval(draw,50);
+
+updateHist();
+
+</script>
+
+</body>
+</html>
