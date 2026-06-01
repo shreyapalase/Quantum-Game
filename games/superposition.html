@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Superposition Level 2</title>
+<title>Superposition Level 4</title>
 
 <style>
 body {
@@ -10,113 +10,142 @@ body {
   background: black;
   color: #00f7ff;
   font-family: monospace;
-  text-align: center;
   overflow: hidden;
 }
 
-/* MAIN CONTAINER */
-.card {
-  width: 90%;
-  margin: auto;
-  margin-top: 20px;
-  border: 2px solid #00f7ff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 30px #00f7ff33;
-}
-
-/* BLOCH SPHERE */
-.sphere {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  border: 2px solid #00f7ff;
-  margin: 20px auto;
-  position: relative;
-  cursor: grab;
-}
-
-.pointer {
-  width: 14px;
-  height: 14px;
-  background: #ff00ff;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform-origin: 0px 0px;
-}
-
-/* PROBABILITY BAR */
-.bar {
-  width: 80%;
-  height: 22px;
-  border: 1px solid white;
-  margin: 10px auto;
-  display: flex;
-}
-
-.p0 {
-  background: #00f7ff;
-  width: 50%;
-  transition: 0.2s;
-}
-
-.p1 {
-  background: #ff00ff;
-  width: 50%;
-  transition: 0.2s;
-}
-
-/* BUTTONS */
-button {
-  padding: 10px 15px;
-  margin: 8px;
-  border: none;
-  background: #00f7ff;
-  cursor: pointer;
-}
-
-/* SCORE */
-#score {
-  font-size: 18px;
-  margin-top: 10px;
-}
-
-/* WAVE BACKGROUND */
-#wave {
-  position: absolute;
+/* BACKGROUND FIELD */
+#bg {
+  position: fixed;
   width: 100%;
   height: 100%;
   background: radial-gradient(circle, #00f7ff22 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-size: 30px 30px;
   animation: move 6s linear infinite;
   z-index: -1;
 }
 
 @keyframes move {
   from { transform: translateY(0); }
-  to { transform: translateY(-100px); }
+  to { transform: translateY(-120px); }
+}
+
+/* MAIN LAYOUT */
+.container {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+/* LEFT PANEL */
+.left {
+  width: 60%;
+  text-align: center;
+}
+
+/* RIGHT PANEL */
+.right {
+  width: 40%;
+  padding: 10px;
+  border-left: 1px solid #00f7ff55;
+  overflow-y: auto;
+  height: 95vh;
+}
+
+/* BLOCH SPHERE */
+.scene {
+  width: 220px;
+  height: 220px;
+  margin: auto;
+  perspective: 800px;
+}
+
+.sphere {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid #00f7ff;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.vector {
+  width: 12px;
+  height: 12px;
+  background: #ff00ff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+/* PROBABILITY BAR */
+.bar {
+  width: 80%;
+  height: 20px;
+  border: 1px solid white;
+  margin: 10px auto;
+  display: flex;
+}
+
+.p0 { background: #00f7ff; width: 50%; transition: 0.2s; }
+.p1 { background: #ff00ff; width: 50%; transition: 0.2s; }
+
+/* HISTOGRAM */
+.hist {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 120px;
+  gap: 20px;
+}
+
+.bar0, .bar1 {
+  width: 40px;
+  transition: 0.3s;
+}
+
+.bar0 { background: #00f7ff; }
+.bar1 { background: #ff00ff; }
+
+/* QISKIT BOX */
+.code {
+  background: #000;
+  border: 1px solid #00f7ff;
+  padding: 10px;
+  font-size: 12px;
+  margin-top: 10px;
+  color: #00f7ff;
+  overflow-x: auto;
+}
+
+/* BUTTON */
+button {
+  padding: 10px;
+  background: #00f7ff;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="wave"></div>
+<div id="bg"></div>
 
-<h1>⚛️ Superposition Level 2</h1>
+<h1 style="text-align:center;">⚛️ Superposition Level 4</h1>
 
-<div class="card">
+<div class="container">
 
-  <h3>Drag Sphere → Change Quantum State</h3>
+<!-- LEFT SIDE -->
+<div class="left">
 
-  <!-- BLOCH SPHERE -->
-  <div class="sphere" id="sphere">
-    <div class="pointer" id="pointer"></div>
+  <div class="scene">
+    <div class="sphere" id="sphere">
+      <div class="vector" id="vector"></div>
+    </div>
   </div>
 
-  <!-- PROBABILITY -->
   <div class="bar">
     <div id="p0" class="p0"></div>
     <div id="p1" class="p1"></div>
@@ -124,73 +153,107 @@ button {
 
   <p>|0⟩: <span id="prob0">50</span>% | |1⟩: <span id="prob1">50</span>%</p>
 
-  <button onclick="measure()">Measure</button>
+  <div class="hist">
+    <div id="h0" class="bar0" style="height:60px;"></div>
+    <div id="h1" class="bar1" style="height:60px;"></div>
+  </div>
+
+  <button onclick="measure()">MEASURE</button>
 
   <h2 id="result"></h2>
-  <div id="score">Score: 0</div>
+  <h3>Score: <span id="score">0</span></h3>
+
+</div>
+
+<!-- RIGHT SIDE -->
+<div class="right">
+
+  <h3>🎮 How to Play</h3>
+  <p>Drag mouse to rotate qubit state.</p>
+  <p>Changing angle changes probability.</p>
+  <p>Press MEASURE to collapse state.</p>
+
+  <h3>🏆 Game Rules</h3>
+  <p>✔ Win if result = |1⟩</p>
+  <p>✔ Lose if result = |0⟩</p>
+  <p>✔ Score increases on win</p>
+  <p>✔ Score decreases on loss</p>
+
+  <h3>📊 Quantum Logic</h3>
+  <p>|ψ⟩ = cos²(θ/2)|0⟩ + sin²(θ/2)|1⟩</p>
+
+  <h3>🧪 Qiskit Code (Reference)</h3>
+
+  <div class="code">
+from qiskit import QuantumCircuit<br>
+qc = QuantumCircuit(1,1)<br>
+qc.h(0)<br>
+qc.measure(0,0)
+  </div>
+
+</div>
 
 </div>
 
 <script>
-let angle = 0;
+let theta = 0;
 let score = 0;
 
-/* MOUSE CONTROL BLOCH SPHERE */
-let dragging = false;
+/* MOUSE CONTROL */
+let drag = false;
 
-const sphere = document.getElementById("sphere");
+document.addEventListener("mousedown", ()=>drag=true);
+document.addEventListener("mouseup", ()=>drag=false);
 
-sphere.addEventListener("mousedown", () => dragging = true);
-document.addEventListener("mouseup", () => dragging = false);
-
-document.addEventListener("mousemove", (e) => {
-  if (!dragging) return;
-
-  angle = e.clientX / window.innerWidth * Math.PI * 2;
-  updateQuantum();
+document.addEventListener("mousemove", (e)=>{
+  if(!drag) return;
+  theta = e.clientX / window.innerWidth * Math.PI * 2;
+  update();
 });
 
-/* QUANTUM STATE CALCULATION */
-function updateQuantum() {
-  // simulate quantum amplitudes using sine/cosine
-  let p1 = Math.pow(Math.sin(angle), 2);
+/* UPDATE SYSTEM */
+function update(){
+
+  let p1 = Math.pow(Math.sin(theta/2),2);
   let p0 = 1 - p1;
 
-  let percent0 = Math.round(p0 * 100);
-  let percent1 = Math.round(p1 * 100);
+  let a = Math.round(p0*100);
+  let b = Math.round(p1*100);
 
-  document.getElementById("p0").style.width = percent0 + "%";
-  document.getElementById("p1").style.width = percent1 + "%";
+  document.getElementById("prob0").innerText = a;
+  document.getElementById("prob1").innerText = b;
 
-  document.getElementById("prob0").innerText = percent0;
-  document.getElementById("prob1").innerText = percent1;
+  document.getElementById("p0").style.width = a + "%";
+  document.getElementById("p1").style.width = b + "%";
 
-  // move pointer visually
-  document.getElementById("pointer").style.transform =
-    `translate(${80 + Math.sin(angle)*60}px, ${80 + Math.cos(angle)*60}px)`;
+  document.getElementById("h0").style.height = (a*1.2) + "px";
+  document.getElementById("h1").style.height = (b*1.2) + "px";
+
+  document.getElementById("sphere").style.transform =
+    `rotateY(${theta*180/Math.PI}deg)`;
+
+  document.getElementById("vector").style.transform =
+    `translate(${Math.sin(theta)*70}px, ${Math.cos(theta)*70}px)`;
 }
 
 /* MEASUREMENT */
-function measure() {
-  let p1 = Math.pow(Math.sin(angle), 2);
+function measure(){
+  let p1 = Math.pow(Math.sin(theta/2),2);
+  let r = Math.random();
 
-  let roll = Math.random();
-
-  if (roll < p1) {
+  if(r < p1){
     document.getElementById("result").innerText = "WIN 🎉 |1⟩";
     score++;
   } else {
     document.getElementById("result").innerText = "LOSE 💀 |0⟩";
-    score = Math.max(0, score - 1);
+    score = Math.max(0, score-1);
   }
 
-  document.getElementById("score").innerText = "Score: " + score;
+  document.getElementById("score").innerText = score;
 }
 
-/* AUTO UPDATE (quantum wave feel) */
-setInterval(updateQuantum, 50);
-
-updateQuantum();
+setInterval(update, 50);
+update();
 </script>
 
 </body>
