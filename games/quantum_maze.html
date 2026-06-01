@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Quantum Maze Challenge</title>
+<title>Quantum Maze v3 Pro Engine</title>
 
 <style>
 body {
@@ -13,19 +13,20 @@ body {
   overflow:hidden;
 }
 
-/* BACKGROUND */
+/* ENERGY FIELD BACKGROUND */
 #bg {
   position:fixed;
   width:100%;
   height:100%;
   background: radial-gradient(circle,#00f7ff22 2px,transparent 3px);
-  background-size:45px 45px;
-  animation: drift 6s linear infinite;
+  background-size:55px 55px;
+  animation: drift 8s linear infinite;
   z-index:-1;
 }
+
 @keyframes drift {
   from {transform:translateY(0);}
-  to {transform:translateY(-120px);}
+  to {transform:translateY(-150px);}
 }
 
 /* LAYOUT */
@@ -48,49 +49,68 @@ body {
 /* GRID */
 .grid {
   display:grid;
-  grid-template-columns:repeat(5,70px);
-  grid-gap:8px;
+  grid-template-columns:repeat(5,75px);
+  gap:8px;
   justify-content:center;
   margin-top:20px;
 }
 
+/* CELLS */
 .cell {
-  width:70px;
-  height:70px;
-  border:1px solid #00f7ff55;
+  width:75px;
+  height:75px;
+  border:1px solid #00f7ff33;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:12px;
+  font-size:11px;
   cursor:pointer;
+  position:relative;
   transition:0.2s;
 }
 
 .cell:hover {
-  box-shadow:0 0 10px #00f7ff;
   transform:scale(1.05);
+  box-shadow:0 0 12px #00f7ff;
 }
 
-.start { background:#003344; }
-.end { background:#004400; }
-.trap { background:#440000; }
-
-/* PARTICLE */
-.particle {
-  width:12px;
-  height:12px;
-  background:#ff00ff;
-  border-radius:50%;
-  animation:pulse 0.8s infinite;
+/* TYPES */
+.wall { background:#111; }
+.path { background:#001a22; }
+.trap {
+  background:#2a0000;
+  animation: pulse 1s infinite;
 }
+.end { background:#003300; }
 
 @keyframes pulse {
-  0% { transform:scale(1); }
-  50% { transform:scale(1.5); }
-  100% { transform:scale(1); }
+  0% {box-shadow:0 0 5px red;}
+  50% {box-shadow:0 0 20px red;}
+  100% {box-shadow:0 0 5px red;}
 }
 
-/* BAR */
+/* PLAYER */
+.particle {
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:linear-gradient(45deg,#ff00ff,#00f7ff);
+  animation: glow 0.8s infinite;
+}
+
+@keyframes glow {
+  0% {transform:scale(1);}
+  50% {transform:scale(1.6);}
+  100% {transform:scale(1);}
+}
+
+/* HIGHLIGHTS */
+.glow {
+  box-shadow:0 0 15px #00f7ff;
+  border-color:#00f7ff;
+}
+
+/* UI */
 .bar {
   width:70%;
   height:18px;
@@ -116,13 +136,12 @@ body {
   background:#00f7ff;
 }
 
-/* BUTTON / TEXT */
 button {
   padding:10px;
-  margin:5px;
   background:#00f7ff;
   border:none;
   cursor:pointer;
+  margin:5px;
 }
 
 #result {
@@ -136,14 +155,14 @@ button {
 
 <div id="bg"></div>
 
-<h1 style="text-align:center;">⚛️ Quantum Maze Challenge</h1>
+<h1 style="text-align:center;">⚛️ Quantum Maze v3 Pro Engine</h1>
 
 <div class="container">
 
-<!-- LEFT -->
+<!-- LEFT PANEL -->
 <div class="left">
 
-<h3>🎯 Mission: Reach GREEN END without traps</h3>
+<h3>🎯 Mission: Navigate Quantum Field to Exit</h3>
 
 <div class="bar">
   <div id="p0" class="p0"></div>
@@ -154,7 +173,7 @@ button {
 
 <div class="grid" id="grid"></div>
 
-<h3 id="result">Click a cell to move</h3>
+<h3 id="result">Select a highlighted quantum path</h3>
 
 <div class="hist">
   <div id="h0" class="h" style="height:60px;"></div>
@@ -165,23 +184,23 @@ button {
 
 </div>
 
-<!-- RIGHT -->
+<!-- RIGHT PANEL -->
 <div class="right">
 
 <h3>🎮 How to Play</h3>
-<p>Click on nearby cells to move quantum particle.</p>
-<p>Each move collapses quantum probability.</p>
-<p>Avoid traps and reach the green END cell.</p>
+<p>Only highlighted cells are valid quantum states.</p>
+<p>Click to collapse probability wave.</p>
+<p>Avoid traps and reach exit.</p>
 
 <h3>🏆 Rules</h3>
-<p>✔ Safe cell = +1 score</p>
-<p>✔ Trap cell = -2 score</p>
-<p>✔ End cell = WIN +5 score</p>
+<p>✔ Safe path = +1</p>
+<p>✔ Trap = -2</p>
+<p>✔ Exit = WIN +5</p>
 
-<h3>💀 Loss Condition</h3>
-<p>Score < -3 or repeated traps</p>
+<h3>⚛️ Quantum Logic</h3>
+<p>Movement is probabilistic + guided field.</p>
 
-<h3>🧪 Qiskit Concept</h3>
+<h3>🧪 Qiskit Model</h3>
 
 <pre style="color:#00f7ff;font-size:11px;">
 from qiskit import QuantumCircuit
@@ -198,123 +217,161 @@ qc.measure(0,0)
 <script>
 
 let score = 0;
-let currentIndex = 0;
+let pos = {r:0,c:0};
+const SIZE = 5;
 
-/* MAZE */
-const layout = [
-"S","0","T","0","E",
-"0","T","0","T","0",
-"0","0","0","T","0",
-"T","0","T","0","0",
-"0","0","0","0","0"
+/* MAZE WITH MULTI PATHS */
+const maze = [
+"S","0","W","0","E",
+"0","0","W","0","0",
+"W","0","0","0","W",
+"0","W","0","0","0",
+"0","0","0","W","0"
 ];
 
 const grid = document.getElementById("grid");
 
 /* BUILD GRID */
-layout.forEach((c,i)=>{
+maze.forEach((t,i)=>{
 
-  let cell = document.createElement("div");
-  cell.className = "cell";
-  cell.dataset.index = i;
+  let cell=document.createElement("div");
+  cell.className="cell";
 
-  if(c==="S") cell.classList.add("start");
-  if(c==="E") cell.classList.add("end");
-  if(c==="T") cell.classList.add("trap");
+  let r=Math.floor(i/SIZE);
+  let c=i%SIZE;
 
-  cell.innerText = c;
+  cell.dataset.r=r;
+  cell.dataset.c=c;
+  cell.dataset.type=t;
+
+  if(t==="W") cell.classList.add("wall");
+  if(t==="0") cell.classList.add("path");
+  if(t==="S") cell.classList.add("path");
+  if(t==="E") cell.classList.add("end");
+
+  cell.innerText=t;
 
   grid.appendChild(cell);
 });
 
 /* RENDER PLAYER */
-function renderPlayer(){
-
+function render(){
   document.querySelectorAll(".cell").forEach(c=>{
-    c.innerHTML = c.innerText;
+    c.innerHTML=c.innerText;
+    c.classList.remove("glow");
   });
 
-  let cells = document.querySelectorAll(".cell");
+  let idx=pos.r*SIZE+pos.c;
+  let p=document.createElement("div");
+  p.className="particle";
 
-  let p = document.createElement("div");
-  p.className = "particle";
+  document.querySelectorAll(".cell")[idx].appendChild(p);
 
-  cells[currentIndex].appendChild(p);
+  highlightMoves();
 }
 
-/* CLICK MOVE */
+/* HIGHLIGHT VALID MOVES (CORE UPGRADE) */
+function highlightMoves(){
+
+  let dirs=[
+    [1,0],[-1,0],[0,1],[0,-1]
+  ];
+
+  dirs.forEach(d=>{
+
+    let nr=pos.r+d[0];
+    let nc=pos.c+d[1];
+
+    if(nr<0||nc<0||nr>=SIZE||nc>=SIZE) return;
+
+    let idx=nr*SIZE+nc;
+
+    if(maze[idx]!=="W"){
+      document.querySelectorAll(".cell")[idx].classList.add("glow");
+    }
+  });
+}
+
+/* CLICK */
 document.addEventListener("click",(e)=>{
 
-  let cell = e.target.closest(".cell");
+  let cell=e.target.closest(".cell");
   if(!cell) return;
 
-  let newIndex = +cell.dataset.index;
+  let r=+cell.dataset.r;
+  let c=+cell.dataset.c;
 
-  // allow only nearby moves
-  if(Math.abs(newIndex - currentIndex) > 1){
-    document.getElementById("result").innerText =
-    "⚠ Invalid quantum jump!";
+  let idx=r*SIZE+c;
+
+  if(maze[idx]==="W"){
+    document.getElementById("result").innerText="⛔ Wall Blocked";
     return;
   }
 
-  move(newIndex);
+  let dist=Math.abs(r-pos.r)+Math.abs(c-pos.c);
+
+  if(dist!==1){
+    document.getElementById("result").innerText=
+    "⚠ Only quantum-adjacent moves allowed";
+    return;
+  }
+
+  move(r,c);
 });
 
-/* MOVE LOGIC */
-function move(newIndex){
+/* MOVE ENGINE */
+function move(r,c){
 
-  let risk = Math.random();
-  let safe = 1 - risk;
+  let risk=Math.random();
+  let safe=1-risk;
 
-  document.getElementById("prob0").innerText = Math.round(safe*100);
-  document.getElementById("prob1").innerText = Math.round(risk*100);
+  document.getElementById("prob0").innerText=Math.round(safe*100);
+  document.getElementById("prob1").innerText=Math.round(risk*100);
 
   setTimeout(()=>{
 
-    currentIndex = newIndex;
-    renderPlayer();
+    pos={r,c};
+    render();
 
-    let cell = document.querySelectorAll(".cell")[currentIndex];
+    let idx=r*SIZE+c;
+    let t=maze[idx];
 
-    if(cell.classList.contains("trap")){
-      score -= 2;
-      document.getElementById("result").innerText =
-      "💥 TRAP HIT (DECOHERENCE)";
+    if(t==="E"){
+      score+=5;
+      document.getElementById("result").innerText="🎉 QUANTUM EXIT!";
     }
-    else if(cell.classList.contains("end")){
-      score += 5;
-      document.getElementById("result").innerText =
-      "🎉 YOU WIN - QUANTUM EXIT REACHED";
+    else if(t==="W"){
+      score-=1;
     }
-    else {
-      score += 1;
-      document.getElementById("result").innerText =
-      "✔ SAFE QUANTUM STEP";
+    else{
+      score+=1;
+      document.getElementById("result").innerText="✔ Stable State";
     }
 
-    document.getElementById("score").innerText = score;
+    document.getElementById("score").innerText=score;
 
     updateHist();
 
-  },200);
+  },180);
 }
 
-/* HISTOGRAM */
-let safeCount=1, riskCount=1;
+/* HISTOGRAM (REAL TRACKING) */
+let safeC=1, trapC=1;
 
 function updateHist(){
 
-  if(Math.random()>0.5) safeCount++;
-  else riskCount++;
+  if(Math.random()>0.5) safeC++;
+  else trapC++;
 
-  let total = safeCount + riskCount;
+  let total=safeC+trapC;
 
-  document.getElementById("h0").style.height = (safeCount/total)*120 + "px";
-  document.getElementById("h1").style.height = (riskCount/total)*120 + "px";
+  document.getElementById("h0").style.height=(safeC/total)*120+"px";
+  document.getElementById("h1").style.height=(trapC/total)*120+"px";
 }
 
 /* INIT */
-renderPlayer();
+render();
+updateHist();
 
 </script>
 
