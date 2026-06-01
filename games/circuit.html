@@ -135,6 +135,7 @@ button {
 <br>
 
 <button onclick="runCircuit()">RUN CIRCUIT</button>
+<button onclick="resetCircuit()">RESET</button>
 
 <h3 id="result">Select gates and build circuit</h3>
 
@@ -188,19 +189,26 @@ let stats={0:1,1:1};
 const circuit=document.getElementById("circuit");
 
 /* BUILD GRID */
-for(let i=0;i<10;i++){
-  let div=document.createElement("div");
-  div.className="cell";
-  div.dataset.index=i;
-  div.innerText=".";
+function buildGrid(){
 
-  div.onclick=()=>{
-    div.innerText=selected;
-    div.className="cell "+selected.toLowerCase();
-  };
+  circuit.innerHTML="";
 
-  circuit.appendChild(div);
+  for(let i=0;i<10;i++){
+    let div=document.createElement("div");
+    div.className="cell";
+    div.dataset.index=i;
+    div.innerText=".";
+
+    div.onclick=()=>{
+      div.innerText=selected;
+      div.className="cell "+selected.toLowerCase();
+    };
+
+    circuit.appendChild(div);
+  }
 }
+
+buildGrid();
 
 /* SELECT GATE */
 function selectGate(g){
@@ -213,11 +221,9 @@ function runCircuit(){
   let cells=document.querySelectorAll(".cell");
 
   let hCount=0;
-  let cxCount=0;
 
   cells.forEach(c=>{
     if(c.innerText==="H") hCount++;
-    if(c.innerText==="CX") cxCount++;
   });
 
   let prob0=0.5 + hCount*0.05;
@@ -240,13 +246,30 @@ function runCircuit(){
   updateHist();
 }
 
+/* RESET CIRCUIT */
+function resetCircuit(){
+
+  score=0;
+  stats={0:1,1:1};
+  selected="H";
+
+  document.getElementById("score").innerText=0;
+  document.getElementById("result").innerText="Circuit Reset";
+
+  buildGrid();
+  updateHist();
+}
+
 /* HISTOGRAM */
 function updateHist(){
 
   let total=stats[0]+stats[1];
 
-  document.getElementById("h0").style.height=(stats[0]/total)*120+"px";
-  document.getElementById("h1").style.height=(stats[1]/total)*120+"px";
+  document.getElementById("h0").style.height=
+    (stats[0]/total)*120+"px";
+
+  document.getElementById("h1").style.height=
+    (stats[1]/total)*120+"px";
 }
 
 updateHist();
