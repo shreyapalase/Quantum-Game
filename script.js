@@ -1,20 +1,15 @@
-console.log("Quantum Arcade JS Loaded");
+console.log("Quantum Arcade Loaded");
 
 function openGame(name) {
-  console.log("Opening game:", name);
+  console.log("Game:", name);
 
   document.getElementById("home").style.display = "none";
+  document.getElementById("gameContainer").classList.remove("hidden");
 
-  const gameContainer = document.getElementById("gameContainer");
-  gameContainer.classList.remove("hidden");
-
-  const frame = document.getElementById("gameFrame");
-  frame.src = "games/" + name + ".html";
+  document.getElementById("gameFrame").src = "games/" + name + ".html";
 }
 
 function exitGame() {
-  console.log("Exit game");
-
   document.getElementById("gameContainer").classList.add("hidden");
   document.getElementById("home").style.display = "flex";
 
