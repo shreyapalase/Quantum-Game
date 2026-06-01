@@ -6,6 +6,7 @@
 
 <style>
 body {
+  margin: 0;
   background: black;
   color: #00f7ff;
   font-family: monospace;
@@ -13,40 +14,36 @@ body {
   padding: 20px;
 }
 
-h1 {
-  text-shadow: 0 0 15px #00f7ff;
-}
-
-/* container */
-.box {
-  border: 1px solid #00f7ff;
-  padding: 20px;
-  border-radius: 12px;
-  width: 80%;
+/* MAIN CARD */
+.card {
+  width: 85%;
   margin: auto;
-  box-shadow: 0 0 25px #00f7ff33;
+  border: 2px solid #00f7ff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 20px #00f7ff33;
 }
 
-/* bloch sphere fake */
+/* BLOCH SPHERE */
 .sphere {
-  width: 120px;
-  height: 120px;
-  margin: 20px auto;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   border: 2px solid #00f7ff;
+  margin: 20px auto;
   position: relative;
-  animation: rotate 3s linear infinite;
+  animation: spin 3s linear infinite;
 }
 
-@keyframes rotate {
+@keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
 .pointer {
-  width: 10px;
-  height: 10px;
-  background: #00f7ff;
+  width: 12px;
+  height: 12px;
+  background: #ff00ff;
   border-radius: 50%;
   position: absolute;
   top: 50%;
@@ -54,7 +51,7 @@ h1 {
   transform: translate(-50%, -50%);
 }
 
-/* probability bar */
+/* PROBABILITY BAR */
 .bar {
   width: 80%;
   height: 20px;
@@ -75,60 +72,88 @@ h1 {
   transition: 0.5s;
 }
 
+/* BUTTONS */
 button {
-  padding: 10px 20px;
-  margin-top: 15px;
-  background: #00f7ff;
+  padding: 10px 15px;
+  margin: 10px;
   border: none;
   cursor: pointer;
+  background: #00f7ff;
 }
 
+/* RESULT */
+#result {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+/* INFO PANEL */
 .info {
   text-align: left;
   margin-top: 20px;
   color: white;
+  font-size: 13px;
+}
+
+/* CODE BOX */
+.code {
+  background: #000;
+  border: 1px solid #00f7ff;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 12px;
+  overflow-x: auto;
+  color: #00f7ff;
 }
 </style>
 </head>
 
 <body>
 
-<h1>⚡ Superposition Quantum Game</h1>
+<h1>⚡ Superposition Game</h1>
 
-<div class="box">
+<div class="card">
 
-  <h2>Qubit State: |ψ⟩ = α|0⟩ + β|1⟩</h2>
+  <h3>Qubit State: |ψ⟩ = α|0⟩ + β|1⟩</h3>
 
   <!-- BLOCH SPHERE -->
   <div class="sphere">
     <div class="pointer"></div>
   </div>
 
-  <!-- PROBABILITY BAR -->
+  <!-- PROBABILITY -->
   <div class="bar">
     <div id="p0" class="p0"></div>
     <div id="p1" class="p1"></div>
   </div>
 
-  <p>Probability |0⟩ = <span id="prob0">50</span>%</p>
-  <p>Probability |1⟩ = <span id="prob1">50</span>%</p>
+  <p>|0⟩: <span id="prob0">50</span>% | |1⟩: <span id="prob1">50</span>%</p>
 
   <button onclick="rotateQubit()">Rotate Qubit</button>
   <button onclick="measure()">Measure</button>
 
   <h2 id="result"></h2>
 
+  <!-- CODE SNIPPET -->
+  <div class="code">
+from qiskit import QuantumCircuit<br>
+qc = QuantumCircuit(1,1)<br>
+qc.h(0)<br>
+qc.measure(0,0)
+  </div>
+
+  <!-- HOW TO PLAY -->
   <div class="info">
     <h3>🎮 How to Play</h3>
     <p>1. Rotate qubit to change probability</p>
     <p>2. Measure to collapse state</p>
-    <p>3. Try to hit target state |1⟩</p>
+    <p>3. Try to get |1⟩ to win</p>
 
     <h3>🏆 Win Condition</h3>
-    <p>Win if measurement = |1⟩</p>
+    <p>Measurement = |1⟩</p>
 
     <h3>💀 Lose Condition</h3>
-    <p>Lose if measurement = |0⟩</p>
+    <p>Measurement = |0⟩</p>
   </div>
 
 </div>
@@ -136,7 +161,7 @@ button {
 <script>
 let angle = 50;
 
-function updateProb() {
+function update() {
   let p0 = angle;
   let p1 = 100 - angle;
 
@@ -149,21 +174,21 @@ function updateProb() {
 
 function rotateQubit() {
   angle = Math.floor(Math.random() * 100);
-  updateProb();
+  update();
 }
 
 function measure() {
   let roll = Math.random() * 100;
-
   let p1 = 100 - angle;
 
-  let result = roll < p1 ? "|1⟩ (WIN 🎉)" : "|0⟩ (LOSE 💀)";
-
-  document.getElementById("result").innerText = result;
+  if (roll < p1) {
+    document.getElementById("result").innerText = "WIN 🎉 |1⟩";
+  } else {
+    document.getElementById("result").innerText = "LOSE 💀 |0⟩";
+  }
 }
 
-/* INIT */
-updateProb();
+update();
 </script>
 
 </body>
