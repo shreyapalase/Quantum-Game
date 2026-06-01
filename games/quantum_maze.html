@@ -10,6 +10,7 @@ body {
   background:black;
   color:#00f7ff;
   font-family:monospace;
+  overflow:hidden;
 }
 
 /* BACKGROUND */
@@ -44,7 +45,7 @@ body {
   overflow:auto;
 }
 
-/* MAZE GRID */
+/* GRID */
 .grid {
   display:grid;
   grid-template-columns:repeat(5,70px);
@@ -60,31 +61,36 @@ body {
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:18px;
-  position:relative;
+  font-size:12px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.cell:hover {
+  box-shadow:0 0 10px #00f7ff;
+  transform:scale(1.05);
 }
 
 .start { background:#003344; }
 .end { background:#004400; }
 .trap { background:#440000; }
 
-/* particle */
+/* PARTICLE */
 .particle {
-  width:10px;
-  height:10px;
+  width:12px;
+  height:12px;
   background:#ff00ff;
   border-radius:50%;
-  position:absolute;
-  animation:pulse 1s infinite;
+  animation:pulse 0.8s infinite;
 }
 
 @keyframes pulse {
-  0%{transform:scale(1);}
-  50%{transform:scale(1.4);}
-  100%{transform:scale(1);}
+  0% { transform:scale(1); }
+  50% { transform:scale(1.5); }
+  100% { transform:scale(1); }
 }
 
-/* bars */
+/* BAR */
 .bar {
   width:70%;
   height:18px;
@@ -96,7 +102,7 @@ body {
 .p0 {background:#00f7ff;width:50%;}
 .p1 {background:#ff00ff;width:50%;}
 
-/* histogram */
+/* HISTOGRAM */
 .hist {
   display:flex;
   justify-content:center;
@@ -105,15 +111,23 @@ body {
   gap:10px;
 }
 
-.h { width:30px; background:#00f7ff; }
+.h {
+  width:30px;
+  background:#00f7ff;
+}
 
-/* buttons */
+/* BUTTON / TEXT */
 button {
   padding:10px;
   margin:5px;
   background:#00f7ff;
   border:none;
   cursor:pointer;
+}
+
+#result {
+  margin-top:10px;
+  font-size:18px;
 }
 </style>
 </head>
@@ -129,22 +143,19 @@ button {
 <!-- LEFT -->
 <div class="left">
 
-<h3>🎯 Mission: Reach END without hitting TRAPS</h3>
+<h3>🎯 Mission: Reach GREEN END without traps</h3>
 
 <div class="bar">
   <div id="p0" class="p0"></div>
   <div id="p1" class="p1"></div>
 </div>
 
-<p>|Safe Path|: <span id="prob0">50</span>% | |Risk Path|: <span id="prob1">50</span>%</p>
+<p>Safe: <span id="prob0">50</span>% | Risk: <span id="prob1">50</span>%</p>
 
 <div class="grid" id="grid"></div>
 
-<button onclick="move()">NEXT STEP (Quantum Move)</button>
+<h3 id="result">Click a cell to move</h3>
 
-<h2 id="result"></h2>
-
-<h3>Histogram (Visited Paths)</h3>
 <div class="hist">
   <div id="h0" class="h" style="height:60px;"></div>
   <div id="h1" class="h" style="height:60px;background:#ff00ff;"></div>
@@ -158,19 +169,19 @@ button {
 <div class="right">
 
 <h3>🎮 How to Play</h3>
-<p>Each move splits into quantum superposition paths.</p>
-<p>Click NEXT STEP to evolve particle.</p>
-<p>Measurement collapses path choice.</p>
+<p>Click on nearby cells to move quantum particle.</p>
+<p>Each move collapses quantum probability.</p>
+<p>Avoid traps and reach the green END cell.</p>
 
 <h3>🏆 Rules</h3>
-<p>✔ Safe path → +1 score</p>
-<p>✔ Trap → -2 score</p>
-<p>✔ Reach END → WIN</p>
+<p>✔ Safe cell = +1 score</p>
+<p>✔ Trap cell = -2 score</p>
+<p>✔ End cell = WIN +5 score</p>
 
-<h3>💀 Lose Condition</h3>
-<p>Score < -3 OR hit too many traps</p>
+<h3>💀 Loss Condition</h3>
+<p>Score < -3 or repeated traps</p>
 
-<h3>🧪 Qiskit Logic</h3>
+<h3>🧪 Qiskit Concept</h3>
 
 <pre style="color:#00f7ff;font-size:11px;">
 from qiskit import QuantumCircuit
@@ -187,26 +198,25 @@ qc.measure(0,0)
 <script>
 
 let score = 0;
-let position = 0;
+let currentIndex = 0;
 
-let safeCount = 1;
-let riskCount = 1;
-
-/* BUILD MAZE */
-const grid = document.getElementById("grid");
-
+/* MAZE */
 const layout = [
- "S","0","T","0","E",
- "0","T","0","T","0",
- "0","0","0","T","0",
- "T","0","T","0","0",
- "0","0","0","0","0"
+"S","0","T","0","E",
+"0","T","0","T","0",
+"0","0","0","T","0",
+"T","0","T","0","0",
+"0","0","0","0","0"
 ];
 
+const grid = document.getElementById("grid");
+
+/* BUILD GRID */
 layout.forEach((c,i)=>{
 
   let cell = document.createElement("div");
   cell.className = "cell";
+  cell.dataset.index = i;
 
   if(c==="S") cell.classList.add("start");
   if(c==="E") cell.classList.add("end");
@@ -217,50 +227,94 @@ layout.forEach((c,i)=>{
   grid.appendChild(cell);
 });
 
-/* MOVE FUNCTION */
-function move(){
+/* RENDER PLAYER */
+function renderPlayer(){
 
-  let riskProb = Math.random();
-  let safeProb = 1 - riskProb;
+  document.querySelectorAll(".cell").forEach(c=>{
+    c.innerHTML = c.innerText;
+  });
 
-  document.getElementById("prob0").innerText = Math.round(safeProb*100);
-  document.getElementById("prob1").innerText = Math.round(riskProb*100);
+  let cells = document.querySelectorAll(".cell");
 
-  let roll = Math.random();
+  let p = document.createElement("div");
+  p.className = "particle";
 
-  if(roll < safeProb){
-    position += 1;
-    safeCount++;
-    document.getElementById("result").innerText = "SAFE MOVE ✔";
-    score++;
-  } else {
-    position += 2;
-    riskCount++;
-    document.getElementById("result").innerText = "TRAP HIT 💀";
-    score -= 2;
+  cells[currentIndex].appendChild(p);
+}
+
+/* CLICK MOVE */
+document.addEventListener("click",(e)=>{
+
+  let cell = e.target.closest(".cell");
+  if(!cell) return;
+
+  let newIndex = +cell.dataset.index;
+
+  // allow only nearby moves
+  if(Math.abs(newIndex - currentIndex) > 1){
+    document.getElementById("result").innerText =
+    "⚠ Invalid quantum jump!";
+    return;
   }
 
-  updateHist();
+  move(newIndex);
+});
 
-  document.getElementById("score").innerText = score;
+/* MOVE LOGIC */
+function move(newIndex){
 
-  if(score >= 5){
-    document.getElementById("result").innerText = "YOU WIN 🎉 MAZE COMPLETED";
-  }
+  let risk = Math.random();
+  let safe = 1 - risk;
 
-  if(score < -3){
-    document.getElementById("result").innerText = "GAME OVER 💥";
-  }
+  document.getElementById("prob0").innerText = Math.round(safe*100);
+  document.getElementById("prob1").innerText = Math.round(risk*100);
+
+  setTimeout(()=>{
+
+    currentIndex = newIndex;
+    renderPlayer();
+
+    let cell = document.querySelectorAll(".cell")[currentIndex];
+
+    if(cell.classList.contains("trap")){
+      score -= 2;
+      document.getElementById("result").innerText =
+      "💥 TRAP HIT (DECOHERENCE)";
+    }
+    else if(cell.classList.contains("end")){
+      score += 5;
+      document.getElementById("result").innerText =
+      "🎉 YOU WIN - QUANTUM EXIT REACHED";
+    }
+    else {
+      score += 1;
+      document.getElementById("result").innerText =
+      "✔ SAFE QUANTUM STEP";
+    }
+
+    document.getElementById("score").innerText = score;
+
+    updateHist();
+
+  },200);
 }
 
 /* HISTOGRAM */
+let safeCount=1, riskCount=1;
+
 function updateHist(){
+
+  if(Math.random()>0.5) safeCount++;
+  else riskCount++;
 
   let total = safeCount + riskCount;
 
   document.getElementById("h0").style.height = (safeCount/total)*120 + "px";
   document.getElementById("h1").style.height = (riskCount/total)*120 + "px";
 }
+
+/* INIT */
+renderPlayer();
 
 </script>
 
