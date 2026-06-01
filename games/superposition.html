@@ -1,66 +1,169 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Superposition Game</title>
+<meta charset="UTF-8">
+<title>Superposition Game</title>
 
-  <style>
-    body {
-      background: black;
-      color: #00f7ff;
-      font-family: monospace;
-      text-align: center;
-      padding-top: 80px;
-    }
+<style>
+body {
+  background: black;
+  color: #00f7ff;
+  font-family: monospace;
+  text-align: center;
+  padding: 20px;
+}
 
-    h1 {
-      text-shadow: 0 0 20px #00f7ff;
-    }
+h1 {
+  text-shadow: 0 0 15px #00f7ff;
+}
 
-    button {
-      padding: 15px 25px;
-      font-size: 18px;
-      background: #00f7ff;
-      border: none;
-      cursor: pointer;
-      margin-top: 20px;
-      border-radius: 8px;
-    }
+/* container */
+.box {
+  border: 1px solid #00f7ff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 80%;
+  margin: auto;
+  box-shadow: 0 0 25px #00f7ff33;
+}
 
-    #state {
-      font-size: 40px;
-      margin: 30px;
-    }
+/* bloch sphere fake */
+.sphere {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  border-radius: 50%;
+  border: 2px solid #00f7ff;
+  position: relative;
+  animation: rotate 3s linear infinite;
+}
 
-    .box {
-      border: 1px solid #00f7ff;
-      width: 300px;
-      margin: auto;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #00f7ff33;
-    }
-  </style>
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.pointer {
+  width: 10px;
+  height: 10px;
+  background: #00f7ff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* probability bar */
+.bar {
+  width: 80%;
+  height: 20px;
+  border: 1px solid white;
+  margin: 10px auto;
+  display: flex;
+}
+
+.p0 {
+  background: #00f7ff;
+  width: 50%;
+  transition: 0.5s;
+}
+
+.p1 {
+  background: #ff00ff;
+  width: 50%;
+  transition: 0.5s;
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 15px;
+  background: #00f7ff;
+  border: none;
+  cursor: pointer;
+}
+
+.info {
+  text-align: left;
+  margin-top: 20px;
+  color: white;
+}
+</style>
 </head>
 
 <body>
 
+<h1>⚡ Superposition Quantum Game</h1>
+
 <div class="box">
 
-  <h1>⚡ Superposition Game</h1>
-  <p>Qubit is in superposition |0⟩ + |1⟩</p>
+  <h2>Qubit State: |ψ⟩ = α|0⟩ + β|1⟩</h2>
 
-  <div id="state">|ψ⟩</div>
+  <!-- BLOCH SPHERE -->
+  <div class="sphere">
+    <div class="pointer"></div>
+  </div>
 
-  <button onclick="measure()">Measure Qubit</button>
+  <!-- PROBABILITY BAR -->
+  <div class="bar">
+    <div id="p0" class="p0"></div>
+    <div id="p1" class="p1"></div>
+  </div>
+
+  <p>Probability |0⟩ = <span id="prob0">50</span>%</p>
+  <p>Probability |1⟩ = <span id="prob1">50</span>%</p>
+
+  <button onclick="rotateQubit()">Rotate Qubit</button>
+  <button onclick="measure()">Measure</button>
+
+  <h2 id="result"></h2>
+
+  <div class="info">
+    <h3>🎮 How to Play</h3>
+    <p>1. Rotate qubit to change probability</p>
+    <p>2. Measure to collapse state</p>
+    <p>3. Try to hit target state |1⟩</p>
+
+    <h3>🏆 Win Condition</h3>
+    <p>Win if measurement = |1⟩</p>
+
+    <h3>💀 Lose Condition</h3>
+    <p>Lose if measurement = |0⟩</p>
+  </div>
 
 </div>
 
 <script>
-function measure() {
-  let result = Math.random() > 0.5 ? "|0⟩" : "|1⟩";
-  document.getElementById("state").innerText = result;
+let angle = 50;
+
+function updateProb() {
+  let p0 = angle;
+  let p1 = 100 - angle;
+
+  document.getElementById("p0").style.width = p0 + "%";
+  document.getElementById("p1").style.width = p1 + "%";
+
+  document.getElementById("prob0").innerText = p0;
+  document.getElementById("prob1").innerText = p1;
 }
+
+function rotateQubit() {
+  angle = Math.floor(Math.random() * 100);
+  updateProb();
+}
+
+function measure() {
+  let roll = Math.random() * 100;
+
+  let p1 = 100 - angle;
+
+  let result = roll < p1 ? "|1⟩ (WIN 🎉)" : "|0⟩ (LOSE 💀)";
+
+  document.getElementById("result").innerText = result;
+}
+
+/* INIT */
+updateProb();
 </script>
 
 </body>
