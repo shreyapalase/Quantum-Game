@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum RPS</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* ENERGY BACKGROUND */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:
+    radial-gradient(circle at 20% 50%, #00f7ff22 2px, transparent 3px),
+    radial-gradient(circle at 80% 50%, #ff00ff22 2px, transparent 3px);
+  background-size:60px 60px;
+  animation: drift 10s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-120px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* ORB */
+.orb {
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  margin:auto;
+  border:2px solid #00f7ff;
+  box-shadow:0 0 25px #00f7ff55;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  transition:0.3s;
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* RESULT */
+#result {
+  font-size:18px;
+}
+
+/* HISTOGRAM */
+.hist {
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  height:120px;
+  gap:10px;
+}
+
+.bar {
+  width:60px;
+  background:#00f7ff;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">✊📄✂️⚛️ Quantum RPS Engine</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Create Quantum Move</h3>
+
+<div class="orb" id="orb">|ψ⟩</div>
+
+<br>
+
+<button onclick="setState(0)">Rock</button>
+<button onclick="setState(1)">Paper</button>
+<button onclick="setState(2)">Scissors</button>
+
+<br>
+
+<button onclick="play()">MEASURE & PLAY</button>
+
+<h3 id="result">Prepare quantum state</h3>
+
+<h3>Player Score: <span id="pscore">0</span></h3>
+<h3>AI Score: <span id="ascore">0</span></h3>
+
+<div class="hist">
+  <div class="bar" id="h0" style="height:40px;"></div>
+  <div class="bar" id="h1" style="height:40px;background:#ff00ff;"></div>
+  <div class="bar" id="h2" style="height:40px;background:#00ff88;"></div>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Create quantum superposition of RPS moves.</p>
+<p>Measurement collapses final move.</p>
+
+<h3>🏆 Rules</h3>
+<p>Rock > Scissors</p>
+<p>Scissors > Paper</p>
+<p>Paper > Rock</p>
+
+<h3>💀 Win Condition</h3>
+<p>First to 10 points wins</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2,2)
+
+qc.h(0)
+qc.h(1)
+qc.measure([0,1],[0,1])
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let state=0;
+
+let pscore=0;
+let ascore=0;
+
+let hist=[1,1,1];
+
+function setState(s){
+  state=s;
+
+  let orb=document.getElementById("orb");
+
+  if(s===0) orb.innerText="|Rock⟩";
+  if(s===1) orb.innerText="|Paper⟩";
+  if(s===2) orb.innerText="|Scissors⟩";
+}
+
+function measure(){
+
+  let r=Math.random();
+
+  if(r<0.33) return 0;
+  if(r<0.66) return 1;
+  return 2;
+}
+
+function play(){
+
+  let player=state;
+  let ai=measure();
+
+  hist[player]++;
+
+  if(player===ai){
+    document.getElementById("result").innerText="DRAW (Quantum Interference)";
+  }
+
+  else if(
+    (player===0 && ai===2) ||
+    (player===1 && ai===0) ||
+    (player===2 && ai===1)
+  ){
+    pscore++;
+    document.getElementById("result").innerText="PLAYER WINS COLLAPSE";
+  } else {
+    ascore++;
+    document.getElementById("result").innerText="AI DOMINATES WAVEFUNCTION";
+  }
+
+  update();
+}
+
+function update(){
+
+  document.getElementById("pscore").innerText=pscore;
+  document.getElementById("ascore").innerText=ascore;
+
+  let total=hist[0]+hist[1]+hist[2];
+
+  document.getElementById("h0").style.height=(hist[0]/total)*120+"px";
+  document.getElementById("h1").style.height=(hist[1]/total)*120+"px";
+  document.getElementById("h2").style.height=(hist[2]/total)*120+"px";
+}
+
+</script>
+
+</body>
+</html>
