@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Teleportation Lab</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* BACKGROUND FIELD */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background: radial-gradient(circle,#00f7ff22 2px,transparent 3px);
+  background-size:60px 60px;
+  animation: drift 10s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-150px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* NODES */
+.node {
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  border:2px solid #00f7ff;
+  display:inline-block;
+  margin:30px;
+  position:relative;
+  box-shadow:0 0 20px #00f7ff55;
+}
+
+.sender { background:#001a22; }
+.receiver { background:#22001a; }
+
+/* LINK */
+.link {
+  width:200px;
+  height:2px;
+  background:linear-gradient(90deg,#00f7ff,#ff00ff);
+  margin:auto;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {opacity:0.3;}
+  50% {opacity:1;}
+  100% {opacity:0.3;}
+}
+
+/* QUBIT */
+.qubit {
+  width:15px;
+  height:15px;
+  border-radius:50%;
+  background:#ff00ff;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  animation: glow 0.8s infinite;
+}
+
+@keyframes glow {
+  0% {transform:translate(-50%,-50%) scale(1);}
+  50% {transform:translate(-50%,-50%) scale(1.5);}
+  100% {transform:translate(-50%,-50%) scale(1);}
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* RESULT */
+#result {
+  font-size:18px;
+}
+
+/* HISTOGRAM */
+.hist {
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  height:120px;
+  gap:30px;
+}
+
+.h {
+  width:80px;
+  background:#00f7ff;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">⚛️ Quantum Teleportation Lab</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Sender → Receiver Quantum Transfer</h3>
+
+<div class="node sender" id="sender">
+  <div class="qubit" id="qbit"></div>
+</div>
+
+<div class="link"></div>
+
+<div class="node receiver" id="receiver"></div>
+
+<br>
+
+<p>Select Quantum State</p>
+
+<button onclick="setState(0)">|0⟩</button>
+<button onclick="setState(1)">|1⟩</button>
+<button onclick="setState(2)">SUPERPOSITION</button>
+
+<br>
+
+<button onclick="teleport()">TELEPORT STATE</button>
+
+<h3 id="result">Ready for teleportation</h3>
+
+<h3>Score: <span id="score">0</span></h3>
+
+<div class="hist">
+  <div id="h0" class="h" style="height:60px;"></div>
+  <div id="h1" class="h" style="height:60px;background:#ff00ff;"></div>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Prepare quantum state at sender node.</p>
+<p>Execute teleportation protocol.</p>
+<p>Receiver collapses state.</p>
+
+<h3>🏆 Rules</h3>
+<p>|0⟩ = +1</p>
+<p>|1⟩ = +2</p>
+<p>Superposition = +3 (risk)</p>
+
+<h3>💀 Failure</h3>
+<p>Decoherence = -2 score</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(3,3)
+
+qc.h(0)
+qc.cx(0,1)
+qc.cx(1,2)
+
+qc.measure([0,1,2],[0,1,2])
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let score=0;
+let stats={s0:1,s1:1};
+
+let state=0;
+
+function setState(s){
+  state=s;
+
+  let q=document.getElementById("qbit");
+
+  if(s===0) q.style.background="#00ff88";
+  if(s===1) q.style.background="#ff0044";
+  if(s===2) q.style.background="#ff00ff";
+
+  document.getElementById("result").innerText=
+    "State prepared: "+s;
+}
+
+/* TELEPORT */
+function teleport(){
+
+  document.getElementById("result").innerText=
+    "Teleportation protocol running...";
+
+  setTimeout(()=>{
+
+    let r=Math.random();
+
+    if(state===0){
+      score+=1;
+      stats.s0++;
+      document.getElementById("result").innerText="SUCCESS: |0⟩ transferred";
+    }
+    else if(state===1){
+      score+=2;
+      stats.s1++;
+      document.getElementById("result").innerText="SUCCESS: |1⟩ transferred";
+    }
+    else{
+      if(r>0.5){
+        score+=3;
+        stats.s1++;
+        document.getElementById("result").innerText="PARTIAL SUCCESS (superposition collapsed)";
+      } else {
+        score-=2;
+        document.getElementById("result").innerText="DECOHERENCE FAILURE";
+      }
+    }
+
+    document.getElementById("score").innerText=score;
+    updateHist();
+
+  },800);
+}
+
+/* HISTOGRAM */
+function updateHist(){
+
+  let total=stats.s0+stats.s1;
+
+  document.getElementById("h0").style.height=(stats.s0/total)*120+"px";
+  document.getElementById("h1").style.height=(stats.s1/total)*120+"px";
+}
+
+updateHist();
+
+</script>
+
+</body>
+</html>
