@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Chess</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* BACKGROUND GRID */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:
+    linear-gradient(#00f7ff22 1px, transparent 1px),
+    linear-gradient(90deg,#00f7ff22 1px, transparent 1px);
+  background-size:50px 50px;
+  animation: drift 10s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-100px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* BOARD */
+.board {
+  width:400px;
+  height:400px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(8,50px);
+  grid-template-rows:repeat(8,50px);
+  border:2px solid #00f7ff;
+  box-shadow:0 0 30px #00f7ff33;
+}
+
+.cell {
+  width:50px;
+  height:50px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.cell:nth-child(even){
+  background:#001a22;
+}
+
+.cell:nth-child(odd){
+  background:#000f14;
+}
+
+.cell:hover {
+  box-shadow:0 0 10px #00f7ff;
+}
+
+/* PIECE STATES */
+.super {
+  color:#ff00ff;
+  animation: glow 1s infinite;
+}
+
+@keyframes glow {
+  0% {opacity:0.6;}
+  50% {opacity:1;}
+  100% {opacity:0.6;}
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* STATUS */
+#result {
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">♟️⚛️ Quantum Chess Engine</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Quantum Chessboard</h3>
+
+<div class="board" id="board"></div>
+
+<br>
+
+<button onclick="toggleSuper()">TOGGLE SUPERPOSITION</button>
+<button onclick="collapse()">COLLAPSE BOARD</button>
+<button onclick="resetGame()">RESET</button>
+
+<h3 id="result">Game Ready</h3>
+
+<h3>Score: <span id="score">0</span></h3>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Select a square → place quantum piece.</p>
+<p>Activate superposition → piece exists in multiple states.</p>
+<p>Collapse to finalize outcome.</p>
+
+<h3>🏆 Rules</h3>
+<p>Superposition piece = high risk / high reward</p>
+<p>Collapse = final board state</p>
+
+<h3>💀 Win Condition</h3>
+<p>Capture opponent king via collapse</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1,1)
+
+qc.h(0)
+qc.measure(0,0)
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let board=document.getElementById("board");
+let score=0;
+let superMode=false;
+
+/* CREATE BOARD */
+function init(){
+
+  board.innerHTML="";
+
+  for(let i=0;i<64;i++){
+
+    let cell=document.createElement("div");
+    cell.className="cell";
+
+    cell.innerText="·";
+
+    cell.onclick=()=>{
+
+      if(superMode){
+        cell.innerText="♟";
+        cell.classList.add("super");
+      } else {
+        cell.innerText="♟";
+        cell.classList.remove("super");
+      }
+    };
+
+    board.appendChild(cell);
+  }
+}
+
+init();
+
+/* SUPERPOSITION MODE */
+function toggleSuper(){
+  superMode=!superMode;
+  document.getElementById("result").innerText=
+    superMode?"SUPERPOSITION ACTIVE":"NORMAL MODE";
+}
+
+/* COLLAPSE */
+function collapse(){
+
+  let cells=document.querySelectorAll(".cell");
+
+  let superCount=0;
+
+  cells.forEach(c=>{
+
+    if(c.classList.contains("super")){
+      superCount++;
+
+      let r=Math.random();
+
+      if(r>0.5){
+        c.innerText="♟";
+      } else {
+        c.innerText="·";
+      }
+
+      c.classList.remove("super");
+    }
+  });
+
+  score+=superCount;
+
+  document.getElementById("score").innerText=score;
+  document.getElementById("result").innerText=
+    "BOARD COLLAPSED ("+superCount+" quantum states)";
+}
+
+/* RESET */
+function resetGame(){
+  score=0;
+  superMode=false;
+  init();
+
+  document.getElementById("score").innerText=0;
+  document.getElementById("result").innerText="Reset Complete";
+}
+
+</script>
+
+</body>
+</html>
