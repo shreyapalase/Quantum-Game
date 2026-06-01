@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Tycoon</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* GRID BACKGROUND */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:
+    linear-gradient(#00f7ff11 1px, transparent 1px),
+    linear-gradient(90deg,#00f7ff11 1px, transparent 1px);
+  background-size:60px 60px;
+  animation: drift 10s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-100px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* CARDS */
+.card {
+  border:1px solid #00f7ff;
+  padding:10px;
+  margin:10px;
+  box-shadow:0 0 10px #00f7ff33;
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* METERS */
+.bar {
+  width:80%;
+  height:20px;
+  border:1px solid #00f7ff;
+}
+
+.fill {
+  height:100%;
+  width:50%;
+  background:#00f7ff;
+  transition:0.3s;
+}
+
+/* TEXT */
+#log {
+  font-size:12px;
+  height:120px;
+  overflow:auto;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">💰⚛️ Quantum Tycoon Simulator</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<div class="card">
+<h3>🏭 Quantum Lab</h3>
+
+<p>Qubits: <span id="q">5</span></p>
+<p>Coherence: <span id="c">70</span>%</p>
+<p>Revenue: $<span id="r">100</span></p>
+
+<div class="bar">
+  <div class="fill" id="bar"></div>
+</div>
+
+<button onclick="upgradeQ()">Upgrade Qubits</button>
+<button onclick="research()">Research Breakthrough</button>
+<button onclick="simulate()">Run Cycle</button>
+
+</div>
+
+<div class="card">
+<h3>📈 Market Log</h3>
+<div id="log"></div>
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Manage quantum company resources.</p>
+<p>Balance coherence vs growth.</p>
+
+<h3>🏆 Rules</h3>
+<p>High coherence = stable profit</p>
+<p>Low coherence = crash risk</p>
+
+<h3>💀 Win Condition</h3>
+<p>Reach $10,000 quantum valuation</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(3,3)
+
+qc.h(0)
+qc.cx(0,1)
+qc.measure_all()
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let q=5;
+let coherence=70;
+let revenue=100;
+
+function log(msg){
+  let l=document.getElementById("log");
+  l.innerHTML="> "+msg+"<br>"+l.innerHTML;
+}
+
+/* UPGRADE */
+function upgradeQ(){
+  q++;
+  coherence-=5;
+  log("Added qubit to system");
+  update();
+}
+
+/* RESEARCH */
+function research(){
+  let r=Math.random();
+
+  if(r>0.6){
+    coherence+=20;
+    log("⚛ Quantum breakthrough achieved!");
+  } else {
+    coherence-=10;
+    log("Research failed - decoherence spike");
+  }
+
+  update();
+}
+
+/* SIMULATION */
+function simulate(){
+
+  let profit = q * (coherence/10);
+
+  revenue += profit;
+
+  let event=Math.random();
+
+  if(event<0.2){
+    revenue -= 50;
+    log("Market crash event!");
+  }
+
+  if(event>0.8){
+    revenue += 200;
+    log("Investor hype wave!");
+  }
+
+  update();
+}
+
+/* UPDATE */
+function update(){
+
+  if(coherence>100) coherence=100;
+  if(coherence<0) coherence=0;
+
+  document.getElementById("q").innerText=q;
+  document.getElementById("c").innerText=coherence;
+  document.getElementById("r").innerText=Math.floor(revenue);
+
+  document.getElementById("bar").style.width=coherence+"%";
+
+  if(revenue>10000){
+    log("🏆 QUANTUM MONOPOLY ACHIEVED");
+  }
+}
+
+</script>
+
+</body>
+</html>
