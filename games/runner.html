@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Uncertainty Runner</title>
+
+<style>
+body {
+  margin:0;
+  background:black;
+  color:#00f7ff;
+  font-family:monospace;
+  overflow:hidden;
+}
+
+/* BACKGROUND TUNNEL */
+#bg {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background: radial-gradient(circle,#00f7ff22 2px,transparent 3px);
+  background-size:50px 50px;
+  animation: drift 8s linear infinite;
+  z-index:-1;
+}
+
+@keyframes drift {
+  from {transform:translateY(0);}
+  to {transform:translateY(-200px);}
+}
+
+/* LAYOUT */
+.container { display:flex; }
+
+.left {
+  width:60%;
+  text-align:center;
+  padding:10px;
+}
+
+.right {
+  width:40%;
+  padding:15px;
+  border-left:1px solid #00f7ff55;
+  height:100vh;
+  overflow:auto;
+}
+
+/* RUNNER */
+.track {
+  width:400px;
+  height:200px;
+  margin:auto;
+  border:1px solid #00f7ff;
+  position:relative;
+  overflow:hidden;
+}
+
+.runner {
+  width:20px;
+  height:20px;
+  background:#00f7ff;
+  border-radius:50%;
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 15px #00f7ff;
+}
+
+/* OBSTACLES */
+.obstacle {
+  width:20px;
+  height:20px;
+  background:#ff0044;
+  position:absolute;
+}
+
+/* SLIDER */
+input[type=range] {
+  width:60%;
+}
+
+/* BUTTON */
+button {
+  padding:10px;
+  background:#00f7ff;
+  border:none;
+  cursor:pointer;
+  margin:5px;
+}
+
+/* SCORE */
+#result {
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<h1 style="text-align:center;">🌀⚛️ Quantum Uncertainty Runner</h1>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<h3>🎯 Survive Quantum Uncertainty Field</h3>
+
+<div class="track" id="track">
+  <div class="runner" id="runner"></div>
+</div>
+
+<br>
+
+<p>Uncertainty Control (Position ↔ Momentum)</p>
+<input type="range" id="unc" min="0" max="100" value="50">
+
+<br>
+
+<button onclick="start()">START RUN</button>
+<button onclick="resetGame()">RESET</button>
+
+<h3 id="result">Ready</h3>
+
+<h3>Score: <span id="score">0</span></h3>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<h3>🎮 How to Play</h3>
+<p>Balance uncertainty slider.</p>
+<p>Avoid decoherence obstacles.</p>
+
+<h3>🏆 Rules</h3>
+<p>Stable movement = +1/sec</p>
+<p>Collision = -5</p>
+
+<h3>💀 Win Condition</h3>
+<p>Survive 30 seconds</p>
+
+<h3>🧪 Qiskit Model</h3>
+
+<pre style="color:#00f7ff;font-size:11px;">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1,1)
+
+qc.h(0)
+qc.rz(theta,0)
+qc.measure(0,0)
+</pre>
+
+</div>
+
+</div>
+
+<script>
+
+let score=0;
+let time=0;
+let running=false;
+
+let runner=document.getElementById("runner");
+let track=document.getElementById("track");
+
+let obstacles=[];
+
+/* CREATE OBSTACLES */
+function spawnObstacle(){
+
+  let o=document.createElement("div");
+  o.className="obstacle";
+
+  o.style.left=Math.random()*380+"px";
+  o.style.top="0px";
+
+  track.appendChild(o);
+  obstacles.push(o);
+}
+
+/* MOVE GAME */
+function loop(){
+
+  if(!running) return;
+
+  time++;
+  score++;
+
+  document.getElementById("score").innerText=score;
+
+  let unc=document.getElementById("unc").value;
+
+  // uncertainty affects jitter
+  let jitter=(unc-50)/10;
+
+  let x=190 + Math.random()*jitter;
+  let y=100 + Math.random()*jitter;
+
+  runner.style.left=x+"px";
+  runner.style.top=y+"px";
+
+  // move obstacles
+  obstacles.forEach((o,i)=>{
+
+    let top=parseInt(o.style.top);
+    o.style.top=(top+5)+"px";
+
+    if(top>200){
+      o.remove();
+      obstacles.splice(i,1);
+    }
+
+    // collision
+    if(Math.abs(x-parseInt(o.style.left))<20 &&
+       Math.abs(y-top)<20){
+      score-=5;
+      document.getElementById("result").innerText="DECOHERENCE COLLISION!";
+    }
+  });
+
+  if(time%20===0) spawnObstacle();
+
+  requestAnimationFrame(loop);
+}
+
+function start(){
+  running=true;
+  loop();
+}
+
+function resetGame(){
+
+  score=0;
+  time=0;
+  running=false;
+
+  obstacles.forEach(o=>o.remove());
+  obstacles=[];
+
+  document.getElementById("score").innerText=0;
+  document.getElementById("result").innerText="Reset Complete";
+
+  runner.style.left="50%";
+  runner.style.top="50%";
+}
+
+</script>
+
+</body>
+</html>
