@@ -1,82 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Quantum Arcade</title>
-
-<link rel="stylesheet" href="assets/css/home.css">
+  <meta charset="UTF-8">
+  <title>Quantum Arcade</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar">
+<div id="bg-animation"></div>
 
-    <div class="logo">⚛ Quantum Arcade</div>
-
-    <div class="menu">
-
-        <button onclick="showSection('home')">Home</button>
-        <button onclick="showSection('games')">Games</button>
-        <button onclick="showSection('about')">About</button>
-
-    </div>
-
-</nav>
+<header>
+  <h1>⚛️ Quantum Arcade</h1>
+  <p>30 Quantum Games • Learn by Playing Reality</p>
+</header>
 
 <!-- HOME -->
-<section id="home" class="page">
+<div id="home" class="grid">
 
-    <h1>Quantum Arcade</h1>
-    <p>30 Interactive Quantum Games</p>
+  <div class="card" onclick="openGame('superposition')">⚡ Superposition Switch</div>
+  <div class="card" onclick="openGame('entanglement')">🔗 Entanglement Duel</div>
+  <div class="card" onclick="openGame('quantum_maze')">🧭 Quantum Maze</div>
+  <div class="card" onclick="openGame('measurement_roulette')">🎲 Measurement Roulette</div>
+  <div class="card" onclick="openGame('quantum_dice')">🎰 Quantum Dice</div>
 
-</section>
+  <div class="card" onclick="openGame('bloch_sphere')">🌐 Bloch Sphere Explorer</div>
+  <div class="card" onclick="openGame('teleportation')">🚀 Quantum Teleportation</div>
+  <div class="card" onclick="openGame('qiskit_builder')">🧪 Circuit Builder</div>
+  <div class="card" onclick="openGame('quantum_lock')">🔐 Quantum Lock</div>
+  <div class="card" onclick="openGame('wave_interference')">🌊 Wave Interference</div>
 
-<!-- GAMES -->
-<section id="games" class="page hidden">
+  <div class="card" onclick="openGame('quantum_memory')">🧠 Quantum Memory</div>
+  <div class="card" onclick="openGame('probability_war')">⚔️ Probability War</div>
+  <div class="card" onclick="openGame('uncertainty_runner')">🏃 Uncertainty Runner</div>
+  <div class="card" onclick="openGame('state_collapse')">💥 State Collapse</div>
+  <div class="card" onclick="openGame('quantum_ai')">🤖 Quantum AI Duel</div>
 
-    <h1>Games Library</h1>
+  <div class="card" onclick="openGame('quantum_chess')">♟️ Quantum Chess</div>
+  <div class="card" onclick="openGame('mirror_universe')">🪞 Mirror Universe</div>
+  <div class="card" onclick="openGame('entangled_flag')">🚩 Entangled Flag</div>
+  <div class="card" onclick="openGame('quantum_rps')">✊ Quantum RPS</div>
+  <div class="card" onclick="openGame('gate_puzzle')">🔧 Gate Puzzle</div>
 
-    <div class="card" onclick="showSection('coinGame')">
-        01. Quantum Coin Flip
-    </div>
+  <div class="card" onclick="openGame('qubit_escape')">🚪 Qubit Escape Room</div>
+  <div class="card" onclick="openGame('error_correction')">🛠️ Error Correction</div>
+  <div class="card" onclick="openGame('quantum_tycoon')">🏭 Quantum Tycoon</div>
+  <div class="card" onclick="openGame('probability_builder')">📊 Probability Builder</div>
+  <div class="card" onclick="openGame('superposition_race')">🏁 Superposition Race</div>
 
-    <div class="card">02. Quantum Dice</div>
-    <div class="card">03. Qubit Explorer</div>
+  <div class="card" onclick="openGame('wave_painter')">🎨 Wave Painter</div>
+  <div class="card" onclick="openGame('collapse_timing')">⏱️ Collapse Timing</div>
+  <div class="card" onclick="openGame('quantum_lab')">🧫 Quantum Lab</div>
+  <div class="card" onclick="openGame('state_guess')">🔮 State Guessing</div>
+  <div class="card" onclick="openGame('final_boss')">👑 Quantum Final Boss</div>
 
-    <button onclick="showSection('home')">Back Home</button>
+</div>
 
-</section>
+<!-- GAME CONTAINER -->
+<div id="gameContainer" class="hidden">
 
-<!-- ABOUT -->
-<section id="about" class="page hidden">
+  <button onclick="exitGame()" class="exit">⟵ Exit Arcade</button>
 
-    <h1>About Quantum Arcade</h1>
+  <iframe id="gameFrame"></iframe>
 
-    <p>30 quantum games learning platform.</p>
+</div>
 
-    <button onclick="showSection('home')">Back Home</button>
-
-</section>
-
-<!-- GAME -->
-<section id="coinGame" class="page hidden">
-
-    <h1>Quantum Coin Flip</h1>
-
-    <h2 id="result">Click Run</h2>
-
-    <button onclick="runQuantumCoin()">Run Quantum Coin</button>
-
-    <button onclick="showSection('games')">Back to Games</button>
-
-</section>
-
-<!-- JS -->
-<script src="assets/js/main.js"></script>
-
+<script src="script.js"></script>
 </body>
 </html>
