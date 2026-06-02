@@ -45,3 +45,18 @@ function animate() {
 }
 
 animate();
+const text = "Explore Quantum Reality | Learn Physics Through Play | Simulate the Impossible";
+
+let i = 0;
+
+function typeWriter() {
+    if (i < text.length) {
+        document.getElementById("typewriter").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 60);
+    }
+}
+
+window.addEventListener("load", () => {
+    typeWriter();
+});
