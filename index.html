@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quantum Game Hub</title>
+
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -16,14 +17,16 @@
 
 <div id="home" class="grid">
 
-<div class="card" onclick="openGame('superposition')">Superposition</div>
-<div class="card" onclick="openGame('entanglement')">Entanglement</div>
-<div class="card" onclick="openGame('maze')">Quantum Maze</div>
+<div class="card" onclick="openGame('superposition')">⚡ Superposition</div>
+<div class="card" onclick="openGame('entanglement')">🔗 Entanglement</div>
+<div class="card" onclick="openGame('quantum_maze')">🧭 Quantum Maze</div>
+<div class="card" onclick="openGame('roulette')">🎲 Roulette</div>
+<div class="card" onclick="openGame('dice')">🎰 Dice</div>
 
 </div>
 
 <div id="gameContainer" class="hidden">
-<button class="exit" onclick="exitGame()">EXIT</button>
+<button class="exit" onclick="exitGame()">⟵ Exit</button>
 <iframe id="gameFrame"></iframe>
 </div>
 
