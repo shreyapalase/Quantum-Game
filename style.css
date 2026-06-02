@@ -13,8 +13,9 @@ body {
 
 .grid {
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: 15px;
     padding: 20px;
 }
 
@@ -23,11 +24,14 @@ body {
     background: #111;
     border: 1px solid #00f7ff;
     cursor: pointer;
+    border-radius: 8px;
+    transition: 0.2s;
 }
 
 .card:hover {
     background: #00f7ff;
     color: black;
+    transform: scale(1.05);
 }
 
 #gameContainer {
@@ -39,12 +43,18 @@ body {
 iframe {
     width: 100%;
     height: 100%;
+    border: none;
 }
 
 .exit {
     position: absolute;
     top: 10px;
     left: 10px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
     z-index: 10;
 }
 
