@@ -5,10 +5,67 @@ body {
     font-family: Arial;
 }
 
+/* =========================
+   QUANTUM GAME HUB TITLE
+========================= */
+
 .title {
     text-align: center;
-    padding: 20px;
-    color: #00f7ff;
+
+    font-family: "Orbitron", sans-serif;
+    font-size: 4.5rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+
+    margin-top: 20px;
+    margin-bottom: 10px;
+
+    /* futuristic gradient */
+    background: linear-gradient(
+        90deg,
+        #00f7ff,
+        #8a2eff,
+        #00ffcc,
+        #ff00ff,
+        #00f7ff
+    );
+
+    background-size: 300% 300%;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* glow */
+    text-shadow:
+        0 0 10px rgba(0, 247, 255, 0.4),
+        0 0 20px rgba(138, 46, 255, 0.3),
+        0 0 40px rgba(0, 255, 204, 0.2);
+
+    /* animation */
+    animation: quantumTitleFlow 5s linear infinite,
+               titlePulse 2.5s ease-in-out infinite;
+}
+
+/* gradient movement */
+@keyframes quantumTitleFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 300% 50%;
+    }
+}
+
+/* breathing glow effect */
+@keyframes titlePulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.03);
+        filter: brightness(1.4);
+    }
 }
 
 .grid {
