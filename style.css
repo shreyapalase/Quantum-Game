@@ -171,3 +171,29 @@ iframe {
     font-size:1rem;
     letter-spacing:1px;
 }
+  .presented-by{
+    text-align:center;
+    margin-top:8px;
+    margin-bottom:20px;
+}
+
+.presented-by p{
+    color:#00f7ff;
+    font-size:12px;
+    margin:0 0 6px 0;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    opacity:0.8;
+}
+
+.company-logo{
+    width:60px;
+    height:auto;
+    object-fit:contain;
+    display:block;
+    margin:auto;
+
+    filter:
+        drop-shadow(0 0 5px #00f7ff)
+        drop-shadow(0 0 10px #00f7ff);
+}
