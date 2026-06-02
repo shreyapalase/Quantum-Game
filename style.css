@@ -1,382 +1,59 @@
-/* ===============================
-   QUANTUM GAME ENGINE STYLE
-   SCI-FI / NEON / HOLOGRAPHIC UI
-================================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: 'Orbitron', sans-serif;
-    background: #050816;
-    overflow-x: hidden;
+    margin: 0;
+    background: black;
     color: white;
-}
-
-/* ===============================
-   BACKGROUND LAYERS
-================================= */
-
-/* Nebula */
-#quantumNebula {
-    position: fixed;
-    inset: 0;
-    z-index: -5;
-
-    background:
-        radial-gradient(circle at 20% 30%, rgba(0, 247, 255, 0.25), transparent 25%),
-        radial-gradient(circle at 80% 40%, rgba(255, 0, 255, 0.18), transparent 30%),
-        radial-gradient(circle at 50% 80%, rgba(0, 255, 170, 0.15), transparent 30%);
-
-    animation: nebulaShift 18s infinite alternate ease-in-out;
-    filter: blur(0px);
-}
-
-/* Canvas particles */
-#quantumCanvas {
-    position: fixed;
-    inset: 0;
-    z-index: -4;
-}
-
-/* Mouse aura */
-#mouseAura {
-    position: fixed;
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: -1;
-
-    background: radial-gradient(circle, rgba(0, 247, 255, 0.25), transparent 70%);
-    transform: translate(-50%, -50%);
-    filter: blur(2px);
-}
-
-/* Scanlines */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 50;
-
-    background: repeating-linear-gradient(
-        transparent 0px,
-        rgba(255,255,255,0.03) 1px,
-        transparent 3px
-    );
-
-    opacity: 0.2;
-}
-
-/* ===============================
-   QUANTUM REACTOR
-================================= */
-
-.quantum-reactor {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 700px;
-    height: 700px;
-    transform: translate(-50%, -50%);
-    z-index: -3;
-    pointer-events: none;
-}
-
-.reactor-core {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 90px;
-    height: 90px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-
-    background: radial-gradient(circle, #00f7ff, #0066ff, transparent);
-    filter: blur(12px);
-
-    animation: corePulse 2.5s infinite ease-in-out;
-}
-
-/* Orbits */
-.orbit {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 247, 255, 0.25);
-}
-
-.orbit1 {
-    width: 220px;
-    height: 220px;
-    margin-left: -110px;
-    margin-top: -110px;
-    animation: rotateCW 10s linear infinite;
-}
-
-.orbit2 {
-    width: 380px;
-    height: 380px;
-    margin-left: -190px;
-    margin-top: -190px;
-    border-color: rgba(255, 0, 255, 0.25);
-    animation: rotateCCW 18s linear infinite;
-}
-
-.orbit3 {
-    width: 560px;
-    height: 560px;
-    margin-left: -280px;
-    margin-top: -280px;
-    border-color: rgba(0, 255, 170, 0.2);
-    animation: rotateCW 26s linear infinite;
-}
-
-.orbit4 {
-    width: 720px;
-    height: 720px;
-    margin-left: -360px;
-    margin-top: -360px;
-    border-color: rgba(0, 247, 255, 0.1);
-    animation: rotateCCW 40s linear infinite;
-}
-
-/* ===============================
-   HUD
-================================= */
-
-.hud-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-    pointer-events: none;
-}
-
-.hud-top {
-    position: fixed;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 20px;
-    z-index: 20;
-}
-
-.hud-box {
-    padding: 8px 14px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(0, 247, 255, 0.2);
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    font-size: 12px;
-}
-
-.hud-label {
-    color: #8adfff;
-    margin-right: 5px;
-}
-
-.hud-value {
-    color: #00f7ff;
-}
-
-/* ===============================
-   HERO
-================================= */
-
-.hero {
-    text-align: center;
-    padding-top: 80px;
-    position: relative;
+    font-family: Arial;
 }
 
 .title {
-    font-size: 4rem;
-    font-weight: 800;
-    background: linear-gradient(90deg, #00f7ff, #8a2eff, #00ffcc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: glowText 4s infinite ease-in-out;
+    text-align: center;
+    padding: 20px;
+    color: #00f7ff;
 }
-
-.subtitle {
-    margin-top: 10px;
-    color: #9adfff;
-    letter-spacing: 2px;
-}
-
-.engine-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 16px;
-    margin-bottom: 20px;
-    border-radius: 50px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(0, 247, 255, 0.2);
-    backdrop-filter: blur(10px);
-}
-
-.status-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #00ff66;
-    box-shadow: 0 0 10px #00ff66;
-    animation: pulse 1.5s infinite;
-}
-
-/* ===============================
-   GRID / CARDS
-================================= */
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    padding: 40px;
-    max-width: 1400px;
-    margin: auto;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 20px;
 }
 
 .card {
-    position: relative;
-    height: 120px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(0, 247, 255, 0.2);
-    border-radius: 18px;
-
-    backdrop-filter: blur(18px);
+    padding: 20px;
+    background: #111;
+    border: 1px solid #00f7ff;
     cursor: pointer;
-
-    transition: 0.3s;
-    overflow: hidden;
-
-    animation: floatCard 6s ease-in-out infinite;
-}
-
-/* glowing border animation */
-.card::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(90deg, #00f7ff, #8a2eff, #00ffcc, #00f7ff);
-    background-size: 400%;
-    filter: blur(12px);
-    opacity: 0.5;
-    animation: borderFlow 6s linear infinite;
-    z-index: -1;
 }
 
 .card:hover {
-    transform: translateY(-10px) scale(1.06);
-    box-shadow: 0 0 20px #00f7ff, 0 0 50px #8a2eff;
+    background: #00f7ff;
+    color: black;
 }
-
-/* ===============================
-   LOGO
-================================= */
-
-.floating-logo {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    opacity: 0.8;
-    z-index: 100;
-}
-
-.floating-logo img {
-    width: 100%;
-    filter: drop-shadow(0 0 10px #00f7ff);
-    animation: logoFloat 4s ease-in-out infinite;
-}
-
-/* ===============================
-   GAME WINDOW
-================================= */
 
 #gameContainer {
     position: fixed;
     inset: 0;
     background: black;
-    z-index: 999;
 }
 
 iframe {
     width: 100%;
     height: 100%;
-    border: none;
 }
 
 .exit {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 10px 16px;
-    background: #ff004c;
-    border: none;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
 }
 
-/* ===============================
-   ANIMATIONS
-================================= */
-
-@keyframes rotateCW {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+.hidden {
+    display: none;
 }
 
-@keyframes rotateCCW {
-    from { transform: rotate(360deg); }
-    to { transform: rotate(0deg); }
-}
-
-@keyframes corePulse {
-    0%,100% { transform: translate(-50%,-50%) scale(1); }
-    50% { transform: translate(-50%,-50%) scale(1.6); }
-}
-
-@keyframes floatCard {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-}
-
-@keyframes borderFlow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
-}
-
-@keyframes glowText {
-    0%,100% { filter: brightness(1); }
-    50% { filter: brightness(1.6); }
-}
-
-@keyframes nebulaShift {
-    0% { transform: scale(1) rotate(0deg); }
-    100% { transform: scale(1.2) rotate(8deg); }
-}
-
-@keyframes pulse {
-    0%,100% { transform: scale(1); }
-    50% { transform: scale(1.4); }
-}
-
-@keyframes logoFloat {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+canvas {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
 }
