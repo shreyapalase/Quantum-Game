@@ -187,11 +187,12 @@ iframe {
 }
 
 .company-logo{
-    width:60px;
+    width:30px;
     height:auto;
     object-fit:contain;
     display:block;
     margin:auto;
+    alignment:center;
 
     filter:
         drop-shadow(0 0 5px #00f7ff)
