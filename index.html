@@ -1,36 +1,73 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+```
 <title>Quantum Game Engine</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
+```
+
 </head>
 
 <body>
 
+```
+<!-- QUANTUM BACKGROUND -->
+<div id="quantumNebula"></div>
 <canvas id="quantumCanvas"></canvas>
-    <div class="quantum-core">
-    <div class="ring ring1"></div>
-    <div class="ring ring2"></div>
-    <div class="ring ring3"></div>
-    <div class="core"></div>
+<div id="mouseAura"></div>
+
+<!-- QUANTUM REACTOR -->
+<div class="quantum-reactor">
+    <div class="orbit orbit1"></div>
+    <div class="orbit orbit2"></div>
+    <div class="orbit orbit3"></div>
+    <div class="orbit orbit4"></div>
+
+    <div class="reactor-core"></div>
 </div>
 
-<div id="mouseGlow"></div>
+<!-- HUD OVERLAY -->
+<div class="hud-overlay"></div>
 
-<div class="scanline"></div>
+<!-- TOP STATUS BAR -->
+<div class="hud-top">
 
+    <div class="hud-box">
+        <span class="hud-label">QUBITS</span>
+        <span class="hud-value">2048</span>
+    </div>
+
+    <div class="hud-box">
+        <span class="hud-label">ENTANGLEMENT</span>
+        <span class="hud-value">98%</span>
+    </div>
+
+    <div class="hud-box">
+        <span class="hud-label">ENGINE</span>
+        <span class="hud-value online">ONLINE</span>
+    </div>
+
+</div>
+
+<!-- HERO SECTION -->
 <header class="hero">
 
+    <div class="hero-glow"></div>
+
     <div class="engine-status">
-        <span></span> Quantum Core Online
+        <span class="status-dot"></span>
+        QUANTUM CORE ACTIVE
     </div>
 
     <h1 class="title">
@@ -38,61 +75,186 @@
     </h1>
 
     <p class="subtitle">
-        Advanced Quantum Simulation Arcade
+        Advanced Quantum Simulation Arcade & Interactive Learning Universe
     </p>
+
+    <div class="hero-line"></div>
 
 </header>
 
-<section id="home" class="grid">
+<!-- GAME GRID -->
+<main id="home" class="grid">
 
-<div class="card" onclick="openGame('superposition')">⚡ Superposition</div>
-<div class="card" onclick="openGame('entanglement')">🔗 Entanglement</div>
-<div class="card" onclick="openGame('quantum_maze')">🧭 Quantum Maze</div>
-<div class="card" onclick="openGame('roulette')">🎲 Measurement Roulette</div>
-<div class="card" onclick="openGame('dice')">🎰 Quantum Dice</div>
+    <div class="card" onclick="openGame('superposition')">
+        <span>⚡</span>
+        <h3>Superposition</h3>
+    </div>
 
-<div class="card" onclick="openGame('bloch')">🌐 Bloch Sphere</div>
-<div class="card" onclick="openGame('teleport')">🚀 Teleportation</div>
-<div class="card" onclick="openGame('circuit')">🧪 Circuit Builder</div>
-<div class="card" onclick="openGame('lock')">🔐 Quantum Lock</div>
-<div class="card" onclick="openGame('wave')">🌊 Wave Interference</div>
+    <div class="card" onclick="openGame('entanglement')">
+        <span>🔗</span>
+        <h3>Entanglement</h3>
+    </div>
 
-<div class="card" onclick="openGame('memory')">🧠 Quantum Memory</div>
-<div class="card" onclick="openGame('war')">⚔️ Probability War</div>
-<div class="card" onclick="openGame('runner')">🏃 Uncertainty Runner</div>
-<div class="card" onclick="openGame('collapse')">💥 State Collapse</div>
-<div class="card" onclick="openGame('ai')">🤖 Quantum AI</div>
+    <div class="card" onclick="openGame('quantum_maze')">
+        <span>🧭</span>
+        <h3>Quantum Maze</h3>
+    </div>
 
-<div class="card" onclick="openGame('chess')">♟️ Quantum Chess</div>
-<div class="card" onclick="openGame('mirror')">🪞 Mirror Universe</div>
-<div class="card" onclick="openGame('flag')">🚩 Entangled Flag</div>
-<div class="card" onclick="openGame('rps')">✊ Quantum RPS</div>
-<div class="card" onclick="openGame('gate')">🔧 Gate Puzzle</div>
+    <div class="card" onclick="openGame('roulette')">
+        <span>🎲</span>
+        <h3>Measurement Roulette</h3>
+    </div>
 
-<div class="card" onclick="openGame('escape')">🚪 Qubit Escape</div>
-<div class="card" onclick="openGame('error')">🛠 Error Correction</div>
-<div class="card" onclick="openGame('tycoon')">🏭 Quantum Tycoon</div>
-<div class="card" onclick="openGame('builder')">📊 Probability Builder</div>
-<div class="card" onclick="openGame('race')">🏁 Superposition Race</div>
+    <div class="card" onclick="openGame('dice')">
+        <span>🎰</span>
+        <h3>Quantum Dice</h3>
+    </div>
 
-<div class="card" onclick="openGame('painter')">🎨 Wave Painter</div>
-<div class="card" onclick="openGame('timing')">⏱ Collapse Timing</div>
-<div class="card" onclick="openGame('lab')">🧫 Quantum Lab</div>
-<div class="card" onclick="openGame('guess')">🔮 State Guess</div>
-<div class="card" onclick="openGame('boss')">👑 Final Boss</div>
+    <div class="card" onclick="openGame('bloch')">
+        <span>🌐</span>
+        <h3>Bloch Sphere</h3>
+    </div>
 
-</section>
+    <div class="card" onclick="openGame('teleport')">
+        <span>🚀</span>
+        <h3>Teleportation</h3>
+    </div>
 
+    <div class="card" onclick="openGame('circuit')">
+        <span>🧪</span>
+        <h3>Circuit Builder</h3>
+    </div>
+
+    <div class="card" onclick="openGame('lock')">
+        <span>🔐</span>
+        <h3>Quantum Lock</h3>
+    </div>
+
+    <div class="card" onclick="openGame('wave')">
+        <span>🌊</span>
+        <h3>Wave Interference</h3>
+    </div>
+
+    <div class="card" onclick="openGame('memory')">
+        <span>🧠</span>
+        <h3>Quantum Memory</h3>
+    </div>
+
+    <div class="card" onclick="openGame('war')">
+        <span>⚔️</span>
+        <h3>Probability War</h3>
+    </div>
+
+    <div class="card" onclick="openGame('runner')">
+        <span>🏃</span>
+        <h3>Uncertainty Runner</h3>
+    </div>
+
+    <div class="card" onclick="openGame('collapse')">
+        <span>💥</span>
+        <h3>State Collapse</h3>
+    </div>
+
+    <div class="card" onclick="openGame('ai')">
+        <span>🤖</span>
+        <h3>Quantum AI</h3>
+    </div>
+
+    <div class="card" onclick="openGame('chess')">
+        <span>♟️</span>
+        <h3>Quantum Chess</h3>
+    </div>
+
+    <div class="card" onclick="openGame('mirror')">
+        <span>🪞</span>
+        <h3>Mirror Universe</h3>
+    </div>
+
+    <div class="card" onclick="openGame('flag')">
+        <span>🚩</span>
+        <h3>Entangled Flag</h3>
+    </div>
+
+    <div class="card" onclick="openGame('rps')">
+        <span>✊</span>
+        <h3>Quantum RPS</h3>
+    </div>
+
+    <div class="card" onclick="openGame('gate')">
+        <span>🔧</span>
+        <h3>Gate Puzzle</h3>
+    </div>
+
+    <div class="card" onclick="openGame('escape')">
+        <span>🚪</span>
+        <h3>Qubit Escape</h3>
+    </div>
+
+    <div class="card" onclick="openGame('error')">
+        <span>🛠️</span>
+        <h3>Error Correction</h3>
+    </div>
+
+    <div class="card" onclick="openGame('tycoon')">
+        <span>🏭</span>
+        <h3>Quantum Tycoon</h3>
+    </div>
+
+    <div class="card" onclick="openGame('builder')">
+        <span>📊</span>
+        <h3>Probability Builder</h3>
+    </div>
+
+    <div class="card" onclick="openGame('race')">
+        <span>🏁</span>
+        <h3>Superposition Race</h3>
+    </div>
+
+    <div class="card" onclick="openGame('painter')">
+        <span>🎨</span>
+        <h3>Wave Painter</h3>
+    </div>
+
+    <div class="card" onclick="openGame('timing')">
+        <span>⏱</span>
+        <h3>Collapse Timing</h3>
+    </div>
+
+    <div class="card" onclick="openGame('lab')">
+        <span>🧫</span>
+        <h3>Quantum Lab</h3>
+    </div>
+
+    <div class="card" onclick="openGame('guess')">
+        <span>🔮</span>
+        <h3>State Guess</h3>
+    </div>
+
+    <div class="card" onclick="openGame('boss')">
+        <span>👑</span>
+        <h3>Final Boss</h3>
+    </div>
+
+</main>
+
+<!-- FLOATING LOGO -->
 <div class="floating-logo">
-    <img src="assets/logo2.png" alt="Logo">
+    <img src="assets/logo2.png" alt="Quantum Logo">
 </div>
 
+<!-- GAME CONTAINER -->
 <div id="gameContainer" class="hidden">
-    <button class="exit" onclick="exitGame()">← Exit Simulation</button>
+
+    <button class="exit" onclick="exitGame()">
+        ← Exit Simulation
+    </button>
+
     <iframe id="gameFrame"></iframe>
+
 </div>
 
 <script src="script.js"></script>
+```
 
 </body>
 </html>
