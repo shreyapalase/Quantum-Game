@@ -2,77 +2,79 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Quantum Coin Simulator</title>
+<title>Quantum Coin Simulator Pro</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1 class="title">⚛ Quantum Coin Toss Simulator</h1>
+<h1 class="title">⚛ Quantum Probability Lab</h1>
 
 <div class="grid">
 
 <!-- LEFT: RULES -->
 <div class="panel">
-  <h2>📜 Game Rules</h2>
-
-  <p>✔ Toss coin to generate H / T</p>
-  <p>✔ Win condition: Heads ≥ 5</p>
-  <p>✔ Lose condition: Tails ≥ 5</p>
-  <p>✔ Game stops automatically</p>
-
-  <h3>🎯 Objective</h3>
-  <p>Stabilize quantum randomness</p>
+  <h2>📜 Rules</h2>
+  <p>✔ 10 total tosses per session</p>
+  <p>✔ Game auto ends after 10 tosses</p>
+  <p>✔ Higher probability wins</p>
+  <p>✔ Heads vs Tails = quantum outcome dominance</p>
 </div>
 
-<!-- MIDDLE: GAME -->
+<!-- CENTER: SIMULATION -->
 <div class="panel center">
 
   <h2>🎮 Simulation Core</h2>
 
   <div class="coin" id="coin">H</div>
 
-  <button onclick="toss()" id="tossBtn">TOSS COIN</button>
+  <button onclick="toss()" id="tossBtn">TOSS</button>
   <button onclick="reset()">RESET</button>
 
   <h3 id="result"></h3>
 
-  <h3>📊 Probability Analyzer</h3>
+  <h3>📊 Probability</h3>
 
   <div class="hist">
     <div class="barH" id="barH"></div>
     <div class="barT" id="barT"></div>
   </div>
 
-  <p>Heads: <span id="h">0</span></p>
-  <p>Tails: <span id="t">0</span></p>
+  <p>Heads: <span id="h">0</span> | Tails: <span id="t">0</span></p>
+  <p>Tosses Left: <span id="left">10</span></p>
 
 </div>
 
-<!-- RIGHT: QISKIT -->
+<!-- RIGHT: QUANTUM CIRCUIT -->
 <div class="panel">
 
-  <h2>⚛ Qiskit Model</h2>
+  <h2>⚛ Quantum Circuit</h2>
 
-<pre>
-from qiskit import QuantumCircuit, Aer, execute
+  <div class="circuit">
+
+    <div class="wire"></div>
+
+    <div class="gate">
+      H
+      <small>Hadamard</small>
+    </div>
+
+    <div class="wire"></div>
+
+    <div class="measure">
+      M
+      <small>Measure</small>
+    </div>
+
+  </div>
+
+  <pre>
+from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(1,1)
 qc.h(0)
 qc.measure(0,0)
-
-backend = Aer.get_backend('qasm_simulator')
-job = execute(qc, backend, shots=1)
-
-result = job.result()
-print(result.get_counts())
-</pre>
-
-<h3>Circuit</h3>
-
-<pre>
-|0⟩ ── H ── M
-</pre>
+  </pre>
 
 </div>
 
