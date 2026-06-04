@@ -1,293 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Superposition Challenge Lab</title>
-
-<style>
-body {
-  margin: 0;
-  background: black;
-  color: #00f7ff;
-  font-family: monospace;
-  overflow: hidden;
-}
-
-/* BACKGROUND */
-#bg {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, #00f7ff22 2px, transparent 3px);
-  background-size: 50px 50px;
-  animation: drift 6s linear infinite;
-  z-index: -1;
-}
-
-@keyframes drift {
-  from { transform: translateY(0); }
-  to { transform: translateY(-120px); }
-}
-
-/* LAYOUT */
-.container {
-  display: flex;
-}
-
-.left {
-  width: 60%;
-  text-align: center;
-  padding: 10px;
-}
-
-.right {
-  width: 40%;
-  padding: 15px;
-  border-left: 1px solid #00f7ff55;
-  height: 100vh;
-  overflow-y: auto;
-}
-
-/* BLOCH */
-.sphere {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  border: 2px solid #00f7ff;
-  margin: auto;
-  position: relative;
-}
-
-.pointer {
-  width: 12px;
-  height: 12px;
-  background: #ff00ff;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-}
-
-/* BAR */
-.bar {
-  width: 80%;
-  height: 18px;
-  border: 1px solid white;
-  display: flex;
-  margin: 10px auto;
-}
-
-.p0 { background: #00f7ff; width: 50%; }
-.p1 { background: #ff00ff; width: 50%; }
-
-/* HISTOGRAM */
-.hist {
-  display: flex;
-  justify-content: center;
-  height: 120px;
-  align-items: flex-end;
-  gap: 10px;
-}
-
-.h0, .h1 {
-  width: 40px;
-}
-
-.h0 { background: #00f7ff; }
-.h1 { background: #ff00ff; }
-
-/* BUTTON */
-button {
-  padding: 10px;
-  background: #00f7ff;
-  border: none;
-  cursor: pointer;
-  margin: 5px;
-}
-
-/* SCORE */
-#grade {
-  font-size: 18px;
-  margin-top: 10px;
-}
-</style>
+<title>Quantum Superposition Lab XR</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div id="bg"></div>
+<div id="particles"></div>
 
-<h1 style="text-align:center;">⚛️ Superposition Challenge Lab</h1>
+<div class="hud">
+  <h1>⚛ Quantum Superposition Lab XR</h1>
+  <p id="mission">MISSION: Keep |1⟩ probability ABOVE 70%</p>
+</div>
 
 <div class="container">
 
-<!-- LEFT -->
-<div class="left">
+  <!-- LEFT -->
+  <div class="left">
 
-<h3>🎯 Mission Challenge</h3>
-<p id="mission">Goal: Keep |1⟩ probability ABOVE 70%</p>
+    <div class="sphere" id="sphere">
+      <div class="glow"></div>
+      <div class="pointer" id="ptr"></div>
+    </div>
 
-<div class="sphere" id="sphere">
-  <div class="pointer" id="ptr"></div>
-</div>
+    <div class="bar">
+      <div id="p0" class="p0"></div>
+      <div id="p1" class="p1"></div>
+    </div>
 
-<div class="bar">
-  <div id="p0" class="p0"></div>
-  <div id="p1" class="p1"></div>
-</div>
+    <p class="stats">
+      |0⟩: <span id="prob0">50</span>% |
+      |1⟩: <span id="prob1">50</span>%
+    </p>
 
-<p>|0⟩: <span id="prob0">50</span>% | |1⟩: <span id="prob1">50</span>%</p>
+    <button onclick="measure()">MEASURE STATE</button>
+    <button onclick="resetGame()">RESET</button>
 
-<button onclick="measure()">MEASURE STATE</button>
+    <h2 id="result"></h2>
 
-<h2 id="result"></h2>
+    <h3>Score: <span id="score">0</span></h3>
+    <h3 id="grade">INIT</h3>
 
-<h3>Histogram</h3>
-<div class="hist">
-  <div id="h0" class="h0" style="height:60px;"></div>
-  <div id="h1" class="h1" style="height:60px;"></div>
-</div>
+  </div>
 
-<h3>Score: <span id="score">0</span></h3>
-<h3 id="grade">Rank: INIT</h3>
+  <!-- RIGHT -->
+  <div class="right">
 
-</div>
+    <h3>Quantum Rules</h3>
+    <p>Drag → manipulate wavefunction</p>
+    <p>Measurement collapses state instantly</p>
 
-<!-- RIGHT -->
-<div class="right">
+    <h3>Win Condition</h3>
+    <p>Score ≥ 5 AND |1⟩ ≥ 70%</p>
 
-<h3>🎮 How to Play</h3>
-<p>Drag mouse → change quantum state (θ)</p>
-<p>Measurement collapses state</p>
-<p>Complete mission objective to win</p>
+    <h3>Lose Condition</h3>
+    <p>Score ≤ -3 OR unstable collapse streak</p>
 
-<h3>🏆 Rules</h3>
-<p>✔ Each round checks probability condition</p>
-<p>✔ Wrong collapse reduces score</p>
-<p>✔ Correct collapse increases score</p>
+    <div id="log"></div>
 
-<h3>🎯 Win Condition</h3>
-<p>Score ≥ 5 AND mission condition satisfied</p>
-
-<h3>💀 Lose Condition</h3>
-<p>Score ≤ -3 OR repeated failure</p>
-
-<h3>🧪 Qiskit Code</h3>
-
-<pre style="color:#00f7ff;font-size:11px;">
-from qiskit import QuantumCircuit
-
-qc = QuantumCircuit(1,1)
-qc.h(0)
-qc.measure(0,0)
-</pre>
+  </div>
 
 </div>
 
+<!-- END SCREEN -->
+<div id="overlay">
+  <div class="panel">
+    <h1 id="finalText"></h1>
+    <button onclick="resetGame()">RESTART REALITY</button>
+  </div>
 </div>
 
-<script>
-
-let theta = 0;
-let score = 0;
-let history = {0:1,1:1};
-let mission = "HIGH_1";
-
-/* MOUSE CONTROL */
-let drag = false;
-
-document.addEventListener("mousedown", ()=>drag=true);
-document.addEventListener("mouseup", ()=>drag=false);
-
-document.addEventListener("mousemove",(e)=>{
-  if(!drag) return;
-  theta = (e.clientX/window.innerWidth)*Math.PI*2;
-  update();
-});
-
-/* QUANTUM STATE */
-function update(){
-
-  let p1 = Math.pow(Math.sin(theta/2),2);
-  let p0 = 1 - p1;
-
-  let a = Math.round(p0*100);
-  let b = Math.round(p1*100);
-
-  document.getElementById("prob0").innerText = a;
-  document.getElementById("prob1").innerText = b;
-
-  document.getElementById("p0").style.width = a+"%";
-  document.getElementById("p1").style.width = b+"%";
-
-  document.getElementById("h0").style.height = (a*1.2)+"px";
-  document.getElementById("h1").style.height = (b*1.2)+"px";
-
-  document.getElementById("ptr").style.transform =
-    `translate(${Math.sin(theta)*60}px, ${Math.cos(theta)*60}px)`;
-}
-
-/* MEASURE + CHALLENGE */
-function measure(){
-
-  let p1 = Math.pow(Math.sin(theta/2),2);
-  let r = Math.random();
-
-  let result = (r < p1) ? 1 : 0;
-
-  history[result]++;
-
-  let msg = "";
-
-  // 🎯 MISSION LOGIC
-  if(mission === "HIGH_1"){
-
-    if(p1 > 0.7 && result === 1){
-      score++;
-      msg = "WIN ✔ Strong |1⟩ achieved";
-    } else {
-      score--;
-      msg = "LOSS ❌ Mission failed";
-    }
-
-  }
-
-  document.getElementById("result").innerText = msg;
-
-  updateHistogram();
-  updateScore();
-  updateRank();
-}
-
-/* HISTOGRAM */
-function updateHistogram(){
-
-  let total = history[0] + history[1];
-
-  document.getElementById("h0").style.height = (history[0]/total)*120 + "px";
-  document.getElementById("h1").style.height = (history[1]/total)*120 + "px";
-}
-
-/* SCORE */
-function updateScore(){
-  document.getElementById("score").innerText = score;
-}
-
-/* RANK SYSTEM */
-function updateRank(){
-
-  let rank = "";
-
-  if(score >= 8) rank = "QUANTUM MASTER ⚛️";
-  else if(score >= 5) rank = "ADVANCED OPERATOR";
-  else if(score >= 2) rank = "QUANTUM TRAINEE";
-  else rank = "INIT STATE";
-
-  document.getElementById("grade").innerText = "Rank: " + rank;
-}
-
-update();
-</script>
-
+<script src="game.js"></script>
 </body>
 </html>
