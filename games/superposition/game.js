@@ -56,37 +56,37 @@ function checkGame() {
     let hProb = heads / total;
     let tProb = tails / total;
 
-    let winnerText = "";
-    
+    let winner = "";
+    let badge = "";
+
     if (hProb > tProb) {
-      winnerText = "🏆 WINNER: HEADS";
-    } 
+      winner = "HEADS DOMINATES";
+      badge = "🏆 HEADS WIN";
+    }
     else if (tProb > hProb) {
-      winnerText = "🏆 WINNER: TAILS";
-    } 
+      winner = "TAILS DOMINATES";
+      badge = "🏆 TAILS WIN";
+    }
     else {
-      winnerText = "🤝 DRAW";
+      winner = "PERFECT BALANCE";
+      badge = "🤝 DRAW";
     }
 
-    // SHOW MAIN TITLE
-    document.getElementById("winnerTitle").innerText = winnerText;
+    // SET TEXT
+    document.getElementById("winnerTitle").innerText = winner;
+    document.getElementById("winnerBadge").innerText = badge;
 
-    // SHOW STATS
-    document.getElementById("finalHeads").innerText =
-      "Heads: " + heads;
-
-    document.getElementById("finalTails").innerText =
-      "Tails: " + tails;
+    document.getElementById("finalHeads").innerText = heads;
+    document.getElementById("finalTails").innerText = tails;
 
     document.getElementById("finalProb").innerText =
-      "Probability → Heads: " + (hProb * 100).toFixed(1) +
-      "% | Tails: " + (tProb * 100).toFixed(1) + "%";
+      (hProb * 100).toFixed(1) + "% vs " +
+      (tProb * 100).toFixed(1) + "%";
 
     // SHOW SCREEN
     document.getElementById("overlay").style.display = "flex";
   }
-}
-/* RESET */
+}/* RESET */
 function reset() {
 
   heads = 0;
