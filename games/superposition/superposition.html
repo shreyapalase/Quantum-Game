@@ -12,46 +12,47 @@
 
 <div class="grid">
 
-<!-- LEFT PANEL -->
+<!-- LEFT: RULES -->
 <div class="panel">
+  <h2>📜 Game Rules</h2>
 
-<h2>🎮 Control Panel</h2>
+  <p>✔ Toss coin to generate H / T</p>
+  <p>✔ Win condition: Heads ≥ 5</p>
+  <p>✔ Lose condition: Tails ≥ 5</p>
+  <p>✔ Game stops automatically</p>
 
-<div class="coin" id="coin">H</div>
+  <h3>🎯 Objective</h3>
+  <p>Stabilize quantum randomness</p>
+</div>
 
-<button onclick="toss()" id="tossBtn">TOSS COIN</button>
-<button onclick="reset()">RESET</button>
+<!-- MIDDLE: GAME -->
+<div class="panel center">
 
-<h3 id="result"></h3>
+  <h2>🎮 Simulation Core</h2>
+
+  <div class="coin" id="coin">H</div>
+
+  <button onclick="toss()" id="tossBtn">TOSS COIN</button>
+  <button onclick="reset()">RESET</button>
+
+  <h3 id="result"></h3>
+
+  <h3>📊 Probability Analyzer</h3>
+
+  <div class="hist">
+    <div class="barH" id="barH"></div>
+    <div class="barT" id="barT"></div>
+  </div>
+
+  <p>Heads: <span id="h">0</span></p>
+  <p>Tails: <span id="t">0</span></p>
 
 </div>
 
-<!-- CENTER PANEL -->
+<!-- RIGHT: QISKIT -->
 <div class="panel">
 
-<h2>📊 Probability Analyzer</h2>
-
-<div class="hist">
-  <div class="barH" id="barH"></div>
-  <div class="barT" id="barT"></div>
-</div>
-
-<p>Heads: <span id="h">0</span></p>
-<p>Tails: <span id="t">0</span></p>
-
-<h3 id="status">SYSTEM: ACTIVE</h3>
-
-</div>
-
-<!-- RIGHT PANEL -->
-<div class="panel">
-
-<h2>📜 Rules</h2>
-<p>✔ Win: Heads ≥ 5</p>
-<p>✔ Lose: Tails ≥ 5</p>
-<p>✔ Game stops automatically</p>
-
-<h2>⚛ Qiskit Model</h2>
+  <h2>⚛ Qiskit Model</h2>
 
 <pre>
 from qiskit import QuantumCircuit, Aer, execute
@@ -67,6 +68,12 @@ result = job.result()
 print(result.get_counts())
 </pre>
 
+<h3>Circuit</h3>
+
+<pre>
+|0⟩ ── H ── M
+</pre>
+
 </div>
 
 </div>
@@ -75,7 +82,7 @@ print(result.get_counts())
 <div id="overlay">
   <div class="box">
     <h1 id="finalText"></h1>
-    <button onclick="reset()">RESTART SIMULATION</button>
+    <button onclick="reset()">PLAY AGAIN</button>
   </div>
 </div>
 
