@@ -56,23 +56,36 @@ function checkGame() {
     let hProb = heads / total;
     let tProb = tails / total;
 
-    let msg = "";
-
+    let winnerText = "";
+    
     if (hProb > tProb) {
-      msg = "🏆 HEADS WINS — HIGHER PROBABILITY";
+      winnerText = "🏆 WINNER: HEADS";
     } 
     else if (tProb > hProb) {
-      msg = "🏆 TAILS WINS — HIGHER PROBABILITY";
+      winnerText = "🏆 WINNER: TAILS";
     } 
     else {
-      msg = "🤝 DRAW — PERFECT BALANCE";
+      winnerText = "🤝 DRAW";
     }
 
-    document.getElementById("finalText").innerText = msg;
+    // SHOW MAIN TITLE
+    document.getElementById("winnerTitle").innerText = winnerText;
+
+    // SHOW STATS
+    document.getElementById("finalHeads").innerText =
+      "Heads: " + heads;
+
+    document.getElementById("finalTails").innerText =
+      "Tails: " + tails;
+
+    document.getElementById("finalProb").innerText =
+      "Probability → Heads: " + (hProb * 100).toFixed(1) +
+      "% | Tails: " + (tProb * 100).toFixed(1) + "%";
+
+    // SHOW SCREEN
     document.getElementById("overlay").style.display = "flex";
   }
 }
-
 /* RESET */
 function reset() {
 
