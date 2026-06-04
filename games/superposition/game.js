@@ -1,102 +1,60 @@
-let theta = 0;
-let score = 0;
-let failStreak = 0;
+let heads = 0;
+let tails = 0;
+let streak = 0;
 
-let dragging = false;
+function toss() {
 
-document.addEventListener("mousedown", () => dragging = true);
-document.addEventListener("mouseup", () => dragging = false);
+  let coin = document.getElementById("coin");
 
-document.addEventListener("mousemove", (e) => {
-  if (!dragging) return;
-  theta = (e.clientX / window.innerWidth) * Math.PI * 2;
-  update();
-});
+  // animation
+  coin.classList.remove("flip");
+  void coin.offsetWidth;
+  coin.classList.add("flip");
 
-/* QUANTUM STATE */
-function update() {
-  let p1 = Math.sin(theta / 2) ** 2;
-  let p0 = 1 - p1;
+  let result = Math.random() < 0.5 ? "H" : "T";
 
-  let a = Math.round(p0 * 100);
-  let b = Math.round(p1 * 100);
+  setTimeout(() => {
 
-  document.getElementById("prob0").innerText = a;
-  document.getElementById("prob1").innerText = b;
+    coin.innerText = result;
 
-  document.getElementById("p0").style.width = a + "%";
-  document.getElementById("p1").style.width = b + "%";
+    if (result === "H") {
+      heads++;
+      streak++;
+    } else {
+      tails++;
+      streak = 0;
+    }
 
-  document.getElementById("ptr").style.transform =
-    `translate(${Math.sin(theta) * 70}px, ${Math.cos(theta) * 70}px)`;
+    updateUI();
+    checkWin();
+
+  }, 300);
 }
 
-/* MEASURE */
-function measure() {
-  let p1 = Math.sin(theta / 2) ** 2;
-  let result = Math.random() < p1 ? 1 : 0;
-
-  let msg = "";
-
-  if (p1 > 0.7 && result === 1) {
-    score++;
-    failStreak = 0;
-    msg = "✔ Quantum success: |1⟩ stabilized";
-  } else {
-    score--;
-    failStreak++;
-    msg = "✖ Collapse failure";
-  }
-
-  document.getElementById("result").innerText = msg;
-
-  updateScore();
-  checkEnd();
+function updateUI() {
+  document.getElementById("h").innerText = heads;
+  document.getElementById("t").innerText = tails;
+  document.getElementById("streak").innerText = streak;
 }
 
-/* SCORE */
-function updateScore() {
-  document.getElementById("score").innerText = score;
-
-  let rank =
-    score > 8 ? "QUANTUM GOD" :
-    score > 5 ? "SYNTH OPERATOR" :
-    score > 2 ? "RESEARCHER" :
-    "INIT";
-
-  document.getElementById("grade").innerText = rank;
-}
-
-/* WIN/LOSE SYSTEM */
-function checkEnd() {
-  let p1 = Math.sin(theta / 2) ** 2;
-
-  if (score >= 5 && p1 >= 0.7) {
-    endGame("YOU WIN — REALITY STABILIZED ⚛");
-  }
-
-  if (score <= -3 || failStreak >= 3) {
-    endGame("YOU LOSE — QUANTUM COLLAPSE ☠");
+function checkWin() {
+  if (streak >= 3) {
+    endGame("YOU WIN — 3 HEADS IN A ROW");
   }
 }
 
-/* END SCREEN */
 function endGame(text) {
   document.getElementById("overlay").style.display = "flex";
-  document.getElementById("finalText").innerText = text;
+  document.getElementById("final").innerText = text;
 }
 
-/* RESET */
-function resetGame() {
-  theta = 0;
-  score = 0;
-  failStreak = 0;
+function reset() {
+  heads = 0;
+  tails = 0;
+  streak = 0;
 
   document.getElementById("overlay").style.display = "none";
-  document.getElementById("result").innerText = "";
+  document.getElementById("coin").innerText = "H";
 
-  updateScore();
-  update();
+  updateUI();
 }
-
-update();
