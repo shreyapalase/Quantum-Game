@@ -1,37 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Coin Toss Lab</title>
+<title>Coin Toss Quantum Lab</title>
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>🪙 COIN TOSS LAB</h1>
-<p id="mission">MISSION: Get HEADS 3 times in a row</p>
+<div class="container">
+
+<!-- LEFT PANEL -->
+<div class="left">
+
+<h1>🪙 Quantum Coin Lab</h1>
 
 <div class="coin" id="coin">H</div>
 
-<div class="controls">
-  <button onclick="toss()">TOSS COIN</button>
-  <button onclick="reset()">RESET</button>
-</div>
-
-<div class="stats">
-  <p>Heads: <span id="h">0</span></p>
-  <p>Tails: <span id="t">0</span></p>
-  <p>Streak: <span id="streak">0</span></p>
-</div>
+<button onclick="toss()" id="tossBtn">TOSS</button>
+<button onclick="reset()">RESET</button>
 
 <h2 id="result"></h2>
 
+<!-- PROBABILITY -->
+<h3>Probability Histogram</h3>
+
+<div class="hist">
+  <div class="barH" id="barH"></div>
+  <div class="barT" id="barT"></div>
+</div>
+
+<p>Heads: <span id="h">0</span> | Tails: <span id="t">0</span></p>
+
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="right">
+
+<h2>📜 Game Rules</h2>
+<p>✔ Win if Heads ≥ 5</p>
+<p>✔ Lose if Tails ≥ 5</p>
+<p>✔ Game stops after result</p>
+
+<h2>⚛ Qiskit Code</h2>
+
+<pre>
+from qiskit import QuantumCircuit, Aer, execute
+
+qc = QuantumCircuit(1,1)
+qc.h(0)
+qc.measure(0,0)
+
+simulator = Aer.get_backend('qasm_simulator')
+job = execute(qc, simulator, shots=1)
+result = job.result()
+counts = result.get_counts()
+
+print(counts)
+</pre>
+
+</div>
+
+</div>
+
+<!-- END SCREEN -->
 <div id="overlay">
   <div class="box">
-    <h1 id="final"></h1>
+    <h1 id="finalText"></h1>
     <button onclick="reset()">PLAY AGAIN</button>
   </div>
 </div>
 
 <script src="game.js"></script>
+
 </body>
 </html>
