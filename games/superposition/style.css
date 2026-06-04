@@ -135,3 +135,20 @@ small {
   padding: 30px;
   text-align: center;
 }
+.resultBox {
+  border: 2px solid #00f7ff;
+  padding: 30px;
+  background: rgba(0,0,0,0.9);
+  text-align: center;
+  box-shadow: 0 0 20px #00f7ff55;
+}
+
+#winnerTitle {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+#statsBox p {
+  margin: 5px;
+  font-size: 16px;
+}
