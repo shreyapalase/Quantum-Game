@@ -89,19 +89,38 @@ qc.measure(0,0)
 
 <!-- WIN SCREEN -->
 <div id="overlay">
-  <div class="resultBox">
 
-    <h1 id="winnerTitle">WINNER</h1>
+  <div class="endCard">
 
-    <div id="statsBox">
-      <p id="finalHeads"></p>
-      <p id="finalTails"></p>
-      <p id="finalProb"></p>
+    <div class="winnerBadge" id="winnerBadge">WINNER</div>
+
+    <h1 id="winnerTitle">RESULT</h1>
+
+    <div class="statsGrid">
+
+      <div class="statBox">
+        <h3>HEADS</h3>
+        <p id="finalHeads">0</p>
+      </div>
+
+      <div class="statBox">
+        <h3>TAILS</h3>
+        <p id="finalTails">0</p>
+      </div>
+
+      <div class="statBox">
+        <h3>PROBABILITY</h3>
+        <p id="finalProb">0%</p>
+      </div>
+
     </div>
 
-    <button onclick="reset()">PLAY AGAIN</button>
+    <button onclick="reset()" class="restartBtn">
+      RESTART SIMULATION
+    </button>
 
   </div>
+
 </div>
 <script src="game.js"></script>
 </body>
