@@ -1,5 +1,7 @@
 let heads = 0;
 let tails = 0;
+let total = 0;
+let maxToss = 10;
 let gameOver = false;
 
 function toss() {
@@ -8,7 +10,6 @@ function toss() {
 
   let coin = document.getElementById("coin");
 
-  // restart animation EVERY TIME
   coin.classList.remove("flip");
   void coin.offsetWidth;
   coin.classList.add("flip");
@@ -22,52 +23,47 @@ function toss() {
     if (result === "H") heads++;
     else tails++;
 
+    total++;
+
+    document.getElementById("left").innerText = maxToss - total;
+
     updateUI();
-    checkGame();
+    checkEnd();
 
   }, 200);
 }
 
-/* UI */
+/* UPDATE */
 function updateUI() {
 
   document.getElementById("h").innerText = heads;
   document.getElementById("t").innerText = tails;
 
-  let total = heads + tails;
+  let hProb = heads / total || 0;
+  let tProb = tails / total || 0;
 
-  document.getElementById("barH").style.height =
-    (heads / total) * 120 + "px";
-
-  document.getElementById("barT").style.height =
-    (tails / total) * 120 + "px";
+  document.getElementById("barH").style.height = (hProb * 120) + "px";
+  document.getElementById("barT").style.height = (tProb * 120) + "px";
 }
 
-/* WIN / LOSS */
-function checkGame() {
+/* END GAME */
+function checkEnd() {
 
-  if (gameOver) return;
+  if (total >= maxToss) {
 
-  if (heads >= 5) {
     gameOver = true;
-    endGame("🏆 YOU WIN — HEADS ≥ 5");
-    return;
+
+    let hProb = heads / total;
+    let tProb = tails / total;
+
+    let winner =
+      hProb > tProb ? "🏆 HEADS WINS (HIGHER PROBABILITY)"
+      : tProb > hProb ? "🏆 TAILS WINS (HIGHER PROBABILITY)"
+      : "🤝 DRAW — PERFECT BALANCE";
+
+    document.getElementById("finalText").innerText = winner;
+    document.getElementById("overlay").style.display = "flex";
   }
-
-  if (tails >= 5) {
-    gameOver = true;
-    endGame("💀 YOU LOSE — TAILS ≥ 5");
-    return;
-  }
-}
-
-/* END */
-function endGame(text) {
-
-  gameOver = true;
-
-  document.getElementById("overlay").style.display = "flex";
-  document.getElementById("finalText").innerText = text;
 }
 
 /* RESET */
@@ -75,10 +71,11 @@ function reset() {
 
   heads = 0;
   tails = 0;
+  total = 0;
   gameOver = false;
 
   document.getElementById("overlay").style.display = "none";
-  document.getElementById("coin").innerText = "H";
+  document.getElementById("left").innerText = maxToss;
 
   updateUI();
 }
