@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Coin Toss Quantum Lab</title>
@@ -10,7 +10,7 @@
 
 <div class="container">
 
-<!-- LEFT PANEL -->
+<!-- LEFT SIDE -->
 <div class="left">
 
 <h1>🪙 Quantum Coin Lab</h1>
@@ -22,7 +22,6 @@
 
 <h2 id="result"></h2>
 
-<!-- PROBABILITY -->
 <h3>Probability Histogram</h3>
 
 <div class="hist">
@@ -32,18 +31,7 @@
 
 <p>Heads: <span id="h">0</span> | Tails: <span id="t">0</span></p>
 
-</div>
-
-<!-- RIGHT PANEL -->
-<div class="right">
-
-<h2>📜 Game Rules</h2>
-<p>✔ Win if Heads ≥ 5</p>
-<p>✔ Lose if Tails ≥ 5</p>
-<p>✔ Game stops after result</p>
-
-<h2>⚛ Qiskit Code</h2>
-
+<h2>⚛ Qiskit Simulation</h2>
 <pre>
 from qiskit import QuantumCircuit, Aer, execute
 
@@ -51,13 +39,23 @@ qc = QuantumCircuit(1,1)
 qc.h(0)
 qc.measure(0,0)
 
-simulator = Aer.get_backend('qasm_simulator')
-job = execute(qc, simulator, shots=1)
+backend = Aer.get_backend('qasm_simulator')
+job = execute(qc, backend, shots=1)
 result = job.result()
-counts = result.get_counts()
 
-print(counts)
+print(result.get_counts())
 </pre>
+
+</div>
+
+<!-- RIGHT SIDE -->
+<div class="right">
+
+<h2>📜 Game Rules</h2>
+<p>✔ Win if Heads ≥ 5</p>
+<p>✔ Lose if Tails ≥ 5</p>
+<p>✔ Game stops automatically</p>
+<p>✔ Reset to play again</p>
 
 </div>
 
@@ -72,6 +70,5 @@ print(counts)
 </div>
 
 <script src="game.js"></script>
-
 </body>
 </html>
