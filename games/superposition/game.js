@@ -8,7 +8,7 @@ function toss() {
 
   let coin = document.getElementById("coin");
 
-  // ALWAYS retrigger animation
+  // restart animation every click
   coin.classList.remove("flip");
   void coin.offsetWidth;
   coin.classList.add("flip");
@@ -43,19 +43,25 @@ function updateUI() {
     (tails / total) * 120 + "px";
 }
 
-/* WIN / LOSE LOGIC */
+/* WIN / LOSE LOGIC (FIXED) */
 function checkGame() {
 
+  if (gameOver) return;
+
   if (heads >= 5) {
-    endGame("YOU WIN 🏆 HEADS MASTER");
+    gameOver = true;
+    endGame("🏆 YOU WIN — HEADS MASTER");
+    return;
   }
 
   if (tails >= 5) {
-    endGame("YOU LOSE 💀 TOO MANY TAILS");
+    gameOver = true;
+    endGame("💀 YOU LOSE — TAIL OVERFLOW");
+    return;
   }
 }
 
-/* END GAME */
+/* END SCREEN */
 function endGame(text) {
 
   gameOver = true;
@@ -66,7 +72,7 @@ function endGame(text) {
   document.getElementById("tossBtn").disabled = true;
 }
 
-/* RESET */
+/* RESET GAME */
 function reset() {
 
   heads = 0;
@@ -79,5 +85,3 @@ function reset() {
 
   updateUI();
 }
-
-updateUI();
