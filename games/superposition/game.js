@@ -8,7 +8,7 @@ function toss() {
 
   let coin = document.getElementById("coin");
 
-  // restart animation every click
+  // always restart animation
   coin.classList.remove("flip");
   void coin.offsetWidth;
   coin.classList.add("flip");
@@ -23,12 +23,12 @@ function toss() {
     else tails++;
 
     updateUI();
-    checkGame();
+    checkWinLoss(); // 🔥 ALWAYS CALLED AFTER UPDATE
 
   }, 200);
 }
 
-/* UPDATE UI */
+/* UI UPDATE */
 function updateUI() {
 
   document.getElementById("h").innerText = heads;
@@ -43,20 +43,20 @@ function updateUI() {
     (tails / total) * 120 + "px";
 }
 
-/* WIN / LOSE LOGIC (FIXED) */
-function checkGame() {
+/* 🔥 GUARANTEED WIN/LOSS CHECK */
+function checkWinLoss() {
 
   if (gameOver) return;
 
   if (heads >= 5) {
     gameOver = true;
-    endGame("🏆 YOU WIN — HEADS MASTER");
+    endGame("🏆 YOU WIN — HEADS REACHED 5");
     return;
   }
 
   if (tails >= 5) {
     gameOver = true;
-    endGame("💀 YOU LOSE — TAIL OVERFLOW");
+    endGame("💀 YOU LOSE — TAILS REACHED 5");
     return;
   }
 }
@@ -68,11 +68,9 @@ function endGame(text) {
 
   document.getElementById("overlay").style.display = "flex";
   document.getElementById("finalText").innerText = text;
-
-  document.getElementById("tossBtn").disabled = true;
 }
 
-/* RESET GAME */
+/* RESET */
 function reset() {
 
   heads = 0;
@@ -80,8 +78,9 @@ function reset() {
   gameOver = false;
 
   document.getElementById("overlay").style.display = "none";
-  document.getElementById("tossBtn").disabled = false;
   document.getElementById("coin").innerText = "H";
 
   updateUI();
 }
+
+updateUI();
