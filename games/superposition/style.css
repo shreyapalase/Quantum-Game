@@ -243,3 +243,27 @@ small {
   box-shadow: 0 0 20px #00f7ff;
   transform: scale(1.03);
 }
+button {
+  padding: 10px;
+  margin: 5px;
+  width: 60%;
+  background: #00f7ff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.25s ease;
+}
+
+/* 🌟 GLOW HOVER EFFECT */
+button:hover {
+  box-shadow: 0 0 15px #00f7ff,
+              0 0 30px #00f7ff66,
+              0 0 45px #00f7ff33;
+  transform: scale(1.05);
+}
+
+/* optional: click feel */
+button:active {
+  transform: scale(0.98);
+  box-shadow: 0 0 8px #00f7ff;
+}
