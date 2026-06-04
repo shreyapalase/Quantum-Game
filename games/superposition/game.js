@@ -8,7 +8,7 @@ function toss() {
 
   let coin = document.getElementById("coin");
 
-  // always restart animation
+  // restart animation EVERY TIME
   coin.classList.remove("flip");
   void coin.offsetWidth;
   coin.classList.add("flip");
@@ -23,12 +23,12 @@ function toss() {
     else tails++;
 
     updateUI();
-    checkWinLoss(); // 🔥 ALWAYS CALLED AFTER UPDATE
+    checkGame();
 
   }, 200);
 }
 
-/* UI UPDATE */
+/* UI */
 function updateUI() {
 
   document.getElementById("h").innerText = heads;
@@ -43,25 +43,25 @@ function updateUI() {
     (tails / total) * 120 + "px";
 }
 
-/* 🔥 GUARANTEED WIN/LOSS CHECK */
-function checkWinLoss() {
+/* WIN / LOSS */
+function checkGame() {
 
   if (gameOver) return;
 
   if (heads >= 5) {
     gameOver = true;
-    endGame("🏆 YOU WIN — HEADS REACHED 5");
+    endGame("🏆 YOU WIN — HEADS ≥ 5");
     return;
   }
 
   if (tails >= 5) {
     gameOver = true;
-    endGame("💀 YOU LOSE — TAILS REACHED 5");
+    endGame("💀 YOU LOSE — TAILS ≥ 5");
     return;
   }
 }
 
-/* END SCREEN */
+/* END */
 function endGame(text) {
 
   gameOver = true;
