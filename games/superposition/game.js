@@ -1,7 +1,7 @@
 let heads = 0;
 let tails = 0;
 let total = 0;
-let maxToss = 10;
+let max = 10;
 let gameOver = false;
 
 function toss() {
@@ -25,15 +25,15 @@ function toss() {
 
     total++;
 
-    document.getElementById("left").innerText = maxToss - total;
+    document.getElementById("left").innerText = max - total;
 
     updateUI();
-    checkEnd();
+    checkGame();
 
   }, 200);
 }
 
-/* UPDATE */
+/* UI */
 function updateUI() {
 
   document.getElementById("h").innerText = heads;
@@ -46,22 +46,29 @@ function updateUI() {
   document.getElementById("barT").style.height = (tProb * 120) + "px";
 }
 
-/* END GAME */
-function checkEnd() {
+/* WIN / LOSE FIXED */
+function checkGame() {
 
-  if (total >= maxToss) {
+  if (total >= max) {
 
     gameOver = true;
 
     let hProb = heads / total;
     let tProb = tails / total;
 
-    let winner =
-      hProb > tProb ? "🏆 HEADS WINS (HIGHER PROBABILITY)"
-      : tProb > hProb ? "🏆 TAILS WINS (HIGHER PROBABILITY)"
-      : "🤝 DRAW — PERFECT BALANCE";
+    let msg = "";
 
-    document.getElementById("finalText").innerText = winner;
+    if (hProb > tProb) {
+      msg = "🏆 HEADS WINS — HIGHER PROBABILITY";
+    } 
+    else if (tProb > hProb) {
+      msg = "🏆 TAILS WINS — HIGHER PROBABILITY";
+    } 
+    else {
+      msg = "🤝 DRAW — PERFECT BALANCE";
+    }
+
+    document.getElementById("finalText").innerText = msg;
     document.getElementById("overlay").style.display = "flex";
   }
 }
@@ -75,7 +82,7 @@ function reset() {
   gameOver = false;
 
   document.getElementById("overlay").style.display = "none";
-  document.getElementById("left").innerText = maxToss;
+  document.getElementById("left").innerText = max;
 
   updateUI();
 }
