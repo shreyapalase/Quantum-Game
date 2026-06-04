@@ -2,29 +2,38 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Quantum Coin Simulator Pro</title>
+<title>Quantum Superposition Simulator</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1 class="title">⚛ Quantum Probability Lab</h1>
+<h1 class="title">⚛ Quantum Superposition Coin Simulator</h1>
 
 <div class="grid">
 
-<!-- LEFT: RULES -->
+<!-- 🟦 COLUMN 1 -->
 <div class="panel">
-  <h2>📜 Rules</h2>
-  <p>✔ 10 total tosses per session</p>
+
+  <h2>📘 Quantum Definition</h2>
+  <p>
+  Superposition is a quantum property where a system exists in multiple states
+  (|0⟩ and |1⟩) until measurement collapses it into one outcome.
+  </p>
+
+  <div class="divider"></div>
+
+  <h2>📜 Game Rules</h2>
+  <p>✔ 10 coin tosses per session</p>
+  <p>✔ Heads vs Tails probability decides winner</p>
   <p>✔ Game auto ends after 10 tosses</p>
-  <p>✔ Higher probability wins</p>
-  <p>✔ Heads vs Tails = quantum outcome dominance</p>
+
 </div>
 
-<!-- CENTER: SIMULATION -->
+<!-- ⚛ COLUMN 2 -->
 <div class="panel center">
 
-  <h2>🎮 Simulation Core</h2>
+  <h2>🎮 Quantum Simulation</h2>
 
   <div class="coin" id="coin">H</div>
 
@@ -33,7 +42,7 @@
 
   <h3 id="result"></h3>
 
-  <h3>📊 Probability</h3>
+  <h2>📊 Probability Analyzer</h2>
 
   <div class="hist">
     <div class="barH" id="barH"></div>
@@ -41,46 +50,44 @@
   </div>
 
   <p>Heads: <span id="h">0</span> | Tails: <span id="t">0</span></p>
-  <p>Tosses Left: <span id="left">10</span></p>
+  <p>Toss Left: <span id="left">10</span></p>
 
 </div>
 
-<!-- RIGHT: QUANTUM CIRCUIT -->
+<!-- 📟 COLUMN 3 -->
 <div class="panel">
 
-  <h2>⚛ Quantum Circuit</h2>
+  <h2>⚛ Qiskit Circuit</h2>
 
   <div class="circuit">
 
     <div class="wire"></div>
 
-    <div class="gate">
-      H
-      <small>Hadamard</small>
-    </div>
+    <div class="box gate">H<br><small>Hadamard</small></div>
 
     <div class="wire"></div>
 
-    <div class="measure">
-      M
-      <small>Measure</small>
-    </div>
+    <div class="box measure">M<br><small>Measurement</small></div>
 
   </div>
 
-  <pre>
+  <div class="divider"></div>
+
+  <h3>Qiskit Code</h3>
+
+<pre>
 from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(1,1)
 qc.h(0)
 qc.measure(0,0)
-  </pre>
+</pre>
 
 </div>
 
 </div>
 
-<!-- END SCREEN -->
+<!-- WIN SCREEN -->
 <div id="overlay">
   <div class="box">
     <h1 id="finalText"></h1>
