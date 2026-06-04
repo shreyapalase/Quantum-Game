@@ -1,12 +1,14 @@
 let heads = 0;
 let tails = 0;
-let streak = 0;
+let gameOver = false;
 
 function toss() {
 
+  if (gameOver) return;
+
   let coin = document.getElementById("coin");
 
-  // animation
+  // ALWAYS retrigger animation
   coin.classList.remove("flip");
   void coin.offsetWidth;
   coin.classList.add("flip");
@@ -17,44 +19,65 @@ function toss() {
 
     coin.innerText = result;
 
-    if (result === "H") {
-      heads++;
-      streak++;
-    } else {
-      tails++;
-      streak = 0;
-    }
+    if (result === "H") heads++;
+    else tails++;
 
     updateUI();
-    checkWin();
+    checkGame();
 
-  }, 300);
+  }, 200);
 }
 
+/* UPDATE UI */
 function updateUI() {
+
   document.getElementById("h").innerText = heads;
   document.getElementById("t").innerText = tails;
-  document.getElementById("streak").innerText = streak;
+
+  let total = heads + tails;
+
+  document.getElementById("barH").style.height =
+    (heads / total) * 120 + "px";
+
+  document.getElementById("barT").style.height =
+    (tails / total) * 120 + "px";
 }
 
-function checkWin() {
-  if (streak >= 3) {
-    endGame("YOU WIN — 3 HEADS IN A ROW");
+/* WIN / LOSE LOGIC */
+function checkGame() {
+
+  if (heads >= 5) {
+    endGame("YOU WIN 🏆 HEADS MASTER");
+  }
+
+  if (tails >= 5) {
+    endGame("YOU LOSE 💀 TOO MANY TAILS");
   }
 }
 
+/* END GAME */
 function endGame(text) {
+
+  gameOver = true;
+
   document.getElementById("overlay").style.display = "flex";
-  document.getElementById("final").innerText = text;
+  document.getElementById("finalText").innerText = text;
+
+  document.getElementById("tossBtn").disabled = true;
 }
 
+/* RESET */
 function reset() {
+
   heads = 0;
   tails = 0;
-  streak = 0;
+  gameOver = false;
 
   document.getElementById("overlay").style.display = "none";
+  document.getElementById("tossBtn").disabled = false;
   document.getElementById("coin").innerText = "H";
 
   updateUI();
 }
+
+updateUI();
