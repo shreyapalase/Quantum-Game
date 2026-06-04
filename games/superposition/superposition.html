@@ -89,12 +89,20 @@ qc.measure(0,0)
 
 <!-- WIN SCREEN -->
 <div id="overlay">
-  <div class="box">
-    <h1 id="finalText"></h1>
+  <div class="resultBox">
+
+    <h1 id="winnerTitle">WINNER</h1>
+
+    <div id="statsBox">
+      <p id="finalHeads"></p>
+      <p id="finalTails"></p>
+      <p id="finalProb"></p>
+    </div>
+
     <button onclick="reset()">PLAY AGAIN</button>
+
   </div>
 </div>
-
 <script src="game.js"></script>
 </body>
 </html>
