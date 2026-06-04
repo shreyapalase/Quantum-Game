@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quantum Superposition Lab XR</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="particles"></div>
+
+<div class="hud">
+  <h1>⚛ Quantum Superposition Lab XR</h1>
+  <p id="mission">MISSION: Keep |1⟩ probability ABOVE 70%</p>
+</div>
+
+<div class="container">
+
+  <!-- LEFT -->
+  <div class="left">
+
+    <div class="sphere" id="sphere">
+      <div class="glow"></div>
+      <div class="pointer" id="ptr"></div>
+    </div>
+
+    <div class="bar">
+      <div id="p0" class="p0"></div>
+      <div id="p1" class="p1"></div>
+    </div>
+
+    <p class="stats">
+      |0⟩: <span id="prob0">50</span>% |
+      |1⟩: <span id="prob1">50</span>%
+    </p>
+
+    <button onclick="measure()">MEASURE STATE</button>
+    <button onclick="resetGame()">RESET</button>
+
+    <h2 id="result"></h2>
+
+    <h3>Score: <span id="score">0</span></h3>
+    <h3 id="grade">INIT</h3>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+
+    <h3>Quantum Rules</h3>
+    <p>Drag → manipulate wavefunction</p>
+    <p>Measurement collapses state instantly</p>
+
+    <h3>Win Condition</h3>
+    <p>Score ≥ 5 AND |1⟩ ≥ 70%</p>
+
+    <h3>Lose Condition</h3>
+    <p>Score ≤ -3 OR unstable collapse streak</p>
+
+    <div id="log"></div>
+
+  </div>
+
+</div>
+
+<!-- END SCREEN -->
+<div id="overlay">
+  <div class="panel">
+    <h1 id="finalText"></h1>
+    <button onclick="resetGame()">RESTART REALITY</button>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
