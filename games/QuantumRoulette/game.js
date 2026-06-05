@@ -2,22 +2,28 @@ let probability = 100;
 let spins = 0;
 let history = [];
 
-const canvas = document.getElementById("histCanvas");
-const ctx = canvas.getContext("2d");
-
-canvas.width = 300;
-canvas.height = 180;
+const wheel = document.getElementById("wheel");
+const ball = document.getElementById("ball");
 
 function spin() {
 
   spins++;
 
-  const result = Math.floor(Math.random() * 12);
+  // 🎰 realistic roulette physics simulation
+  const result = Math.floor(Math.random() * 36);
 
-  if (result === 7 || result === 11) {
-    probability += 5;
+  // add spin animation
+  wheel.classList.remove("spinActive");
+  void wheel.offsetWidth;
+  wheel.classList.add("spinActive");
+
+  // 🧠 quantum collapse rule
+  if (result === 7 || result === 11 || result === 17) {
+    probability += 6;
+    quantumEffect(true);
   } else {
     probability -= 8;
+    quantumEffect(false);
   }
 
   history.push(probability);
@@ -26,13 +32,55 @@ function spin() {
   document.getElementById("prob").innerText = probability;
   document.getElementById("spins").innerText = spins;
 
-  draw();
+  animateBall();
 
   if (probability <= 0) end(false);
   if (spins >= 10 && probability > 60) end(true);
+
+  drawHist();
 }
 
-function draw() {
+/* 🎯 BALL PHYSICS */
+function animateBall() {
+
+  let angle = 0;
+  let speed = 20;
+
+  let interval = setInterval(() => {
+
+    angle += speed;
+    speed *= 0.96;
+
+    let x = 110 + Math.cos(angle * Math.PI / 180) * 60;
+    let y = 110 + Math.sin(angle * Math.PI / 180) * 60;
+
+    ball.style.left = x + "px";
+    ball.style.top = y + "px";
+
+    if (speed < 1) clearInterval(interval);
+
+  }, 16);
+}
+
+/* ⚛ quantum glow effect */
+function quantumEffect(win) {
+  if (win) {
+    wheel.style.boxShadow = "0 0 50px #0f0, 0 0 100px #0ff";
+  } else {
+    wheel.style.boxShadow = "0 0 50px #f00";
+  }
+
+  wheel.classList.add("quantum-flash");
+
+  setTimeout(() => {
+    wheel.classList.remove("quantum-flash");
+    wheel.style.boxShadow = "0 0 30px #0ff";
+  }, 500);
+}
+
+/* 📊 histogram */
+function drawHist() {
+  const ctx = document.getElementById("histCanvas").getContext("2d");
   ctx.clearRect(0,0,300,180);
 
   history.forEach((p,i) => {
@@ -41,8 +89,9 @@ function draw() {
   });
 }
 
+/* 🏁 END */
 function end(win) {
   document.getElementById("result").style.display = "flex";
   document.getElementById("resultText").innerText =
-    win ? "QUANTUM WIN" : "DECOHERENCE LOSS";
+    win ? "QUANTUM CASINO WIN" : "DECOHERENCE LOSS";
 }
