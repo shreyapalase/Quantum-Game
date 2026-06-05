@@ -3,57 +3,60 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Quantum Maze</title>
+<title>Quantum Maze AAA</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="bg"></div>
+<div class="glow-orbs"></div>
 
 <div class="ui">
 
+  <!-- LEFT PANEL -->
   <div class="panel left">
     <h1>⚛ Quantum Maze</h1>
 
-    <h2>Rules</h2>
-    <ul>
-      <li>Reach the glowing exit portal.</li>
-      <li>Each move shifts quantum probability paths.</li>
-      <li>Some paths collapse (blocked states).</li>
-      <li>Wrong collapse = probability loss.</li>
-      <li>Reach exit before probability hits 0.</li>
-    </ul>
+    <h2>Mission Rules</h2>
+    <div class="box">
+      Reach the exit portal using quantum navigation.
+      Walls are probabilistic barriers — not absolute.
+      Each move collapses quantum state.
+      If probability reaches zero → decoherence failure.
+    </div>
+
+    <h2>Quantum Logic</h2>
+    <div class="box small">
+      • 70% wall collision failure  
+      • 30% quantum tunneling success  
+      • Movement reduces probability  
+      • Exit = full collapse victory  
+    </div>
 
     <h2>Qiskit Reference</h2>
-    <pre>
-from qiskit import QuantumCircuit, Aer, execute
+    <div class="box code">
+from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(2, 2)
 qc.h(0)
-qc.cx(0, 1)
-qc.measure([0,1],[0,1])
-
-backend = Aer.get_backend('qasm_simulator')
-result = execute(qc, backend, shots=1024).result()
-counts = result.get_counts()
-print(counts)
-    </pre>
-
-    <p class="note">This game simulates quantum probability collapse visually.</p>
+qc.cx(0,1)
+qc.measure_all()
+    </div>
   </div>
 
-  <div class="game-wrap">
+  <!-- CENTER GAME -->
+  <div class="game">
 
     <div id="hud">
-      <div>Probability: <span id="prob">100</span>%</div>
-      <div>Steps: <span id="steps">0</span></div>
+      <span>⚡ Probability: <b id="prob">100</b>%</span>
+      <span>🧭 Steps: <b id="steps">0</b></span>
     </div>
 
     <canvas id="maze"></canvas>
 
-    <div id="resultScreen">
-      <div class="resultBox">
+    <div id="result">
+      <div class="box">
         <h1 id="resultText">RESULT</h1>
         <button onclick="location.reload()">RESTART</button>
       </div>
@@ -61,18 +64,26 @@ print(counts)
 
   </div>
 
+  <!-- RIGHT PANEL -->
   <div class="panel right">
-    <h2>Quantum Probability Histogram</h2>
+
+    <h2>Probability Field</h2>
     <canvas id="hist"></canvas>
 
     <h2>Controls</h2>
-    <p>Arrow Keys / WASD</p>
+    <div class="box small">
+      Move: Arrow Keys / WASD  
+      Goal: Reach green portal  
+      Avoid collapse → probability loss
+    </div>
 
+    <h2>Legend</h2>
     <div class="legend">
       <div><span class="p"></span> Player</div>
-      <div><span class="e"></span> Exit Portal</div>
-      <div><span class="w"></span> Walls</div>
+      <div><span class="e"></span> Exit</div>
+      <div><span class="w"></span> Wall</div>
     </div>
+
   </div>
 
 </div>
