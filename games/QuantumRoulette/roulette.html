@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quantum Roulette V4 GOD MODE</title>
+<title>Quantum Roulette V5 MULTIVERSE</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -16,35 +16,41 @@
   <!-- LEFT PANEL -->
   <div class="panel float">
 
-    <h1 class="title">⚛ QUANTUM ROULETTE V4</h1>
+    <h1 class="title">⚛ QUANTUM ROULETTE V5</h1>
 
-    <h2>GOD MODE SYSTEM</h2>
+    <h2>🎮 GAME DESCRIPTION</h2>
     <div class="box">
-      AI-driven quantum casino simulation using entropy-based randomness,
-      probabilistic collapse, and adaptive difficulty scaling.
+      Quantum roulette is a hybrid AI + quantum-inspired simulation where
+      every spin is a probabilistic wavefunction collapse.
     </div>
 
-    <h2>RULES</h2>
+    <h2>📜 HOW TO PLAY</h2>
     <div class="box small">
-      • Spin wheel to collapse quantum state  
-      • High entropy = unstable outcomes  
-      • 10 spins → final judgment  
-      • Stable probability → WIN  
+      • Press SPIN to collapse quantum state  
+      • 10 spins = final evaluation  
+      • High stability → WIN  
+      • Low probability → LOSS  
     </div>
 
-    <h2>QISKIT MODEL</h2>
+    <h2>⚛ QISKIT MODEL</h2>
     <div class="box code">
 from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(1,1)
 qc.h(0)
 qc.measure(0,0)
-# Hadamard superposition collapse
+
+# Hadamard superposition + measurement collapse
+    </div>
+
+    <h2>🧠 ALGORITHM</h2>
+    <div class="box small">
+      Entropy-based decay + Monte Carlo randomness + AI adaptive difficulty scaling
     </div>
 
   </div>
 
-  <!-- CENTER -->
+  <!-- CENTER GAME -->
   <div class="game">
 
     <div id="hud">
@@ -53,10 +59,8 @@ qc.measure(0,0)
     </div>
 
     <div class="stage">
-
       <div id="wheel"></div>
       <div id="pointer"></div>
-
     </div>
 
     <button onclick="spin()">SPIN QUANTUM CORE</button>
@@ -65,24 +69,30 @@ qc.measure(0,0)
 
   </div>
 
-  <!-- RIGHT -->
+  <!-- RIGHT PANEL -->
   <div class="panel float">
 
-    <h2>AI QUANTUM FIELD</h2>
+    <h2>📊 PROBABILITY FIELD</h2>
     <div class="box small">
-      System adapts probability decay based on entropy history.
-      Higher instability → harder future outcomes.
+      Live quantum collapse probability evolution graph.
+    </div>
+
+    <h2>⚛ CIRCUIT DIAGRAM</h2>
+    <div class="box code">
+|0⟩ ── H ── M → 0/1
+        │
+   Superposition
     </div>
 
   </div>
 
 </div>
 
-<!-- POPUP -->
+<!-- WIN/LOSS RESULT -->
 <div id="popup">
   <div class="popupBox">
     <h1 id="resultText"></h1>
-    <button onclick="resetGame()">RESTART SIMULATION</button>
+    <button onclick="resetGame()">RESTART MULTIVERSE</button>
   </div>
 </div>
 
