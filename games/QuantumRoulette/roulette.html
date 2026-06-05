@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quantum Roulette Stable AAA</title>
+<title>Quantum Roulette AAA FIXED</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,30 +13,21 @@
 
 <div class="ui">
 
-  <!-- LEFT -->
-  <div class="panel">
+  <!-- LEFT PANEL -->
+  <div class="panel float">
+
     <h1 class="title">⚛ QUANTUM ROULETTE</h1>
 
-    <h2>Game Info</h2>
+    <h2>Game Rules</h2>
     <div class="box">
-      Quantum roulette simulates probabilistic wave collapse
-      using AI-adjusted randomness and quantum-inspired logic.
+      Spin quantum roulette and observe wavefunction collapse.
+      After 10 spins result is finalized.
     </div>
 
-    <h2>Rules</h2>
+    <h2>Win / Lose</h2>
     <div class="box small">
-      • Click PLAY to spin  
-      • 7 / 11 / 17 = WIN boost  
-      • 0 probability = LOSS  
-    </div>
-
-    <h2>Qiskit Model</h2>
-    <div class="box code">
-from qiskit import QuantumCircuit
-
-qc = QuantumCircuit(1,1)
-qc.h(0)
-qc.measure(0,0)
+      WIN → Probability > 60 after 10 spins  
+      LOSE → Probability hits 0 or below threshold  
     </div>
 
   </div>
@@ -45,14 +36,16 @@ qc.measure(0,0)
   <div class="game">
 
     <div id="hud">
-      ⚡ Prob: <b id="prob">100</b>% |
+      ⚡ Probability: <b id="prob">100</b>% |
       🎲 Spins: <b id="spins">0</b>
     </div>
 
-    <div id="wheel"></div>
+    <div class="roulette">
+      <div id="wheel"></div>
+    </div>
 
     <div class="buttons">
-      <button class="play" onclick="spin()">PLAY</button>
+      <button class="play" onclick="spin()">SPIN</button>
       <button class="reset" onclick="resetGame()">RESET</button>
     </div>
 
@@ -61,9 +54,13 @@ qc.measure(0,0)
   </div>
 
   <!-- RIGHT -->
-  <div class="panel">
+  <div class="panel float">
+
     <h2>Quantum Field</h2>
-    <canvas id="histCanvas"></canvas>
+    <div class="box small">
+      AI-driven probability decay simulation with quantum randomness.
+    </div>
+
   </div>
 
 </div>
