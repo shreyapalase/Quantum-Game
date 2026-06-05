@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quantum Roulette V5 MULTIVERSE</title>
+<title>Quantum Roulette FIX</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,89 +13,38 @@
 
 <div class="ui">
 
-  <!-- LEFT PANEL -->
-  <div class="panel float">
-
-    <h1 class="title">⚛ QUANTUM ROULETTE V5</h1>
-
-    <h2>🎮 GAME DESCRIPTION</h2>
-    <div class="box">
-      Quantum roulette is a hybrid AI + quantum-inspired simulation where
-      every spin is a probabilistic wavefunction collapse.
-    </div>
-
-    <h2>📜 HOW TO PLAY</h2>
-    <div class="box small">
-      • Press SPIN to collapse quantum state  
-      • 10 spins = final evaluation  
-      • High stability → WIN  
-      • Low probability → LOSS  
-    </div>
-
-    <h2>⚛ QISKIT MODEL</h2>
-    <div class="box code">
-from qiskit import QuantumCircuit
-
-qc = QuantumCircuit(1,1)
-qc.h(0)
-qc.measure(0,0)
-
-# Hadamard superposition + measurement collapse
-    </div>
-
-    <h2>🧠 ALGORITHM</h2>
-    <div class="box small">
-      Entropy-based decay + Monte Carlo randomness + AI adaptive difficulty scaling
-    </div>
-
+  <div class="panel">
+    <h1 class="title">QUANTUM ROULETTE</h1>
+    <div class="box">Press spin to start simulation</div>
   </div>
 
-  <!-- CENTER GAME -->
   <div class="game">
 
     <div id="hud">
-      ⚡ Probability: <b id="prob">100</b>% |
-      🎲 Spins: <b id="spins">0</b>
+      Prob: <span id="prob">100</span> |
+      Spins: <span id="spins">0</span>
     </div>
 
-    <div class="stage">
-      <div id="wheel"></div>
-      <div id="pointer"></div>
-    </div>
+    <div id="wheel"></div>
 
-    <button onclick="spin()">SPIN QUANTUM CORE</button>
+    <!-- IMPORTANT: button directly calls safe function -->
+    <button onclick="spin()">SPIN</button>
 
     <canvas id="hist"></canvas>
 
   </div>
 
-  <!-- RIGHT PANEL -->
-  <div class="panel float">
-
-    <h2>📊 PROBABILITY FIELD</h2>
-    <div class="box small">
-      Live quantum collapse probability evolution graph.
-    </div>
-
-    <h2>⚛ CIRCUIT DIAGRAM</h2>
-    <div class="box code">
-|0⟩ ── H ── M → 0/1
-        │
-   Superposition
-    </div>
-
-  </div>
-
 </div>
 
-<!-- WIN/LOSS RESULT -->
 <div id="popup">
   <div class="popupBox">
     <h1 id="resultText"></h1>
-    <button onclick="resetGame()">RESTART MULTIVERSE</button>
+    <button onclick="resetGame()">RESTART</button>
   </div>
 </div>
 
-<script src="game.js"></script>
+<!-- 🔥 FIX: defer ensures JS loads AFTER HTML -->
+<script src="game.js" defer></script>
+
 </body>
 </html>
