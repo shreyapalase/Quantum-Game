@@ -1,0 +1,158 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Orbitron,sans-serif;
+}
+
+body{
+background:#020617;
+overflow:hidden;
+color:white;
+height:100vh;
+}
+
+#particles{
+position:fixed;
+width:100%;
+height:100%;
+z-index:-1;
+}
+
+.quantumParticle{
+position:absolute;
+width:8px;
+height:8px;
+border-radius:50%;
+background:cyan;
+box-shadow:
+0 0 20px cyan,
+0 0 40px cyan,
+0 0 60px cyan;
+animation:float 8s infinite linear;
+}
+
+@keyframes float{
+from{
+transform:translateY(100vh) scale(0);
+}
+to{
+transform:translateY(-100px) scale(2);
+}
+}
+
+.hud{
+padding:20px;
+backdrop-filter:blur(20px);
+}
+
+h1{
+text-align:center;
+font-size:3rem;
+margin-bottom:20px;
+
+background:linear-gradient(
+90deg,
+cyan,
+magenta,
+yellow,
+cyan
+);
+
+background-size:400%;
+-webkit-background-clip:text;
+color:transparent;
+
+animation:rainbow 6s linear infinite;
+}
+
+@keyframes rainbow{
+0%{background-position:0%;}
+100%{background-position:400%;}
+}
+
+.arena{
+display:flex;
+justify-content:space-around;
+align-items:center;
+margin-top:20px;
+}
+
+.playerPanel{
+width:300px;
+padding:20px;
+background:rgba(255,255,255,0.08);
+border:1px solid cyan;
+border-radius:20px;
+
+box-shadow:
+0 0 40px cyan;
+}
+
+.result{
+font-size:5rem;
+text-align:center;
+margin-top:20px;
+
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+
+0%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.2);
+}
+
+100%{
+transform:scale(1);
+}
+}
+
+.centerPanel{
+text-align:center;
+}
+
+button{
+padding:15px 30px;
+font-size:20px;
+cursor:pointer;
+
+background:linear-gradient(
+45deg,
+cyan,
+magenta
+);
+
+border:none;
+border-radius:20px;
+
+color:white;
+
+box-shadow:
+0 0 30px cyan;
+}
+
+#winnerBox{
+margin-top:20px;
+font-size:2rem;
+color:gold;
+}
+
+canvas{
+background:white;
+border-radius:20px;
+margin-top:10px;
+}
+
+.qiskit{
+margin-top:10px;
+padding:20px;
+background:black;
+color:#00ff88;
+border-radius:15px;
+overflow:auto;
+}
