@@ -1,133 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Quantum Maze Runner</title>
-
-<link rel="stylesheet" href="style.css">
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quantum Maze PRO MAX</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-<div id="bg"></div>
+  <div id="ui">
+    <h1>⚛ Quantum Maze PRO MAX</h1>
+    <p>Press <b>D</b> = Decoherence Storm</p>
+    <p>Click = pulse quantum field</p>
+  </div>
 
-<h1>⚛ Quantum Maze Runner</h1>
-
-<p class="sub">
-Navigate a maze that exists in quantum superposition
-</p>
-
-<!-- GUIDE -->
-
-<section class="panel">
-
-<h2>🎓 How To Play</h2>
-
-<ul>
-<li>The maze is not fixed — it exists in multiple states.</li>
-<li>You choose quantum operations to bias probability.</li>
-<li>Press “Run Quantum Step” to evolve system.</li>
-<li>Measurement collapses maze into one final reality.</li>
-<li>Reach exit node to win.</li>
-</ul>
-
-<h3>Controls</h3>
-
-<ul>
-<li>Z Gate → stabilizes current path</li>
-<li>X Gate → flips probability direction</li>
-<li>H Gate → creates superposition (multi-path)</li>
-</ul>
-
-</section>
-
-<!-- THEORY -->
-
-<section class="panel">
-
-<h2>🧠 Quantum Concept Used</h2>
-
-<p>
-This game simulates a <b>Quantum Random Walk</b> where a particle explores
-multiple maze paths simultaneously until measurement collapses it.
-</p>
-
-</section>
-
-<!-- CIRCUIT -->
-
-<section class="panel">
-
-<h2>💻 Quantum Circuit (Qiskit)</h2>
-
-<pre>
-
-from qiskit import QuantumCircuit
-
-qc = QuantumCircuit(3)
-
-qc.h([0,1,2])   # superposition paths
-
-qc.cx(0,1)
-
-qc.cx(1,2)
-
-qc.measure_all()
-
-</pre>
-
-</section>
-
-<!-- GAME AREA -->
-
-<section class="mazeBox">
-
-<div id="maze3D"></div>
-
-<div class="controls">
-
-<select id="gate">
-<option>H Gate</option>
-<option>X Gate</option>
-<option>Z Gate</option>
-</select>
-
-<button id="stepBtn">Run Quantum Step</button>
-
-<button id="measureBtn">MEASURE MAZE</button>
-
-</div>
-
-</section>
-
-<!-- STATS -->
-
-<section class="panel">
-
-<h2>📊 Probability Distribution</h2>
-
-<canvas id="chart"></canvas>
-
-</section>
-
-<!-- RESULT -->
-
-<section class="panel">
-
-<h2>🏁 Outcome</h2>
-
-<div id="resultBox">Awaiting Collapse...</div>
-
-<div id="winnerBox"></div>
-
-</section>
-
-<script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 
 </body>
 </html>
