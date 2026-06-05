@@ -2,23 +2,22 @@ let probability = 100;
 let spins = 0;
 let history = [];
 
-const hist = document.getElementById("hist");
-const hctx = hist.getContext("2d");
+const canvas = document.getElementById("histCanvas");
+const ctx = canvas.getContext("2d");
 
-hist.width = 300;
-hist.height = 180;
+canvas.width = 300;
+canvas.height = 180;
 
 function spin() {
 
   spins++;
 
-  // ⚛ quantum collapse simulation
-  let result = Math.floor(Math.random() * 12);
+  const result = Math.floor(Math.random() * 12);
 
   if (result === 7 || result === 11) {
-    probability += 5; // lucky collapse
+    probability += 5;
   } else {
-    probability -= 8; // decoherence loss
+    probability -= 8;
   }
 
   history.push(probability);
@@ -27,25 +26,23 @@ function spin() {
   document.getElementById("prob").innerText = probability;
   document.getElementById("spins").innerText = spins;
 
-  if (probability <= 0) return end(false);
-  if (spins >= 10 && probability > 60) return end(true);
+  draw();
 
-  drawHist();
+  if (probability <= 0) end(false);
+  if (spins >= 10 && probability > 60) end(true);
 }
 
-/* 📊 HISTOGRAM */
-function drawHist() {
-  hctx.clearRect(0,0,300,180);
+function draw() {
+  ctx.clearRect(0,0,300,180);
 
   history.forEach((p,i) => {
-    hctx.fillStyle = `hsl(${180+i*10},100%,50%)`;
-    hctx.fillRect(i*12, 180 - p*1.5, 8, p*1.5);
+    ctx.fillStyle = `hsl(${180+i*10},100%,50%)`;
+    ctx.fillRect(i*12, 180 - p*1.5, 8, p*1.5);
   });
 }
 
-/* 🏁 END SCREEN */
 function end(win) {
   document.getElementById("result").style.display = "flex";
   document.getElementById("resultText").innerText =
-    win ? "QUANTUM WIN: COLLAPSE SUCCESS" : "DECOHERENCE LOSS";
+    win ? "QUANTUM WIN" : "DECOHERENCE LOSS";
 }
