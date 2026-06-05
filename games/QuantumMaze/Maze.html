@@ -1,71 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quantum Maze PRO MAX</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Quantum Maze</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- UI PANEL -->
-<div id="ui">
+<div class="bg"></div>
 
-  <h1>⚛ Quantum Maze PRO MAX</h1>
+<div class="ui">
 
-  <div class="panel">
+  <div class="panel left">
+    <h1>⚛ Quantum Maze</h1>
 
-    <h2>📘 How to Play</h2>
-    <p>
-      Navigate the quantum maze. Nodes represent quantum states.
-      Find the <b>Target Node</b> before decoherence collapses the system.
-    </p>
-
-    <p><b>Controls:</b></p>
+    <h2>Rules</h2>
     <ul>
-      <li>Click → Quantum pulse boost</li>
-      <li>D → Toggle Decoherence Storm (Boss Mode)</li>
+      <li>Reach the glowing exit portal.</li>
+      <li>Each move shifts quantum probability paths.</li>
+      <li>Some paths collapse (blocked states).</li>
+      <li>Wrong collapse = probability loss.</li>
+      <li>Reach exit before probability hits 0.</li>
     </ul>
 
-  </div>
-
-  <div class="panel">
-    <h2>⚛ Algorithm Used</h2>
-    <p><b>Grover Search Simulation</b></p>
-    <p>Amplitude amplification visualized as glowing probability increase.</p>
-
+    <h2>Qiskit Reference</h2>
     <pre>
-Qiskit (Reference):
 from qiskit import QuantumCircuit, Aer, execute
 
-qc = QuantumCircuit(2)
-qc.h([0,1])
-qc.cz(0,1)
-qc.h([0,1])
+qc = QuantumCircuit(2, 2)
+qc.h(0)
+qc.cx(0, 1)
+qc.measure([0,1],[0,1])
 
-backend = Aer.get_backend('statevector_simulator')
-result = execute(qc, backend).result()
-print(result.get_statevector())
+backend = Aer.get_backend('qasm_simulator')
+result = execute(qc, backend, shots=1024).result()
+counts = result.get_counts()
+print(counts)
     </pre>
+
+    <p class="note">This game simulates quantum probability collapse visually.</p>
   </div>
 
-  <div class="panel">
-    <h2>📊 Probability Distribution</h2>
-    <canvas id="histogram"></canvas>
+  <div class="game-wrap">
+
+    <div id="hud">
+      <div>Probability: <span id="prob">100</span>%</div>
+      <div>Steps: <span id="steps">0</span></div>
+    </div>
+
+    <canvas id="maze"></canvas>
+
+    <div id="resultScreen">
+      <div class="resultBox">
+        <h1 id="resultText">RESULT</h1>
+        <button onclick="location.reload()">RESTART</button>
+      </div>
+    </div>
+
   </div>
 
-  <button id="startBtn">✨ Start Quantum Run</button>
+  <div class="panel right">
+    <h2>Quantum Probability Histogram</h2>
+    <canvas id="hist"></canvas>
+
+    <h2>Controls</h2>
+    <p>Arrow Keys / WASD</p>
+
+    <div class="legend">
+      <div><span class="p"></span> Player</div>
+      <div><span class="e"></span> Exit Portal</div>
+      <div><span class="w"></span> Walls</div>
+    </div>
+  </div>
 
 </div>
 
-<!-- RESULT SCREEN -->
-<div id="resultScreen" class="hidden">
-  <h1 id="resultText"></h1>
-  <p id="resultDetail"></p>
-</div>
-
-<script type="module" src="script.js"></script>
-
+<script src="game.js"></script>
 </body>
 </html>
