@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quantum Roulette AAA</title>
+<title>Quantum Roulette - Fixed AAA</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,47 +13,36 @@
 
 <div class="ui">
 
-  <!-- LEFT PANEL -->
-  <div class="panel left">
-
+  <!-- LEFT -->
+  <div class="panel">
     <h1 class="title">⚛ QUANTUM ROULETTE</h1>
 
-    <h2>🎯 Game Description</h2>
+    <h2>Game Description</h2>
     <div class="box">
-      Quantum Roulette simulates probabilistic spin outcomes
-      using quantum superposition principles.
-      Each spin collapses into a classical result.
+      A quantum simulation where every spin is a wavefunction collapse.
+      Outcomes are probabilistic, not fixed.
     </div>
 
-    <h2>📜 Rules</h2>
+    <h2>Rules</h2>
     <div class="box small">
-      • Press SPIN to collapse quantum state  
-      • Each spin = probabilistic outcome  
-      • Win if result matches target zone  
-      • Lose if probability drops too low  
+      • Click SPIN to collapse state  
+      • 7 or 11 = quantum resonance WIN  
+      • Others reduce stability  
+      • 0 probability = DECOHERENCE LOSS  
     </div>
 
-    <h2>⚛ Qiskit Circuit</h2>
+    <h2>Qiskit Reference</h2>
     <div class="box code">
 from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(1,1)
-qc.h(0)               # superposition
-qc.measure(0,0)       # collapse
-
-# result = random quantum bit (0 or 1)
-    </div>
-
-    <h2>🧠 Algorithm</h2>
-    <div class="box small">
-      Hadamard-based superposition sampling  
-      + Monte Carlo collapse simulation  
-      + weighted probability decay system  
+qc.h(0)
+qc.measure(0,0)
     </div>
 
   </div>
 
-  <!-- CENTER GAME -->
+  <!-- CENTER -->
   <div class="game">
 
     <div id="hud">
@@ -62,38 +51,28 @@ qc.measure(0,0)       # collapse
     </div>
 
     <div class="roulette">
-      <div id="wheel">🎰</div>
+      <div id="wheel"></div>
       <button onclick="spin()">SPIN</button>
     </div>
 
+    <canvas id="hist"></canvas>
+
     <div id="result">
-      <div class="box center">
-        <h1 id="resultText">RESULT</h1>
+      <div class="box">
+        <h1 id="resultText"></h1>
         <button onclick="location.reload()">RESTART</button>
       </div>
     </div>
 
   </div>
 
-  <!-- RIGHT PANEL -->
-  <div class="panel right">
-
-    <h2>📊 Quantum Probability Field</h2>
-    <canvas id="hist"></canvas>
-
-    <h2>🎯 Target Rule</h2>
+  <!-- RIGHT -->
+  <div class="panel">
+    <h2>Probability Field</h2>
     <div class="box small">
-      Match quantum collapsed number: 7 or 11 = WIN  
-      Others = partial loss  
-      Zero probability = DECOHERENCE LOSS
+      Quantum state collapses visually here:
     </div>
-
-    <h2>🎮 Controls</h2>
-    <div class="box small">
-      Click SPIN to collapse wavefunction  
-      Observe probability decay  
-    </div>
-
+    <canvas id="histCanvas"></canvas>
   </div>
 
 </div>
