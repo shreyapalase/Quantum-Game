@@ -1,61 +1,24 @@
-body{
-margin:0;
-background:#02040a;
-color:white;
-font-family:Arial;
-overflow-x:hidden;
+body {
+  margin: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #050510, #000);
+  font-family: monospace;
 }
 
-h1{
-text-align:center;
-color:#00ffff;
-text-shadow:0 0 20px cyan;
+canvas {
+  display: block;
 }
 
-.sub{
-text-align:center;
-color:#aaa;
+#ui {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #00ffff;
+  z-index: 10;
+  text-shadow: 0 0 10px #00ffff;
 }
 
-.panel{
-margin:20px auto;
-padding:20px;
-width:90%;
-background:rgba(255,255,255,0.05);
-border:1px solid cyan;
-border-radius:15px;
-backdrop-filter:blur(10px);
-}
-
-.mazeBox{
-display:flex;
-justify-content:space-around;
-align-items:center;
-padding:20px;
-}
-
-#maze3D{
-width:600px;
-height:400px;
-border:1px solid cyan;
-background:black;
-}
-
-.controls{
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-button{
-padding:10px;
-background:cyan;
-border:none;
-cursor:pointer;
-}
-
-#resultBox{
-font-size:2rem;
-text-align:center;
-color:gold;
+#ui h1 {
+  font-size: 18px;
+  margin: 0;
 }
