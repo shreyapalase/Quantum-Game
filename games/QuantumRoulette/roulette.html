@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quantum Roulette - Fixed AAA</title>  
+<title>AI Quantum Roulette</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,36 +13,45 @@
 
 <div class="ui">
 
-  <!-- LEFT -->
-  <div class="panel">
-    <h1 class="title">⚛ QUANTUM ROULETTE</h1>
+  <!-- LEFT PANEL -->
+  <div class="panel left">
 
-    <h2>Game Description</h2>
+    <h1 class="title">⚛ AI QUANTUM ROULETTE</h1>
+
+    <h2>🎮 Game Description</h2>
     <div class="box">
-      A quantum simulation where every spin is a wavefunction collapse.
-      Outcomes are probabilistic, not fixed.
+      A quantum-inspired AI roulette system where every spin is a probabilistic wavefunction collapse.
+      Outcomes evolve dynamically based on player history.
     </div>
 
-    <h2>Rules</h2>
+    <h2>📜 How to Play</h2>
     <div class="box small">
-      • Click SPIN to collapse state  
-      • 7 or 11 = quantum resonance WIN  
-      • Others reduce stability  
-      • 0 probability = DECOHERENCE LOSS  
+      • Click PLAY to spin quantum wheel  
+      • Win = high-energy collapse states (7, 11, 17)  
+      • Lose = decoherence collapse  
+      • Probability evolves like AI learning system  
     </div>
 
-    <h2>Qiskit Reference</h2>
+    <h2>🏆 Win / Loss Conditions</h2>
+    <div class="box small">
+      WIN → stable high probability (>60 after 10 spins)  
+      LOSS → probability reaches 0  
+    </div>
+
+    <h2>⚛ Qiskit Model</h2>
     <div class="box code">
 from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(1,1)
 qc.h(0)
 qc.measure(0,0)
+
+# Quantum superposition collapse simulation
     </div>
 
   </div>
 
-  <!-- CENTER -->
+  <!-- CENTER GAME -->
   <div class="game">
 
     <div id="hud">
@@ -50,39 +59,43 @@ qc.measure(0,0)
       🎲 Spins: <b id="spins">0</b>
     </div>
 
-<div class="roulette">
+    <div class="roulette">
 
-  <div class="table-glow"></div>
+      <div id="wheel"></div>
 
-  <div id="wheelContainer">
-    <div id="wheel"></div>
-    <div id="ball"></div>
-  </div>
+      <div class="buttons">
+        <button class="play" onclick="spin()">▶ PLAY SPIN</button>
+        <button class="reset" onclick="resetGame()">⟲ RESET</button>
+      </div>
 
-  <button onclick="spin()">SPIN QUANTUM ROULETTE</button>
-
-</div>
+    </div>
 
     <canvas id="hist"></canvas>
 
-    <div id="result">
-      <div class="box">
-        <h1 id="resultText"></h1>
-        <button onclick="location.reload()">RESTART</button>
-      </div>
-    </div>
-
   </div>
 
-  <!-- RIGHT -->
-  <div class="panel">
-    <h2>Probability Field</h2>
-    <div class="box small">
-      Quantum state collapses visually here:
-    </div>
+  <!-- RIGHT PANEL -->
+  <div class="panel right">
+
+    <h2>📊 Quantum Probability Field</h2>
     <canvas id="histCanvas"></canvas>
+
+    <h2>🧠 AI Behavior</h2>
+    <div class="box small">
+      System adapts probability decay based on past outcomes.
+      More losses → higher instability.
+    </div>
+
   </div>
 
+</div>
+
+<!-- RESULT POPUP -->
+<div id="popup">
+  <div class="popupBox">
+    <h1 id="resultText"></h1>
+    <button onclick="resetGame()">PLAY AGAIN</button>
+  </div>
 </div>
 
 <script src="game.js"></script>
