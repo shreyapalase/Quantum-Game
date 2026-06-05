@@ -6,15 +6,66 @@
   <title>Quantum Maze PRO MAX</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-  <div id="ui">
-    <h1>⚛ Quantum Maze PRO MAX</h1>
-    <p>Press <b>D</b> = Decoherence Storm</p>
-    <p>Click = pulse quantum field</p>
+<!-- UI PANEL -->
+<div id="ui">
+
+  <h1>⚛ Quantum Maze PRO MAX</h1>
+
+  <div class="panel">
+
+    <h2>📘 How to Play</h2>
+    <p>
+      Navigate the quantum maze. Nodes represent quantum states.
+      Find the <b>Target Node</b> before decoherence collapses the system.
+    </p>
+
+    <p><b>Controls:</b></p>
+    <ul>
+      <li>Click → Quantum pulse boost</li>
+      <li>D → Toggle Decoherence Storm (Boss Mode)</li>
+    </ul>
+
   </div>
 
-  <script type="module" src="script.js"></script>
+  <div class="panel">
+    <h2>⚛ Algorithm Used</h2>
+    <p><b>Grover Search Simulation</b></p>
+    <p>Amplitude amplification visualized as glowing probability increase.</p>
+
+    <pre>
+Qiskit (Reference):
+from qiskit import QuantumCircuit, Aer, execute
+
+qc = QuantumCircuit(2)
+qc.h([0,1])
+qc.cz(0,1)
+qc.h([0,1])
+
+backend = Aer.get_backend('statevector_simulator')
+result = execute(qc, backend).result()
+print(result.get_statevector())
+    </pre>
+  </div>
+
+  <div class="panel">
+    <h2>📊 Probability Distribution</h2>
+    <canvas id="histogram"></canvas>
+  </div>
+
+  <button id="startBtn">✨ Start Quantum Run</button>
+
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="resultScreen" class="hidden">
+  <h1 id="resultText"></h1>
+  <p id="resultDetail"></p>
+</div>
+
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
