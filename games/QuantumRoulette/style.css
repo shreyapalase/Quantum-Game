@@ -125,3 +125,108 @@ canvas {
   border: 1px solid #0ff;
   box-shadow: 0 0 20px #0ff;
 }
+
+.roulette {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* 🌌 table glow */
+.table-glow {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, #0ff3, transparent 60%);
+  filter: blur(20px);
+  animation: pulse 4s infinite alternate;
+  z-index: 0;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); opacity: 0.5; }
+  to { transform: scale(1.2); opacity: 1; }
+}
+
+/* 🎰 WHEEL CONTAINER (3D DEPTH) */
+#wheelContainer {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  perspective: 1000px;
+}
+
+/* REALISTIC ROULETTE WHEEL */
+#wheel {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  position: absolute;
+  background: conic-gradient(
+    #0ff 0deg 20deg,
+    #111 20deg 40deg,
+    #f0f 40deg 60deg,
+    #111 60deg 80deg,
+    #0ff 80deg 100deg,
+    #111 100deg 120deg,
+    #ff0 120deg 140deg,
+    #111 140deg 160deg,
+    #0ff 160deg 180deg,
+    #111 180deg 200deg,
+    #f0f 200deg 220deg,
+    #111 220deg 240deg,
+    #0ff 240deg 260deg,
+    #111 260deg 280deg,
+    #ff0 280deg 300deg,
+    #111 300deg 320deg,
+    #0ff 320deg 360deg
+  );
+
+  border: 6px solid #0ff;
+  box-shadow:
+    0 0 30px #0ff,
+    inset 0 0 20px rgba(255,255,255,0.1);
+
+  animation: idleSpin 8s linear infinite;
+}
+
+/* idle slow spin */
+@keyframes idleSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 🎯 BALL (REALISTIC ORBIT + DROP FEEL) */
+#ball {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 15px white;
+}
+
+/* SPIN ANIMATION CLASS */
+.spinActive {
+  animation: spinFast 2s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes spinFast {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(1440deg); }
+}
+
+/* quantum glow distortion */
+.quantum-flash {
+  animation: flash 0.3s ease-in-out 3;
+}
+
+@keyframes flash {
+  0% { filter: hue-rotate(0deg) brightness(1); }
+  50% { filter: hue-rotate(120deg) brightness(2); }
+  100% { filter: hue-rotate(0deg) brightness(1); }
+}
