@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quantum Roulette FIX</title>
+<title>Quantum Roulette FINAL GOD MODE</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,38 +13,73 @@
 
 <div class="ui">
 
-  <div class="panel">
-    <h1 class="title">QUANTUM ROULETTE</h1>
-    <div class="box">Press spin to start simulation</div>
+  <!-- LEFT PANEL -->
+  <div class="panel float">
+
+    <h1 class="title">⚛ FINAL GOD MODE</h1>
+
+    <h2>Quantum System</h2>
+    <div class="box">
+      A physics + AI + quantum-inspired roulette simulation engine.
+    </div>
+
+    <h2>Rules</h2>
+    <div class="box small">
+      • 10 spins = final collapse  
+      • Lucky states = 7, 11, 17  
+      • Stability decides WIN or LOSS  
+    </div>
+
+    <h2>Qiskit Model</h2>
+    <div class="box code">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1,1)
+qc.h(0)
+qc.measure(0,0)
+    </div>
+
   </div>
 
+  <!-- CENTER GAME -->
   <div class="game">
 
     <div id="hud">
-      Prob: <span id="prob">100</span> |
-      Spins: <span id="spins">0</span>
+      ⚡ Prob: <b id="prob">100</b>% |
+      🎲 Spins: <b id="spins">0</b>
     </div>
 
-    <div id="wheel"></div>
+    <div class="stage">
+      <div id="wheel"></div>
+      <div id="ball"></div>
+    </div>
 
-    <!-- IMPORTANT: button directly calls safe function -->
-    <button onclick="spin()">SPIN</button>
+    <button onclick="spin()">SPIN REALITY CORE</button>
 
     <canvas id="hist"></canvas>
 
   </div>
 
+  <!-- RIGHT PANEL -->
+  <div class="panel float">
+
+    <h2>AI FIELD</h2>
+    <div class="box small">
+      Adaptive entropy engine modifies probability decay dynamically.
+    </div>
+
+  </div>
+
 </div>
 
+<!-- RESULT SCREEN -->
 <div id="popup">
   <div class="popupBox">
     <h1 id="resultText"></h1>
-    <button onclick="resetGame()">RESTART</button>
+    <button onclick="resetGame()">RESTART SIMULATION</button>
   </div>
 </div>
 
-<!-- 🔥 FIX: defer ensures JS loads AFTER HTML -->
-<script src="game.js" defer></script>
-
+<script src="game.js"></script>
 </body>
 </html>
