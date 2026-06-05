@@ -2,84 +2,127 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quantum Roulette FINAL GOD MODE</title>
-<link rel="stylesheet" href="style.css">
+<title>Quantum Roulette SAFE FIX</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: Arial;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+#wheel {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: conic-gradient(red, black, cyan, black, yellow);
+  margin: 20px;
+  transition: transform 1.5s ease;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#popup {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.8);
+}
+</style>
 </head>
 
 <body>
 
-<div class="bg"></div>
+<h2>Quantum Roulette (SAFE MODE)</h2>
 
-<div class="ui">
+<div id="wheel"></div>
 
-  <!-- LEFT PANEL -->
-  <div class="panel float">
+<button id="spinBtn">SPIN</button>
 
-    <h1 class="title">⚛ FINAL GOD MODE</h1>
+<p>Probability: <span id="prob">100</span></p>
+<p>Spins: <span id="spins">0</span></p>
 
-    <h2>Quantum System</h2>
-    <div class="box">
-      A physics + AI + quantum-inspired roulette simulation engine.
-    </div>
-
-    <h2>Rules</h2>
-    <div class="box small">
-      • 10 spins = final collapse  
-      • Lucky states = 7, 11, 17  
-      • Stability decides WIN or LOSS  
-    </div>
-
-    <h2>Qiskit Model</h2>
-    <div class="box code">
-from qiskit import QuantumCircuit
-
-qc = QuantumCircuit(1,1)
-qc.h(0)
-qc.measure(0,0)
-    </div>
-
-  </div>
-
-  <!-- CENTER GAME -->
-  <div class="game">
-
-    <div id="hud">
-      ⚡ Prob: <b id="prob">100</b>% |
-      🎲 Spins: <b id="spins">0</b>
-    </div>
-
-    <div class="stage">
-      <div id="wheel"></div>
-      <div id="ball"></div>
-    </div>
-
-    <button onclick="spin()">SPIN REALITY CORE</button>
-
-    <canvas id="hist"></canvas>
-
-  </div>
-
-  <!-- RIGHT PANEL -->
-  <div class="panel float">
-
-    <h2>AI FIELD</h2>
-    <div class="box small">
-      Adaptive entropy engine modifies probability decay dynamically.
-    </div>
-
-  </div>
-
-</div>
-
-<!-- RESULT SCREEN -->
 <div id="popup">
-  <div class="popupBox">
-    <h1 id="resultText"></h1>
-    <button onclick="resetGame()">RESTART SIMULATION</button>
+  <div style="background:#111;padding:20px;border:1px solid cyan;">
+    <h1 id="result"></h1>
+    <button onclick="resetGame()">RESTART</button>
   </div>
 </div>
 
-<script src="game.js"></script>
+<script>
+/* =========================
+   SAFE GLOBAL GAME ENGINE
+   ========================= */
+
+let probability = 100;
+let spins = 0;
+
+const wheel = document.getElementById("wheel");
+const probText = document.getElementById("prob");
+const spinText = document.getElementById("spins");
+const popup = document.getElementById("popup");
+const result = document.getElementById("result");
+
+/* ✅ BUTTON IS GUARANTEED WORKING HERE */
+document.getElementById("spinBtn").addEventListener("click", spin);
+
+function spin() {
+
+  spins++;
+
+  // wheel animation
+  let angle = 720 + Math.random() * 360;
+  wheel.style.transform = `rotate(${angle}deg)`;
+
+  // probability logic
+  let roll = Math.random();
+
+  if (roll > 0.7) {
+    probability += 10;
+  } else {
+    probability -= 12;
+  }
+
+  // clamp (VERY IMPORTANT)
+  probability = Math.max(0, Math.min(100, probability));
+
+  // UI update
+  probText.innerText = probability;
+  spinText.innerText = spins;
+
+  // finish game
+  if (spins >= 10) {
+    setTimeout(() => {
+      popup.style.display = "flex";
+
+      result.innerText =
+        probability > 60 ? "YOU WIN ⚛" : "YOU LOSE 💥";
+
+    }, 600);
+  }
+}
+
+function resetGame() {
+  probability = 100;
+  spins = 0;
+  popup.style.display = "none";
+  wheel.style.transform = "rotate(0deg)";
+  probText.innerText = probability;
+  spinText.innerText = spins;
+}
+</script>
+
 </body>
 </html>
