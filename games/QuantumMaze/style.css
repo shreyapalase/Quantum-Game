@@ -6,58 +6,34 @@
 }
 
 body {
-  background: black;
   overflow: hidden;
+  background: black;
   color: white;
 }
 
-/* QUANTUM BACKGROUND */
+/* 🌌 QUANTUM ENERGY BACKGROUND */
 .bg {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, #0ff3, #000 60%);
-  animation: pulse 6s infinite alternate;
+  background: radial-gradient(circle at center, #0ff3, #000 60%),
+              radial-gradient(circle at 20% 80%, #ff00ff33, transparent 50%);
+  animation: energy 6s infinite alternate;
 }
 
-@keyframes pulse {
-  0% { filter: blur(10px) brightness(1); }
-  100% { filter: blur(18px) brightness(1.4); }
-}
-
-/* FLOATING ORBS */
-.glow-orbs::before,
-.glow-orbs::after {
-  content: "";
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: #0ff3;
-  filter: blur(60px);
-  animation: float 8s infinite alternate;
-}
-
-.glow-orbs::after {
-  background: #f0f3ff;
-  left: 70%;
-  top: 60%;
-}
-
-@keyframes float {
-  from { transform: translateY(0px); }
-  to { transform: translateY(-40px); }
+@keyframes energy {
+  0% { filter: hue-rotate(0deg) blur(8px); transform: scale(1); }
+  100% { filter: hue-rotate(40deg) blur(14px); transform: scale(1.1); }
 }
 
 /* UI LAYOUT */
 .ui {
-  position: relative;
   display: flex;
-  width: 100%;
   height: 100vh;
+  position: relative;
 }
 
-/* PANELS */
+/* PANEL STYLE */
 .panel {
   width: 22%;
   padding: 12px;
@@ -68,24 +44,18 @@ body {
   overflow: hidden;
 }
 
-h1 {
-  color: #0ff;
-  text-shadow: 0 0 10px #0ff;
-  font-size: 22px;
-}
-
 h2 {
   color: #ff00ff;
+  font-size: 13px;
   margin-top: 10px;
-  font-size: 14px;
-  text-shadow: 0 0 8px #ff00ff;
+  text-shadow: 0 0 10px #ff00ff;
 }
 
 .box {
   margin-top: 8px;
   padding: 8px;
   font-size: 12px;
-  border: 1px solid #0ff2;
+  border: 1px solid #0ff3;
   background: rgba(255,255,255,0.03);
   border-radius: 6px;
   line-height: 1.4;
@@ -96,11 +66,28 @@ h2 {
 .code {
   font-family: monospace;
   color: #0ff;
-  font-size: 11px;
   white-space: pre;
 }
 
-/* CENTER GAME */
+/* ✨ CENTER TITLE ANIMATION */
+.title {
+  text-align: center;
+  font-size: 26px;
+  letter-spacing: 3px;
+  background: linear-gradient(90deg, #0ff, #ff00ff, #0ff);
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowText 4s linear infinite;
+  text-shadow: 0 0 20px #0ff;
+}
+
+@keyframes glowText {
+  0% { background-position: 0%; }
+  100% { background-position: 300%; }
+}
+
+/* GAME AREA */
 .game {
   width: 56%;
   display: flex;
@@ -109,13 +96,14 @@ h2 {
   position: relative;
 }
 
+/* CANVAS */
 canvas {
   border: 2px solid #0ff;
-  box-shadow: 0 0 35px #0ff;
+  box-shadow: 0 0 40px #0ff;
   background: rgba(0,0,0,0.6);
-  transition: 0.2s;
 }
 
+/* HUD */
 #hud {
   position: absolute;
   top: 10px;
@@ -123,8 +111,6 @@ canvas {
   border: 1px solid #0ff;
   background: rgba(0,0,0,0.5);
   box-shadow: 0 0 20px #0ff;
-  display: flex;
-  gap: 20px;
 }
 
 /* RESULT SCREEN */
@@ -144,23 +130,13 @@ canvas {
   height: 180px;
 }
 
-/* LEGEND */
-.legend span {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-}
-
-.p { background: #0ff; }
-.e { background: #0f0; }
-.w { background: #777; }
-
+/* BUTTON */
 button {
   margin-top: 10px;
   padding: 10px;
   background: #0ff;
   border: none;
-  cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 0 15px #0ff;
+  box-shadow: 0 0 20px #0ff;
+  cursor: pointer;
 }
