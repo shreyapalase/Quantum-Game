@@ -8,13 +8,13 @@ const ctx = document.getElementById("hist").getContext("2d");
 document.getElementById("hist").width = 300;
 document.getElementById("hist").height = 150;
 
-/* 🧠 AI ENTROPY SYSTEM */
+/* 🧠 ENTROPY AI */
 function entropy() {
-  let low = history.filter(x => x < 50).length;
-  return low * 0.6;
+  let unstable = history.filter(x => x < 50).length;
+  return unstable * 0.5;
 }
 
-/* 🎰 SPIN (REALISTIC PHYSICS SIMULATION) */
+/* 🎰 SPIN ENGINE */
 function spin() {
 
   if (spins >= 10) return;
@@ -29,9 +29,9 @@ function spin() {
   let decay = entropy();
 
   if ([7,11,17].includes(result)) {
-    probability += 7;
+    probability += 8;
   } else {
-    probability -= (8 + decay);
+    probability -= (7 + decay);
   }
 
   probability = Math.max(0, Math.min(100, probability));
@@ -44,7 +44,7 @@ function spin() {
 
   if (spins === 10) {
     setTimeout(() => {
-      probability > 60 ? end(true) : end(false);
+      end(probability > 60);
     }, 900);
   }
 }
@@ -65,11 +65,11 @@ function draw() {
   });
 }
 
-/* 🏁 END SCREEN */
+/* 🏁 RESULT */
 function end(win) {
   document.getElementById("popup").style.display = "flex";
   document.getElementById("resultText").innerText =
-    win ? "⚛ QUANTUM ASCENSION (WIN)" : "💥 DECOHERENCE COLLAPSE (LOSS)";
+    win ? "⚛ MULTIVERSE WIN ACHIEVED" : "💥 QUANTUM COLLAPSE LOSS";
 }
 
 /* 🔄 RESET */
