@@ -8,40 +8,44 @@ const ctx = document.getElementById("hist").getContext("2d");
 document.getElementById("hist").width = 300;
 document.getElementById("hist").height = 150;
 
-/* 🎰 SPIN */
+/* 🧠 AI ENTROPY SYSTEM */
+function entropy() {
+  let low = history.filter(x => x < 50).length;
+  return low * 0.6;
+}
+
+/* 🎰 SPIN (REALISTIC PHYSICS SIMULATION) */
 function spin() {
 
   if (spins >= 10) return;
 
   spins++;
 
-  // REALISTIC ROTATION
-  let angle = 720 + Math.random() * 360;
-  wheel.style.transform = `rotate(${angle}deg)`;
+  let force = 720 + Math.random() * 1440;
+  wheel.style.transform = `rotate(${force}deg)`;
 
   let result = Math.floor(Math.random() * 36);
 
+  let decay = entropy();
+
   if ([7,11,17].includes(result)) {
-    probability += 6;
+    probability += 7;
   } else {
-    probability -= 8;
+    probability -= (8 + decay);
   }
 
-  // 🚫 CLAMP probability (NO NEGATIVE BUG)
   probability = Math.max(0, Math.min(100, probability));
 
   history.push(probability);
-  if (history.length > 20) history.shift();
+  if (history.length > 25) history.shift();
 
   updateUI();
   draw();
 
-  // 🏁 GUARANTEED END AFTER 10 SPINS
   if (spins === 10) {
     setTimeout(() => {
-      if (probability > 60) end(true);
-      else end(false);
-    }, 800);
+      probability > 60 ? end(true) : end(false);
+    }, 900);
   }
 }
 
@@ -61,11 +65,11 @@ function draw() {
   });
 }
 
-/* 🏆 END */
+/* 🏁 END SCREEN */
 function end(win) {
   document.getElementById("popup").style.display = "flex";
   document.getElementById("resultText").innerText =
-    win ? "⚛ QUANTUM STABLE WIN" : "💥 DECOHERENCE LOSS";
+    win ? "⚛ QUANTUM ASCENSION (WIN)" : "💥 DECOHERENCE COLLAPSE (LOSS)";
 }
 
 /* 🔄 RESET */
@@ -73,9 +77,8 @@ function resetGame() {
   probability = 100;
   spins = 0;
   history = [];
-
-  document.getElementById("popup").style.display = "none";
   wheel.style.transform = "rotate(0deg)";
+  document.getElementById("popup").style.display = "none";
   updateUI();
   draw();
 }
