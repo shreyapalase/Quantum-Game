@@ -2,16 +2,22 @@ let probability = 100;
 let spins = 0;
 let history = [];
 
-const ctx = document.getElementById("histCanvas").getContext("2d");
-const canvas = document.getElementById("histCanvas");
+const wheel = document.getElementById("wheel");
+const ctx = document.getElementById("hist").getContext("2d");
 
-canvas.width = 300;
-canvas.height = 150;
+document.getElementById("hist").width = 300;
+document.getElementById("hist").height = 150;
 
 /* 🎰 SPIN */
 function spin() {
 
+  if (spins >= 10) return;
+
   spins++;
+
+  // REALISTIC ROTATION
+  let angle = 720 + Math.random() * 360;
+  wheel.style.transform = `rotate(${angle}deg)`;
 
   let result = Math.floor(Math.random() * 36);
 
@@ -21,19 +27,27 @@ function spin() {
     probability -= 8;
   }
 
+  // 🚫 CLAMP probability (NO NEGATIVE BUG)
+  probability = Math.max(0, Math.min(100, probability));
+
   history.push(probability);
   if (history.length > 20) history.shift();
 
   updateUI();
   draw();
 
-  if (probability <= 0) end(false);
-  if (spins >= 10 && probability > 60) end(true);
+  // 🏁 GUARANTEED END AFTER 10 SPINS
+  if (spins === 10) {
+    setTimeout(() => {
+      if (probability > 60) end(true);
+      else end(false);
+    }, 800);
+  }
 }
 
 /* UI */
 function updateUI() {
-  document.getElementById("prob").innerText = Math.max(0, probability);
+  document.getElementById("prob").innerText = probability;
   document.getElementById("spins").innerText = spins;
 }
 
@@ -47,20 +61,21 @@ function draw() {
   });
 }
 
-/* 🏁 END */
+/* 🏆 END */
 function end(win) {
   document.getElementById("popup").style.display = "flex";
   document.getElementById("resultText").innerText =
-    win ? "QUANTUM WIN" : "LOSS - DECOHERENCE";
+    win ? "⚛ QUANTUM STABLE WIN" : "💥 DECOHERENCE LOSS";
 }
 
-/* RESET */
+/* 🔄 RESET */
 function resetGame() {
   probability = 100;
   spins = 0;
   history = [];
 
   document.getElementById("popup").style.display = "none";
+  wheel.style.transform = "rotate(0deg)";
   updateUI();
   draw();
 }
