@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quantum Entanglement Arena</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div id="particles"></div>
+
+<div class="hud">
+
+<h1>⚛ QUANTUM ENTANGLEMENT ARENA ⚛</h1>
+
+<div class="arena">
+
+<div class="playerPanel">
+<h2>Alice</h2>
+
+<select id="aliceBasis">
+<option>Z Basis</option>
+<option>X Basis</option>
+<option>Y Basis</option>
+</select>
+
+<div class="result" id="aliceResult">?</div>
+</div>
+
+<div class="centerPanel">
+
+<h2>Quantum Circuit</h2>
+
+<pre>
+q0 ──H────■──
+          │
+q1 ───────X──
+</pre>
+
+<button id="measureBtn">
+Measure Entangled Pair
+</button>
+
+<div id="winnerBox">
+Awaiting Experiment...
+</div>
+
+</div>
+
+<div class="playerPanel">
+
+<h2>Bob</h2>
+
+<select id="bobBasis">
+<option>Z Basis</option>
+<option>X Basis</option>
+<option>Y Basis</option>
+</select>
+
+<div class="result" id="bobResult">?</div>
+
+</div>
+
+</div>
+
+<h2>Probability Histogram</h2>
+
+<canvas id="histogram"></canvas>
+
+<h2>Qiskit Representation</h2>
+
+<pre class="qiskit">
+
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2,2)
+
+qc.h(0)
+qc.cx(0,1)
+
+qc.measure([0,1],[0,1])
+
+</pre>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
