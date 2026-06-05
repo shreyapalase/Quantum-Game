@@ -1,89 +1,509 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<title>Quantum Entanglement Arena</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quantum Entanglement Arena - Ultimate AAA</title>
+
 <link rel="stylesheet" href="style.css">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 </head>
+
 <body>
 
-<div id="particles"></div>
+<div id="bgParticles"></div>
 
-<div class="hud">
+<!-- ========================================= -->
+<!-- HERO -->
+<!-- ========================================= -->
 
-<h1>⚛ QUANTUM ENTANGLEMENT ARENA ⚛</h1>
+<header class="hero">
 
-<div class="arena">
+<h1 class="title">
+⚛ QUANTUM ENTANGLEMENT ARENA ⚛
+</h1>
 
-<div class="playerPanel">
+<p class="subtitle">
+AAA Quantum Physics Simulation Game
+</p>
+
+</header>
+
+<!-- ========================================= -->
+<!-- BEGINNER GUIDE -->
+<!-- ========================================= -->
+
+<section class="panel">
+
+<h2>🎓 Beginner Guide</h2>
+
+<p>
+No quantum physics knowledge required.
+This simulation teaches entanglement through gameplay.
+</p>
+
+<div class="guideGrid">
+
+<div class="guideCard">
+
+<h3>Z Basis</h3>
+
+<p>
+Standard measurement direction.
+Best choice for beginners.
+</p>
+
+</div>
+
+<div class="guideCard">
+
+<h3>X Basis</h3>
+
+<p>
+Measures quantum states from a different angle.
+</p>
+
+</div>
+
+<div class="guideCard">
+
+<h3>Y Basis</h3>
+
+<p>
+Advanced basis used in many quantum experiments.
+</p>
+
+</div>
+
+</div>
+
+<h3>Recommended Strategy</h3>
+
+<ul>
+
+<li>Choose Z on both Alice and Bob.</li>
+
+<li>Then test X and X.</li>
+
+<li>Then test Y and Y.</li>
+
+<li>Same bases often show stronger correlations.</li>
+
+<li>Different bases create more randomness.</li>
+
+</ul>
+
+</section>
+
+<!-- ========================================= -->
+<!-- ENTANGLEMENT EXPLANATION -->
+<!-- ========================================= -->
+
+<section class="panel">
+
+<h2>⚛ What Is Quantum Entanglement?</h2>
+
+<p>
+Quantum entanglement occurs when two particles
+share a single quantum state.
+</p>
+
+<p>
+Measurements on one particle become correlated
+with measurements on the other particle.
+</p>
+
+<p>
+The particles do not send messages to each other.
+Instead, they were prepared in a shared quantum state.
+</p>
+
+<p>
+This principle is used in:
+</p>
+
+<ul>
+
+<li>Quantum Communication</li>
+
+<li>Quantum Cryptography</li>
+
+<li>Quantum Networking</li>
+
+<li>Quantum Teleportation Research</li>
+
+</ul>
+
+</section>
+
+<!-- ========================================= -->
+<!-- BELL STATE -->
+<!-- ========================================= -->
+
+<section class="panel">
+
+<h2>📖 Bell State</h2>
+
+<div class="formula">
+
+|Φ⁺⟩ = (|00⟩ + |11⟩)/√2
+
+</div>
+
+<p>
+This means both particles exist in a superposition
+until measurement.
+</p>
+
+<p>
+When measured, outcomes become correlated.
+</p>
+
+</section>
+
+<!-- ========================================= -->
+<!-- MISSION RULES -->
+<!-- ========================================= -->
+
+<section class="panel">
+
+<h2>🎮 Mission Rules</h2>
+
+<div class="rulesGrid">
+
+<div class="ruleCard">
+
+<h3>Objective</h3>
+
+<p>
+Create strong quantum correlations.
+</p>
+
+</div>
+
+<div class="ruleCard">
+
+<h3>Score</h3>
+
+<p>
+Same basis correlation = +10 points
+</p>
+
+</div>
+
+<div class="ruleCard">
+
+<h3>Error</h3>
+
+<p>
+Unexpected failures create errors.
+</p>
+
+</div>
+
+<div class="ruleCard">
+
+<h3>Victory</h3>
+
+<p>
+Reach 100 quantum points.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- 3D LAB -->
+<!-- ========================================= -->
+
+<section class="panel">
+
+<h2>🌌 Quantum Laboratory</h2>
+
+<div id="threeContainer"></div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- MAIN GAME -->
+<!-- ========================================= -->
+
+<section class="gameArena">
+
+<!-- Alice -->
+
+<div class="playerCard">
+
 <h2>Alice</h2>
 
 <select id="aliceBasis">
+
 <option>Z Basis</option>
 <option>X Basis</option>
 <option>Y Basis</option>
+
 </select>
 
-<div class="result" id="aliceResult">?</div>
+<div id="aliceResult" class="resultBox">
+?
 </div>
 
-<div class="centerPanel">
+</div>
 
-<h2>Quantum Circuit</h2>
+<!-- Center -->
+
+<div class="centerCard">
+
+<h2>⚛ Quantum Control Center</h2>
+
+<div class="circuit">
 
 <pre>
-q0 ──H────■──
+
+q0 ──H────■────M──
           │
-q1 ───────X──
+q1 ───────X────M──
+
 </pre>
 
+</div>
+
 <button id="measureBtn">
-Measure Entangled Pair
+RUN QUANTUM EXPERIMENT
 </button>
 
-<div id="winnerBox">
-Awaiting Experiment...
-</div>
+<div id="aiCommentator">
+
+Quantum AI Awaiting Data...
 
 </div>
 
-<div class="playerPanel">
+</div>
+
+<!-- Bob -->
+
+<div class="playerCard">
 
 <h2>Bob</h2>
 
 <select id="bobBasis">
+
 <option>Z Basis</option>
 <option>X Basis</option>
 <option>Y Basis</option>
+
 </select>
 
-<div class="result" id="bobResult">?</div>
-
+<div id="bobResult" class="resultBox">
+?
 </div>
 
 </div>
 
-<h2>Probability Histogram</h2>
+</section>
+
+<!-- ========================================= -->
+<!-- STATS -->
+<!-- ========================================= -->
+
+<section class="panel">
+
+<h2>📊 Experiment Statistics</h2>
+
+<div class="statsGrid">
+
+<div class="statCard">
+
+<h3>Quantum Score</h3>
+
+<div id="quantumScore">
+0
+</div>
+
+</div>
+
+<div class="statCard">
+
+<h3>Errors</h3>
+
+<div id="errorScore">
+0
+</div>
+
+</div>
+
+<div class="statCard">
+
+<h3>Experiments</h3>
+
+<div id="experimentCount">
+0
+</div>
+
+</div>
+
+<div class="statCard">
+
+<h3>Correlation</h3>
+
+<div id="correlationRate">
+0%
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- HISTOGRAM -->
+<!-- ========================================= -->
+
+<section class="panel">
+
+<h2>📈 Probability Histogram</h2>
 
 <canvas id="histogram"></canvas>
 
-<h2>Qiskit Representation</h2>
+</section>
 
-<pre class="qiskit">
+<!-- ========================================= -->
+<!-- QISKIT -->
+<!-- ========================================= -->
+
+<section class="panel">
+
+<h2>💻 Qiskit Representation</h2>
+
+<pre class="codeBlock">
 
 from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(2,2)
 
 qc.h(0)
+
 qc.cx(0,1)
 
 qc.measure([0,1],[0,1])
 
 </pre>
 
+</section>
+
+<!-- ========================================= -->
+<!-- MISSIONS -->
+<!-- ========================================= -->
+
+<section class="panel">
+
+<h2>🚀 Mission Progress</h2>
+
+<div class="missionGrid">
+
+<div class="missionCard">
+
+Photon Lab
+
+<div id="mission1">
+LOCKED
 </div>
+
+</div>
+
+<div class="missionCard">
+
+Bell Test
+
+<div id="mission2">
+LOCKED
+</div>
+
+</div>
+
+<div class="missionCard">
+
+Quantum Internet
+
+<div id="mission3">
+LOCKED
+</div>
+
+</div>
+
+<div class="missionCard">
+
+Decoherence Boss
+
+<div id="mission4">
+LOCKED
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- ACHIEVEMENTS -->
+<!-- ========================================= -->
+
+<section class="panel">
+
+<h2>🏅 Achievements</h2>
+
+<div id="achievementBox">
+
+No Achievements Yet
+
+</div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- FINAL RESULT -->
+<!-- ========================================= -->
+
+<section class="finalPanel">
+
+<h2>🏁 Experiment Status</h2>
+
+<div id="winnerBox">
+
+Awaiting Quantum Data...
+
+</div>
+
+<div id="resultExplanation">
+
+Run experiments to determine whether
+Quantum Mechanics or Classical Randomness wins.
+
+</div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- FOOTER -->
+<!-- ========================================= -->
+
+<footer>
+
+Quantum Entanglement Arena Ultimate AAA Edition
+
+</footer>
 
 <script src="script.js"></script>
 
