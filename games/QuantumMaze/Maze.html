@@ -3,60 +3,60 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Quantum Maze AAA</title>
+<title>Quantum Maze - Magical Edition</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="bg"></div>
-<div class="glow-orbs"></div>
 
 <div class="ui">
 
   <!-- LEFT PANEL -->
   <div class="panel left">
-    <h1>⚛ Quantum Maze</h1>
+
+    <h1 class="title">⚛ QUANTUM MAZE</h1>
 
     <h2>Mission Rules</h2>
     <div class="box">
-      Reach the exit portal using quantum navigation.
-      Walls are probabilistic barriers — not absolute.
-      Each move collapses quantum state.
-      If probability reaches zero → decoherence failure.
+      Navigate a probabilistic quantum maze.
+      Walls behave as unstable quantum barriers.
+      Reach the portal before decoherence collapses you.
     </div>
 
-    <h2>Quantum Logic</h2>
+    <h2>Quantum Mechanics</h2>
     <div class="box small">
-      • 70% wall collision failure  
-      • 30% quantum tunneling success  
+      • Wall = 30% tunneling chance  
       • Movement reduces probability  
-      • Exit = full collapse victory  
+      • Collapse = game over  
+      • Exit = full wavefunction collapse win  
     </div>
 
     <h2>Qiskit Reference</h2>
     <div class="box code">
 from qiskit import QuantumCircuit
 
-qc = QuantumCircuit(2, 2)
+qc = QuantumCircuit(2,2)
 qc.h(0)
 qc.cx(0,1)
 qc.measure_all()
     </div>
+
   </div>
 
-  <!-- CENTER GAME -->
+  <!-- GAME CENTER -->
   <div class="game">
 
     <div id="hud">
-      <span>⚡ Probability: <b id="prob">100</b>%</span>
-      <span>🧭 Steps: <b id="steps">0</b></span>
+      ⚡ Probability: <b id="prob">100</b>% &nbsp; | &nbsp;
+      🧭 Steps: <b id="steps">0</b>
     </div>
 
     <canvas id="maze"></canvas>
 
     <div id="result">
-      <div class="box">
+      <div class="box center">
         <h1 id="resultText">RESULT</h1>
         <button onclick="location.reload()">RESTART</button>
       </div>
@@ -70,18 +70,17 @@ qc.measure_all()
     <h2>Probability Field</h2>
     <canvas id="hist"></canvas>
 
-    <h2>Controls</h2>
+    <h2>Legend</h2>
     <div class="box small">
-      Move: Arrow Keys / WASD  
-      Goal: Reach green portal  
-      Avoid collapse → probability loss
+      🟦 Player = quantum particle  
+      🟢 Portal = collapse exit  
+      🟪 Walls = unstable barriers  
     </div>
 
-    <h2>Legend</h2>
-    <div class="legend">
-      <div><span class="p"></span> Player</div>
-      <div><span class="e"></span> Exit</div>
-      <div><span class="w"></span> Wall</div>
+    <h2>Controls</h2>
+    <div class="box small">
+      Arrow Keys / WASD to move  
+      Avoid decoherence loss  
     </div>
 
   </div>
