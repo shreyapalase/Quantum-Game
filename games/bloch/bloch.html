@@ -7,91 +7,76 @@
 </head>
 <body>
 
-<div class="bg"></div>
+<div class="stars"></div>
 
 <header>
   <h1>⚛️ Quantum Bloch Sphere Game</h1>
-  <p class="subtitle">A quantum state simulation challenge</p>
+  <p class="subtitle">Control a quantum state in a simulated universe</p>
 </header>
 
 <div class="container">
 
-  <!-- INFO PANEL -->
   <div class="panel">
     <h2>📘 Game Description</h2>
     <p>
-      You are controlling a single qubit represented on the Bloch Sphere.
-      Rotate the quantum state and try to match the hidden target state.
-      Then measure the qubit and hope for the correct outcome.
+      You are manipulating a single qubit on a Bloch Sphere.
+      Adjust angles to match a hidden quantum target state.
     </p>
 
     <h2>🎮 How to Play</h2>
     <ul>
-      <li>Adjust θ (theta) and φ (phi) using sliders</li>
-      <li>Align the qubit close to the target state</li>
-      <li>Press <b>Measure Qubit</b></li>
-      <li>Outcome depends on quantum probability</li>
+      <li>Move θ (theta) and φ (phi) sliders</li>
+      <li>Align with target quantum state</li>
+      <li>Click Measure</li>
     </ul>
 
-    <h2>🏁 Win / Loss Condition</h2>
+    <h2>🏁 Win / Loss</h2>
     <p>
-      ✔ Win: Measurement matches target outcome OR fidelity > 0.92<br>
-      ✖ Loss: Otherwise
+      ✔ Win: Fidelity > 0.92 OR lucky measurement match<br>
+      ✖ Lose: Otherwise
     </p>
   </div>
 
-  <!-- GAME AREA -->
   <div class="game-box">
+
     <canvas id="bloch"></canvas>
 
     <div class="controls">
-      <label>Theta (θ)
+      <label>θ
         <input type="range" id="theta" min="0" max="3.14" step="0.01">
       </label>
 
-      <label>Phi (φ)
+      <label>φ
         <input type="range" id="phi" min="0" max="6.28" step="0.01">
       </label>
 
-      <button onclick="measureQubit()">⚛️ Measure Qubit</button>
+      <button onclick="measureQubit()">⚛ Measure</button>
     </div>
 
     <div class="target">
       🎯 Target State: <span id="targetState"></span>
     </div>
 
-    <div id="resultBox">Result will appear here...</div>
+    <div id="resultBox">Awaiting quantum collapse...</div>
   </div>
 
 </div>
 
-<!-- QISKIT PANEL -->
 <div class="panel wide">
-  <h2>💻 Qiskit Reference (Quantum Circuit)</h2>
-
+  <h2>💻 Qiskit Reference</h2>
   <pre>
-from qiskit import QuantumCircuit, Aer, execute
-from numpy import pi
+from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(1, 1)
 
-# Prepare arbitrary state
 qc.ry(theta, 0)
 qc.rz(phi, 0)
 
 qc.measure(0, 0)
-
-backend = Aer.get_backend('qasm_simulator')
-result = execute(qc, backend, shots=1024).result()
-counts = result.get_counts()
-print(counts)
   </pre>
 
-  <h2>🔷 Circuit Diagram</h2>
   <pre>
 q0: ──Ry(θ)──Rz(φ)──M──
-                 │
-c0: ─────────────┘
   </pre>
 </div>
 
