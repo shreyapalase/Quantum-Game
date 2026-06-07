@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Dice Simulator</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="particles"></div>
+
+<header>
+    <h1>⚛ QUANTUM DICE SIMULATOR ⚛</h1>
+    <p>Ultra Hyper Realistic Quantum Probability Game</p>
+</header>
+
+<div class="container">
+
+    <section class="panel">
+        <h2>Game Description</h2>
+        <p>
+            Quantum Dice uses quantum superposition concepts to simulate
+            probabilistic outcomes. The dice exists in multiple states until
+            measurement collapses it into a final value.
+        </p>
+    </section>
+
+    <section class="panel">
+        <h2>How To Play</h2>
+        <ul>
+            <li>Click Roll Quantum Dice.</li>
+            <li>Quantum state enters superposition.</li>
+            <li>Measurement collapses wave function.</li>
+            <li>Roll greater than 3 = Win.</li>
+            <li>Roll 3 or below = Loss.</li>
+        </ul>
+    </section>
+
+    <section class="panel">
+        <h2>Win / Loss Condition</h2>
+
+        <div class="condition win">
+            WIN → Dice Value 4,5,6
+        </div>
+
+        <div class="condition lose">
+            LOSS → Dice Value 1,2,3
+        </div>
+    </section>
+
+    <section class="game-panel">
+
+        <div class="quantum-ring"></div>
+
+        <div id="dice">?</div>
+
+        <button id="rollBtn">
+            Roll Quantum Dice
+        </button>
+
+    </section>
+
+    <section class="result-panel">
+        <h2>Quantum Measurement Result</h2>
+
+        <div id="resultBox">
+            Waiting For Measurement...
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>Qiskit Algorithm Reference</h2>
+
+<pre>
+from qiskit import QuantumCircuit
+from qiskit_aer import AerSimulator
+
+qc = QuantumCircuit(3,3)
+
+qc.h(0)
+qc.h(1)
+qc.h(2)
+
+qc.measure([0,1,2],[0,1,2])
+
+sim = AerSimulator()
+result = sim.run(qc).result()
+
+counts = result.get_counts()
+
+print(counts)
+</pre>
+
+    </section>
+
+    <section class="panel">
+        <h2>Quantum Circuit</h2>
+
+<div class="circuit">
+
+<div class="wire">
+q0 ──H────────M
+</div>
+
+<div class="wire">
+q1 ──H────────M
+</div>
+
+<div class="wire">
+q2 ──H────────M
+</div>
+
+</div>
+
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
