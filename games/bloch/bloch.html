@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Bloch Sphere Simulator</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body>
+
+<div class="particles"></div>
+
+<header>
+<h1>⚛ QUANTUM BLOCH SPHERE ⚛</h1>
+<p>Ultra Hyper Realistic Quantum State Visualization</p>
+</header>
+
+<div class="container">
+
+<section class="panel">
+<h2>Game Description</h2>
+
+<p>
+The Bloch Sphere represents the state of a single qubit.
+Apply quantum gates to rotate the state vector through
+superposition and phase space.
+</p>
+
+</section>
+
+<section class="panel">
+<h2>How To Play</h2>
+
+<ul>
+<li>Start with |0⟩ state.</li>
+<li>Apply quantum gates.</li>
+<li>Observe Bloch vector movement.</li>
+<li>Measure the qubit.</li>
+<li>Reach target state to win.</li>
+</ul>
+
+</section>
+
+<section class="panel">
+
+<h2>Win / Loss Conditions</h2>
+
+<div class="condition win">
+WIN → Reach Target State |1⟩
+</div>
+
+<div class="condition lose">
+LOSS → Collapse To Wrong State
+</div>
+
+</section>
+
+<section class="game-panel">
+
+<div id="sphereContainer"></div>
+
+<div class="controls">
+
+<button onclick="applyGate('X')">X Gate</button>
+<button onclick="applyGate('Y')">Y Gate</button>
+<button onclick="applyGate('Z')">Z Gate</button>
+<button onclick="applyGate('H')">H Gate</button>
+
+<button onclick="measure()">
+Measure
+</button>
+
+</div>
+
+</section>
+
+<section class="result-panel">
+
+<h2>Quantum Measurement Result</h2>
+
+<div id="resultBox">
+
+Waiting For Quantum Measurement...
+
+</div>
+
+</section>
+
+<section class="panel">
+
+<h2>Current Quantum State</h2>
+
+<div id="stateDisplay">
+
+|0⟩
+
+</div>
+
+</section>
+
+<section class="panel">
+
+<h2>Qiskit Algorithm Reference</h2>
+
+<pre>
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1,1)
+
+qc.h(0)
+
+qc.measure(0,0)
+
+print(qc)
+</pre>
+
+</section>
+
+<section class="panel">
+
+<h2>Quantum Circuit</h2>
+
+<div class="circuit">
+
+q0 ──H────M
+
+</div>
+
+</section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
