@@ -1,94 +1,106 @@
-const canvas = document.getElementById("sphere");
+const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
 
-canvas.width = 500;
-canvas.height = 500;
+canvas.width = 520;
+canvas.height = 520;
 
-let user = { x: 0, y: 0 };
-let target = { x: 0, y: 0 };
+let theta = 0;
+let phi = 0;
 
-function randomTarget() {
-  target.x = (Math.random() * 2 - 1);
-  target.y = (Math.random() * 2 - 1);
+let rot = 0;
+
+// convert Bloch coords → 3D projection
+function project(x, y, z) {
+  const angle = rot;
+
+  let x1 = x * Math.cos(angle) - z * Math.sin(angle);
+  let z1 = x * Math.sin(angle) + z * Math.cos(angle);
+
+  let scale = 250 / (z1 + 400);
+
+  return {
+    x: 260 + x1 * scale,
+    y: 260 + y * scale
+  };
 }
 
 function drawSphere() {
-  ctx.clearRect(0, 0, 500, 500);
+  ctx.clearRect(0, 0, 520, 520);
 
-  const cx = 250;
-  const cy = 250;
-  const r = 180;
+  const R = 150;
 
-  // sphere glow
+  // sphere grid (lat lines)
+  for (let i = 0; i < 10; i++) {
+    ctx.beginPath();
+    ctx.arc(260, 260, R - i * 10, 0, Math.PI * 2);
+    ctx.strokeStyle = "rgba(0,255,255,0.05)";
+    ctx.stroke();
+  }
+
+  // axis lines
   ctx.beginPath();
-  ctx.arc(cx, cy, r, 0, Math.PI * 2);
-  ctx.strokeStyle = "rgba(0,255,255,0.25)";
+  ctx.moveTo(...Object.values(project(-R,0,0)));
+  ctx.lineTo(...Object.values(project(R,0,0)));
+  ctx.strokeStyle = "red";
   ctx.stroke();
 
-  // TARGET VECTOR (RED GHOST ARROW)
   ctx.beginPath();
-  ctx.moveTo(cx, cy);
-  ctx.lineTo(cx + target.x * r, cy - target.y * r);
-  ctx.strokeStyle = "rgba(255,0,100,0.7)";
-  ctx.lineWidth = 2;
+  ctx.moveTo(...Object.values(project(0,-R,0)));
+  ctx.lineTo(...Object.values(project(0,R,0)));
+  ctx.strokeStyle = "lime";
   ctx.stroke();
 
-  // USER VECTOR (BLUE REAL ARROW)
   ctx.beginPath();
-  ctx.moveTo(cx, cy);
-  ctx.lineTo(cx + user.x * r, cy - user.y * r);
-  ctx.strokeStyle = "#00f7ff";
-  ctx.lineWidth = 4;
+  ctx.moveTo(...Object.values(project(0,0,-R)));
+  ctx.lineTo(...Object.values(project(0,0,R)));
+  ctx.strokeStyle = "cyan";
   ctx.stroke();
 
-  // ARROW HEAD
+  // quantum state vector
+  let x = Math.sin(theta) * Math.cos(phi) * R;
+  let y = Math.cos(theta) * R;
+  let z = Math.sin(theta) * Math.sin(phi) * R;
+
+  let p1 = project(0,0,0);
+  let p2 = project(x,y,z);
+
+  // VECTOR LINE
   ctx.beginPath();
-  ctx.arc(cx + user.x * r, cy - user.y * r, 6, 0, Math.PI * 2);
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
+  ctx.strokeStyle = "#00ffff";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // VECTOR HEAD
+  ctx.beginPath();
+  ctx.arc(p2.x, p2.y, 6, 0, Math.PI*2);
   ctx.fillStyle = "cyan";
   ctx.fill();
 
-  // TARGET DOT
-  ctx.beginPath();
-  ctx.arc(cx + target.x * r, cy - target.y * r, 5, 0, Math.PI * 2);
-  ctx.fillStyle = "red";
-  ctx.fill();
+  // poles
+  let top = project(0,R,0);
+  let bottom = project(0,-R,0);
+
+  ctx.fillStyle = "yellow";
+  ctx.fillText("|0⟩", top.x, top.y);
+
+  ctx.fillText("|1⟩", bottom.x, bottom.y);
 }
 
-function update() {
-  user.x = parseFloat(document.getElementById("xRot").value);
-  user.y = parseFloat(document.getElementById("yRot").value);
+function loop() {
+  theta = parseFloat(document.getElementById("theta").value);
+  phi = parseFloat(document.getElementById("phi").value);
+
+  rot += 0.01;
 
   drawSphere();
-  requestAnimationFrame(update);
+  requestAnimationFrame(loop);
 }
 
-function checkWin() {
-  let dx = user.x - target.x;
-  let dy = user.y - target.y;
-  let dist = Math.sqrt(dx * dx + dy * dy);
-
-  let box = document.getElementById("resultBox");
-
-  if (dist < 0.12) {
-    box.innerHTML = "🟢 QUANTUM MATCH! STATE STABLE";
-    box.style.color = "lime";
-  } else {
-    box.innerHTML = "🔴 COLLAPSED STATE! TRY AGAIN";
-    box.style.color = "red";
-  }
-
-  randomTarget();
+function reset() {
+  document.getElementById("theta").value = 0;
+  document.getElementById("phi").value = 0;
 }
 
-function resetGame() {
-  user.x = 0;
-  user.y = 0;
-
-  document.getElementById("xRot").value = 0;
-  document.getElementById("yRot").value = 0;
-
-  randomTarget();
-}
-
-randomTarget();
-update();
+loop();
