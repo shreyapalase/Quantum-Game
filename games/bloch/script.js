@@ -1,41 +1,47 @@
 const canvas = document.getElementById("bloch");
 const ctx = canvas.getContext("2d");
 
-canvas.width = 500;
-canvas.height = 300;
+function resizeCanvas() {
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
 
-let thetaInput = document.getElementById("theta");
-let phiInput = document.getElementById("phi");
-let resultBox = document.getElementById("resultBox");
-let targetStateBox = document.getElementById("targetState");
+const thetaInput = document.getElementById("theta");
+const phiInput = document.getElementById("phi");
+const resultBox = document.getElementById("resultBox");
+const targetStateBox = document.getElementById("targetState");
 
-// Target quantum state
+// target state
 let targetTheta = Math.random() * Math.PI;
 let targetPhi = Math.random() * 2 * Math.PI;
 
 targetStateBox.innerText =
-  `θ=${targetTheta.toFixed(2)}, φ=${targetPhi.toFixed(2)}`;
+  `θ=${targetTheta.toFixed(2)} φ=${targetPhi.toFixed(2)}`;
 
-// Draw Bloch sphere
-function drawBloch(theta, phi) {
+function draw(theta, phi) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  const r = 100;
 
   // sphere
   ctx.beginPath();
-  ctx.arc(250, 150, 100, 0, Math.PI * 2);
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
   ctx.strokeStyle = "cyan";
   ctx.stroke();
 
-  // vector projection
-  let x = 250 + 100 * Math.sin(theta) * Math.cos(phi);
-  let y = 150 - 100 * Math.cos(theta);
+  // vector
+  const x = cx + r * Math.sin(theta) * Math.cos(phi);
+  const y = cy - r * Math.cos(theta);
 
   ctx.beginPath();
-  ctx.moveTo(250, 150);
+  ctx.moveTo(cx, cy);
   ctx.lineTo(x, y);
   ctx.strokeStyle = "magenta";
   ctx.shadowBlur = 20;
-  ctx.shadowColor = "magenta";
   ctx.stroke();
 
   ctx.beginPath();
@@ -44,31 +50,29 @@ function drawBloch(theta, phi) {
   ctx.fill();
 }
 
-// fidelity calculation
 function fidelity(t1, p1, t2, p2) {
-  let cos =
+  let f =
     Math.cos(t1 / 2) * Math.cos(t2 / 2) +
     Math.sin(t1 / 2) * Math.sin(t2 / 2) * Math.cos(p1 - p2);
 
-  return cos * cos;
+  return f * f;
 }
 
-// measurement simulation
 function measureQubit() {
-  let theta = parseFloat(thetaInput.value);
-  let phi = parseFloat(phiInput.value);
+  const t = parseFloat(thetaInput.value);
+  const p = parseFloat(phiInput.value);
 
-  let prob0 = Math.cos(theta / 2) ** 2;
-  let outcome = Math.random() < prob0 ? 0 : 1;
+  const prob0 = Math.cos(t / 2) ** 2;
+  const outcome = Math.random() < prob0 ? 0 : 1;
 
-  let fid = fidelity(theta, phi, targetTheta, targetPhi);
+  const fid = fidelity(t, p, targetTheta, targetPhi);
 
-  let win = fid > 0.92 || outcome === 0;
+  const win = fid > 0.92;
 
   resultBox.innerHTML = `
-    🎲 Outcome: <b>${outcome}</b><br>
-    📊 Fidelity: <b>${fid.toFixed(3)}</b><br>
-    ${win ? "🟢 YOU WIN!" : "🔴 YOU LOSE"}
+    Outcome: ${outcome}<br>
+    Fidelity: ${fid.toFixed(3)}<br>
+    <b>${win ? "🟢 WIN" : "🔴 LOSE"}</b>
   `;
 
   resultBox.style.boxShadow = win
@@ -76,9 +80,8 @@ function measureQubit() {
     : "0 0 20px red";
 }
 
-// animation loop
 function animate() {
-  drawBloch(
+  draw(
     parseFloat(thetaInput.value),
     parseFloat(phiInput.value)
   );
