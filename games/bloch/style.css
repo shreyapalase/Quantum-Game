@@ -1,55 +1,57 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: radial-gradient(circle at top, #0b0f2a, #000);
+  background: radial-gradient(circle at top, #050816, #000);
   color: #00f7ff;
   overflow-x: hidden;
 }
 
-.background-glow {
+/* MAGIC BACKGROUND */
+.magic-bg {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(0,255,255,0.1), transparent 60%);
-  animation: pulse 6s infinite;
+  background: radial-gradient(circle, rgba(0,255,255,0.08), transparent 60%);
+  animation: glow 6s infinite;
   pointer-events: none;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 0.4; }
-  50% { transform: scale(1.2); opacity: 0.7; }
-  100% { transform: scale(1); opacity: 0.4; }
+@keyframes glow {
+  0% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.3); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 0.3; }
 }
 
-.app {
-  padding: 20px;
-}
-
-.header {
+/* HEADER */
+header {
   text-align: center;
+  padding: 15px;
   text-shadow: 0 0 20px cyan;
 }
 
-.main-grid {
+/* LAYOUT */
+.layout {
   display: flex;
   gap: 20px;
-  margin-top: 20px;
+  padding: 10px;
 }
 
+/* PANEL */
 .panel {
   width: 300px;
+  padding: 15px;
   background: rgba(0,255,255,0.05);
   border: 1px solid cyan;
-  padding: 15px;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 0 20px cyan;
 }
 
-.controls input {
+/* SLIDERS */
+input[type="range"] {
   width: 100%;
-  margin-bottom: 10px;
 }
 
+/* BUTTONS */
 button {
   width: 100%;
   margin-top: 10px;
@@ -60,14 +62,15 @@ button {
   font-weight: bold;
 }
 
-.result-box {
-  margin-top: 15px;
+/* RESULT */
+#resultBox {
+  margin-top: 10px;
   padding: 10px;
   border: 1px solid cyan;
-  min-height: 50px;
 }
 
-.sphere-container {
+/* SPHERE */
+.sphere-wrap {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -78,41 +81,41 @@ canvas {
   width: 500px;
   height: 500px;
   border-radius: 50%;
-  box-shadow: 0 0 40px cyan;
   background: radial-gradient(circle, #001, #000);
+  box-shadow: 0 0 50px cyan;
 }
 
-.sphere-label {
+.hint {
   margin-top: 10px;
 }
 
-.info {
+/* INFO CARDS */
+.bottom {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
+  padding: 10px;
 }
 
 .card {
   flex: 1;
   padding: 10px;
   border: 1px solid cyan;
-  background: rgba(0,255,255,0.05);
+  background: rgba(0,255,255,0.04);
 }
 
-.qiskit {
-  margin-top: 20px;
-  padding: 15px;
-  border-top: 1px solid cyan;
-}
+/* 📱 MOBILE RESPONSIVE */
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+    align-items: center;
+  }
 
-pre {
-  background: black;
-  padding: 10px;
-  border: 1px solid cyan;
-}
+  canvas {
+    width: 90vw;
+    height: 90vw;
+  }
 
-.circuit {
-  font-size: 20px;
-  text-align: center;
-  margin-top: 10px;
+  .bottom {
+    flex-direction: column;
+  }
 }
