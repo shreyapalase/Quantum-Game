@@ -1,24 +1,41 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  color: #fff;
-  background: radial-gradient(circle at top, #0b0f2a, #000);
+  font-family: Arial, sans-serif;
+  color: white;
+  background: radial-gradient(circle at top, #050816, #000);
   overflow-x: hidden;
 }
 
-.bg {
+/* animated star background (NO images needed) */
+.stars {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: url('https://i.imgur.com/3ZQ3ZQm.png');
-  opacity: 0.08;
-  animation: float 20s linear infinite;
+  background: transparent;
+  overflow: hidden;
 }
 
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+.stars::before,
+.stars::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(white 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: moveStars 60s linear infinite;
+  opacity: 0.2;
+}
+
+.stars::after {
+  background-size: 80px 80px;
+  animation-duration: 120s;
+  opacity: 0.15;
+}
+
+@keyframes moveStars {
+  from { transform: translate(0,0); }
+  to { transform: translate(-500px, -500px); }
 }
 
 header {
@@ -33,34 +50,36 @@ header {
 
 .container {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   padding: 20px;
 }
 
 .panel {
   flex: 1;
-  background: rgba(10, 15, 40, 0.7);
+  background: rgba(10, 15, 40, 0.75);
   border: 1px solid cyan;
   padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0 0 25px cyan;
+  border-radius: 12px;
+  box-shadow: 0 0 20px cyan;
 }
 
 .game-box {
   flex: 1.2;
-  background: rgba(5, 5, 20, 0.9);
-  border-radius: 15px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid magenta;
+  border-radius: 12px;
   padding: 15px;
-  box-shadow: 0 0 40px magenta;
+  box-shadow: 0 0 30px magenta;
   text-align: center;
 }
 
+/* IMPORTANT FIX */
 canvas {
   width: 100%;
-  height: 300px;
-  background: black;
+  height: 320px;
+  display: block;
+  background: radial-gradient(circle, #02020a, #000);
   border-radius: 10px;
-  box-shadow: 0 0 30px cyan;
 }
 
 .controls {
@@ -76,11 +95,9 @@ button {
   padding: 10px;
   background: linear-gradient(90deg, cyan, magenta);
   border: none;
-  color: black;
-  font-weight: bold;
   cursor: pointer;
   border-radius: 8px;
-  box-shadow: 0 0 15px cyan;
+  font-weight: bold;
 }
 
 #resultBox {
@@ -89,14 +106,10 @@ button {
   border: 1px solid cyan;
   border-radius: 10px;
   min-height: 40px;
-}
-
-.wide {
-  margin: 20px;
+  transition: 0.3s;
 }
 
 .target {
   margin-top: 10px;
   color: gold;
-  text-shadow: 0 0 10px gold;
 }
