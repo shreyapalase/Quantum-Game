@@ -3,40 +3,60 @@ body {
   font-family: Arial;
   background: radial-gradient(circle, #05061a, #000);
   color: cyan;
+
+  /* ✅ FIX SCROLL */
+  overflow-y: auto;
+  min-height: 100vh;
 }
 
+/* BACKGROUND GLOW */
 .bg {
   position: fixed;
   width: 100%;
   height: 100%;
   background: radial-gradient(circle, rgba(0,255,255,0.08), transparent 60%);
+  animation: glow 6s infinite;
 }
 
+@keyframes glow {
+  0% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.2); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 0.3; }
+}
+
+/* HEADER */
 header {
   text-align: center;
   padding: 10px;
 }
 
+/* MAIN LAYOUT FIX */
 .layout {
   display: flex;
   gap: 15px;
   padding: 10px;
+  align-items: flex-start;
 }
 
-/* PANEL */
+/* PANEL FIX (IMPORTANT) */
 .panel {
   width: 320px;
+  min-width: 320px;
+
   padding: 15px;
   border: 1px solid cyan;
-  background: rgba(0,255,255,0.05);
+  background: rgba(0,255,255,0.06);
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 0 30px cyan;
 }
 
-.section {
-  margin-bottom: 10px;
+/* INPUTS */
+input {
+  width: 100%;
 }
 
-input { width: 100%; }
-
+/* BUTTONS */
 button {
   width: 100%;
   margin-top: 10px;
@@ -44,14 +64,17 @@ button {
   background: cyan;
   border: none;
   cursor: pointer;
+  font-weight: bold;
 }
 
-.output {
+/* INFO BOX */
+.box {
   margin-top: 10px;
   padding: 10px;
   border: 1px solid cyan;
 }
 
+/* RESULT BOX */
 #resultBox {
   margin-top: 10px;
   padding: 10px;
@@ -59,7 +82,7 @@ button {
   font-weight: bold;
 }
 
-/* SPHERE */
+/* SPHERE AREA */
 .scene {
   flex: 1;
   display: flex;
@@ -68,27 +91,58 @@ button {
   position: relative;
 }
 
+/* CANVAS */
 canvas {
   width: 520px;
   height: 520px;
   border-radius: 50%;
   background: radial-gradient(circle, #001, #000);
-  box-shadow: 0 0 50px cyan;
+  box-shadow: 0 0 80px cyan;
 }
 
-/* BOTTOM */
+/* LABELS FIX */
+.labels {
+  position: absolute;
+  pointer-events: none;
+}
+
+.labels div {
+  position: absolute;
+  font-weight: bold;
+}
+
+.labels div:nth-child(1) { top: 10px; left: 50%; transform: translateX(-50%); }
+.labels div:nth-child(2) { bottom: 10px; left: 50%; transform: translateX(-50%); }
+
+/* BOTTOM SECTION */
 .bottom {
+  display: flex;
+  gap: 10px;
   padding: 10px;
+  flex-wrap: wrap;
 }
 
 .card {
+  flex: 1;
+  min-width: 250px;
   border: 1px solid cyan;
   padding: 10px;
-  margin-top: 10px;
+  background: rgba(0,255,255,0.04);
 }
 
-.circuit {
-  font-size: 20px;
-  text-align: center;
-  margin-top: 10px;
+/* MOBILE FIX */
+@media (max-width: 900px) {
+  .layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  canvas {
+    width: 90vw;
+    height: 90vw;
+  }
+
+  .panel {
+    width: 90%;
+  }
 }
