@@ -1,23 +1,15 @@
-const canvas = document.getElementById("blochCanvas");
+const canvas = document.getElementById("sphere");
 const ctx = canvas.getContext("2d");
 
 canvas.width = 500;
 canvas.height = 500;
 
-let theta = 0;
-let phi = 0;
+let user = { x: 0, y: 0 };
+let target = { x: 0, y: 0 };
 
-let target = {
-  theta: Math.random() * Math.PI,
-  phi: Math.random() * Math.PI * 2
-};
-
-function updateTarget() {
-  target.theta = Math.random() * Math.PI;
-  target.phi = Math.random() * Math.PI * 2;
-
-  document.getElementById("targetState").innerText =
-    `θ=${target.theta.toFixed(2)}, φ=${target.phi.toFixed(2)}`;
+function randomTarget() {
+  target.x = (Math.random() * 2 - 1);
+  target.y = (Math.random() * 2 - 1);
 }
 
 function drawSphere() {
@@ -25,65 +17,78 @@ function drawSphere() {
 
   const cx = 250;
   const cy = 250;
+  const r = 180;
 
   // sphere glow
   ctx.beginPath();
-  ctx.arc(cx, cy, 180, 0, Math.PI * 2);
-  ctx.strokeStyle = "rgba(0,255,255,0.3)";
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.strokeStyle = "rgba(0,255,255,0.25)";
   ctx.stroke();
 
-  // quantum vector
-  let x = 180 * Math.sin(theta) * Math.cos(phi);
-  let y = 180 * Math.cos(theta);
-
+  // TARGET VECTOR (RED GHOST ARROW)
   ctx.beginPath();
   ctx.moveTo(cx, cy);
-  ctx.lineTo(cx + x, cy - y);
-  ctx.strokeStyle = "#00ffff";
-  ctx.lineWidth = 3;
+  ctx.lineTo(cx + target.x * r, cy - target.y * r);
+  ctx.strokeStyle = "rgba(255,0,100,0.7)";
+  ctx.lineWidth = 2;
   ctx.stroke();
 
-  // particle glow
+  // USER VECTOR (BLUE REAL ARROW)
   ctx.beginPath();
-  ctx.arc(cx + x, cy - y, 6, 0, Math.PI * 2);
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx + user.x * r, cy - user.y * r);
+  ctx.strokeStyle = "#00f7ff";
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  // ARROW HEAD
+  ctx.beginPath();
+  ctx.arc(cx + user.x * r, cy - user.y * r, 6, 0, Math.PI * 2);
   ctx.fillStyle = "cyan";
+  ctx.fill();
+
+  // TARGET DOT
+  ctx.beginPath();
+  ctx.arc(cx + target.x * r, cy - target.y * r, 5, 0, Math.PI * 2);
+  ctx.fillStyle = "red";
   ctx.fill();
 }
 
 function update() {
-  theta = parseFloat(document.getElementById("theta").value);
-  phi = parseFloat(document.getElementById("phi").value);
+  user.x = parseFloat(document.getElementById("xRot").value);
+  user.y = parseFloat(document.getElementById("yRot").value);
 
   drawSphere();
   requestAnimationFrame(update);
 }
 
-function measure() {
-  const diff =
-    Math.abs(theta - target.theta) +
-    Math.abs(phi - target.phi);
+function checkWin() {
+  let dx = user.x - target.x;
+  let dy = user.y - target.y;
+  let dist = Math.sqrt(dx * dx + dy * dy);
 
-  const resultBox = document.getElementById("resultBox");
+  let box = document.getElementById("resultBox");
 
-  if (diff < 0.3) {
-    resultBox.innerHTML = "🟢 QUANTUM WIN: State matched!";
-    resultBox.style.color = "lime";
+  if (dist < 0.12) {
+    box.innerHTML = "🟢 QUANTUM MATCH! STATE STABLE";
+    box.style.color = "lime";
   } else {
-    resultBox.innerHTML = "🔴 COLLAPSED: Quantum Loss!";
-    resultBox.style.color = "red";
+    box.innerHTML = "🔴 COLLAPSED STATE! TRY AGAIN";
+    box.style.color = "red";
   }
 
-  updateTarget();
+  randomTarget();
 }
 
 function resetGame() {
-  theta = 0;
-  phi = 0;
-  document.getElementById("theta").value = 0;
-  document.getElementById("phi").value = 0;
+  user.x = 0;
+  user.y = 0;
 
-  updateTarget();
+  document.getElementById("xRot").value = 0;
+  document.getElementById("yRot").value = 0;
+
+  randomTarget();
 }
 
-updateTarget();
+randomTarget();
 update();
