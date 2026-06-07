@@ -1,8 +1,8 @@
 body {
   margin: 0;
-  background: radial-gradient(circle at top, #05061a, #000);
-  color: cyan;
   font-family: Arial;
+  background: radial-gradient(circle, #05061a, #000);
+  color: cyan;
 }
 
 .bg {
@@ -10,13 +10,6 @@ body {
   width: 100%;
   height: 100%;
   background: radial-gradient(circle, rgba(0,255,255,0.08), transparent 60%);
-  animation: glow 6s infinite;
-}
-
-@keyframes glow {
-  0% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.2); opacity: 0.6; }
-  100% { transform: scale(1); opacity: 0.3; }
 }
 
 header {
@@ -26,15 +19,20 @@ header {
 
 .layout {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   padding: 10px;
 }
 
+/* PANEL */
 .panel {
-  width: 260px;
+  width: 320px;
   padding: 15px;
   border: 1px solid cyan;
   background: rgba(0,255,255,0.05);
+}
+
+.section {
+  margin-bottom: 10px;
 }
 
 input { width: 100%; }
@@ -48,32 +46,49 @@ button {
   cursor: pointer;
 }
 
+.output {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid cyan;
+}
+
+#resultBox {
+  margin-top: 10px;
+  padding: 10px;
+  border: 2px solid cyan;
+  font-weight: bold;
+}
+
+/* SPHERE */
 .scene {
   flex: 1;
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 canvas {
   width: 520px;
   height: 520px;
-  background: radial-gradient(circle, #001, #000);
   border-radius: 50%;
-  box-shadow: 0 0 60px cyan;
+  background: radial-gradient(circle, #001, #000);
+  box-shadow: 0 0 50px cyan;
 }
 
-/* FIXED LABELS */
-.label {
-  position: absolute;
-  font-weight: bold;
-  text-shadow: 0 0 10px cyan;
-  pointer-events: none;
+/* BOTTOM */
+.bottom {
+  padding: 10px;
 }
 
-.top { top: 20px; left: 50%; transform: translateX(-50%); }
-.bottom { bottom: 20px; left: 50%; transform: translateX(-50%); }
-.x { left: 20px; top: 50%; transform: translateY(-50%); }
-.y { right: 20px; top: 50%; transform: translateY(-50%); }
-.z { top: 50%; left: 50%; transform: translate(-50%,-50%); color: yellow; }
+.card {
+  border: 1px solid cyan;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.circuit {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 10px;
+}
