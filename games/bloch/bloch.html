@@ -4,107 +4,79 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quantum Bloch Sphere Simulator</title>
-
 <link rel="stylesheet" href="style.css">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
-
 <body>
 
 <div class="particles"></div>
 
 <header>
-<h1>⚛ QUANTUM BLOCH SPHERE ⚛</h1>
-<p>Ultra Hyper Realistic Quantum State Visualization</p>
+    <h1>⚛ QUANTUM BLOCH SPHERE ⚛</h1>
+    <p>Ultra Hyper Realistic Quantum State Simulator</p>
 </header>
 
 <div class="container">
 
-<section class="panel">
-<h2>Game Description</h2>
+    <section class="panel">
+        <h2>Game Description</h2>
+        <p>
+            A Bloch Sphere is a visual representation of a qubit.
+            Apply quantum gates and rotate the quantum state vector.
+            Measure the qubit and see whether you reach the target state.
+        </p>
+    </section>
 
-<p>
-The Bloch Sphere represents the state of a single qubit.
-Apply quantum gates to rotate the state vector through
-superposition and phase space.
-</p>
+    <section class="panel">
+        <h2>How To Play</h2>
+        <ul>
+            <li>Start from |0⟩ state.</li>
+            <li>Apply quantum gates.</li>
+            <li>Observe state vector movement.</li>
+            <li>Measure the qubit.</li>
+            <li>Reach |1⟩ to win.</li>
+        </ul>
+    </section>
 
-</section>
+    <section class="panel">
+        <h2>Win / Loss Conditions</h2>
 
-<section class="panel">
-<h2>How To Play</h2>
+        <div class="condition win">
+            WIN → Collapse to |1⟩
+        </div>
 
-<ul>
-<li>Start with |0⟩ state.</li>
-<li>Apply quantum gates.</li>
-<li>Observe Bloch vector movement.</li>
-<li>Measure the qubit.</li>
-<li>Reach target state to win.</li>
-</ul>
+        <div class="condition lose">
+            LOSS → Collapse to |0⟩
+        </div>
+    </section>
 
-</section>
+    <section class="game-panel">
 
-<section class="panel">
+        <canvas id="blochCanvas"></canvas>
 
-<h2>Win / Loss Conditions</h2>
+        <div class="controls">
+            <button onclick="applyGate('X')">X Gate</button>
+            <button onclick="applyGate('Y')">Y Gate</button>
+            <button onclick="applyGate('Z')">Z Gate</button>
+            <button onclick="applyGate('H')">H Gate</button>
+            <button onclick="measure()">Measure</button>
+        </div>
 
-<div class="condition win">
-WIN → Reach Target State |1⟩
-</div>
+    </section>
 
-<div class="condition lose">
-LOSS → Collapse To Wrong State
-</div>
+    <section class="panel">
+        <h2>Current State</h2>
+        <div id="stateDisplay">|0⟩</div>
+    </section>
 
-</section>
+    <section class="result-panel">
+        <h2>Quantum Measurement Result</h2>
+        <div id="resultBox">
+            Waiting For Measurement...
+        </div>
+    </section>
 
-<section class="game-panel">
-
-<div id="sphereContainer"></div>
-
-<div class="controls">
-
-<button onclick="applyGate('X')">X Gate</button>
-<button onclick="applyGate('Y')">Y Gate</button>
-<button onclick="applyGate('Z')">Z Gate</button>
-<button onclick="applyGate('H')">H Gate</button>
-
-<button onclick="measure()">
-Measure
-</button>
-
-</div>
-
-</section>
-
-<section class="result-panel">
-
-<h2>Quantum Measurement Result</h2>
-
-<div id="resultBox">
-
-Waiting For Quantum Measurement...
-
-</div>
-
-</section>
-
-<section class="panel">
-
-<h2>Current Quantum State</h2>
-
-<div id="stateDisplay">
-
-|0⟩
-
-</div>
-
-</section>
-
-<section class="panel">
-
-<h2>Qiskit Algorithm Reference</h2>
+    <section class="panel">
+        <h2>Qiskit Reference Code</h2>
 
 <pre>
 from qiskit import QuantumCircuit
@@ -112,25 +84,21 @@ from qiskit import QuantumCircuit
 qc = QuantumCircuit(1,1)
 
 qc.h(0)
-
 qc.measure(0,0)
 
 print(qc)
 </pre>
 
-</section>
+    </section>
 
-<section class="panel">
+    <section class="panel">
+        <h2>Quantum Circuit</h2>
 
-<h2>Quantum Circuit</h2>
-
-<div class="circuit">
-
+<pre>
 q0 ──H────M
+</pre>
 
-</div>
-
-</section>
+    </section>
 
 </div>
 
