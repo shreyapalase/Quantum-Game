@@ -1,159 +1,123 @@
-let scene;
-let camera;
-let renderer;
-let sphere;
-let arrow;
+const canvas =
+document.getElementById("blochCanvas");
 
-let state = "|0⟩";
+const ctx =
+canvas.getContext("2d");
 
-const container =
-document.getElementById("sphereContainer");
+canvas.width = 700;
+canvas.height = 500;
 
-scene = new THREE.Scene();
+let angle = -90;
+let currentState = "|0⟩";
 
-camera =
-new THREE.PerspectiveCamera(
-60,
-container.clientWidth /
-container.clientHeight,
-0.1,
-1000
+function drawSphere(){
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
 );
 
-renderer =
-new THREE.WebGLRenderer({
-antialias:true
-});
+const cx = 350;
+const cy = 250;
+const r = 150;
 
-renderer.setSize(
-container.clientWidth,
-container.clientHeight
+ctx.strokeStyle = "#00ffff";
+ctx.lineWidth = 3;
+
+ctx.beginPath();
+ctx.arc(cx,cy,r,0,Math.PI*2);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.ellipse(
+cx,
+cy,
+r,
+r/3,
+0,
+0,
+Math.PI*2
 );
+ctx.stroke();
 
-container.appendChild(
-renderer.domElement
-);
+ctx.beginPath();
+ctx.moveTo(cx-r,cy);
+ctx.lineTo(cx+r,cy);
+ctx.stroke();
 
-camera.position.z = 4;
+ctx.beginPath();
+ctx.moveTo(cx,cy-r);
+ctx.lineTo(cx,cy+r);
+ctx.stroke();
 
-const geometry =
-new THREE.SphereGeometry(
-1,
-64,
-64
-);
+const rad =
+angle * Math.PI / 180;
 
-const material =
-new THREE.MeshBasicMaterial({
-color:0x00ffff,
-wireframe:true
-});
+const x =
+cx + Math.cos(rad)*r;
 
-sphere =
-new THREE.Mesh(
-geometry,
-material
-);
+const y =
+cy + Math.sin(rad)*r;
 
-scene.add(sphere);
+ctx.strokeStyle="#ff00ff";
+ctx.lineWidth=6;
 
-const arrowHelper =
-new THREE.ArrowHelper(
-new THREE.Vector3(0,1,0),
-new THREE.Vector3(0,0,0),
-1.2,
-0xff00ff,
-0.2,
-0.1
-);
+ctx.beginPath();
+ctx.moveTo(cx,cy);
+ctx.lineTo(x,y);
+ctx.stroke();
 
-scene.add(arrowHelper);
+ctx.fillStyle="#ff00ff";
 
-arrow = arrowHelper;
+ctx.beginPath();
+ctx.arc(x,y,10,0,Math.PI*2);
+ctx.fill();
 
-function animate(){
-
-requestAnimationFrame(
-animate
-);
-
-sphere.rotation.y += 0.003;
-
-renderer.render(
-scene,
-camera
-);
-
+requestAnimationFrame(drawSphere);
 }
 
-animate();
+drawSphere();
 
 function applyGate(gate){
 
 switch(gate){
 
 case "X":
-
-arrow.setDirection(
-new THREE.Vector3(
-0,-1,0
-));
-
-state = "|1⟩";
-
+angle = 90;
+currentState="|1⟩";
 break;
 
 case "Y":
-
-arrow.setDirection(
-new THREE.Vector3(
-1,0,0
-));
-
-state = "|+i⟩";
-
+angle = 0;
+currentState="|+i⟩";
 break;
 
 case "Z":
-
-arrow.setDirection(
-new THREE.Vector3(
-0,1,0
-));
-
-state = "|0⟩";
-
+angle = -90;
+currentState="|0⟩";
 break;
 
 case "H":
-
-arrow.setDirection(
-new THREE.Vector3(
-1,1,0
-).normalize()
-);
-
-state = "|+⟩";
-
+angle = -45;
+currentState="|+⟩";
 break;
-
 }
 
-document
-.getElementById(
+document.getElementById(
 "stateDisplay"
-).innerHTML = state;
-
+).innerHTML=currentState;
 }
 
 function measure(){
 
-let result =
+const result =
 Math.random() > 0.5
 ? "|1⟩"
 : "|0⟩";
 
-let box =
+const box =
 document.getElementById(
 "resultBox"
 );
@@ -162,8 +126,8 @@ box.className="";
 
 if(result==="|1⟩"){
 
-box.innerHTML =
-"🏆 TARGET STATE REACHED<br>YOU WIN";
+box.innerHTML=
+"🏆 QUANTUM COLLAPSE → YOU WIN";
 
 box.classList.add(
 "winResult"
@@ -171,13 +135,11 @@ box.classList.add(
 
 }else{
 
-box.innerHTML =
-"💀 WRONG COLLAPSE<br>YOU LOSE";
+box.innerHTML=
+"💀 QUANTUM COLLAPSE → YOU LOSE";
 
 box.classList.add(
 "loseResult"
 );
-
 }
-
 }
