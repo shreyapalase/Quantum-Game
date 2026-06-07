@@ -1,20 +1,19 @@
 body {
   margin: 0;
-  background: radial-gradient(circle at top, #020314, #000);
+  background: radial-gradient(circle at top, #05061a, #000);
   color: cyan;
   font-family: Arial;
-  overflow: hidden;
 }
 
-.glow {
+.bg {
   position: fixed;
   width: 100%;
   height: 100%;
   background: radial-gradient(circle, rgba(0,255,255,0.08), transparent 60%);
-  animation: pulse 6s infinite;
+  animation: glow 6s infinite;
 }
 
-@keyframes pulse {
+@keyframes glow {
   0% { transform: scale(1); opacity: 0.3; }
   50% { transform: scale(1.2); opacity: 0.6; }
   100% { transform: scale(1); opacity: 0.3; }
@@ -32,16 +31,13 @@ header {
 }
 
 .panel {
-  width: 280px;
+  width: 260px;
   padding: 15px;
   border: 1px solid cyan;
   background: rgba(0,255,255,0.05);
-  box-shadow: 0 0 20px cyan;
 }
 
-input {
-  width: 100%;
-}
+input { width: 100%; }
 
 button {
   width: 100%;
@@ -49,6 +45,7 @@ button {
   padding: 10px;
   background: cyan;
   border: none;
+  cursor: pointer;
 }
 
 .scene {
@@ -67,21 +64,16 @@ canvas {
   box-shadow: 0 0 60px cyan;
 }
 
-.labels {
-  position: absolute;
-  width: 520px;
-  height: 520px;
-  pointer-events: none;
-}
-
-.l1, .l2, .lx, .ly, .lz {
+/* FIXED LABELS */
+.label {
   position: absolute;
   font-weight: bold;
   text-shadow: 0 0 10px cyan;
+  pointer-events: none;
 }
 
-.l1 { top: 20px; left: 48%; }
-.l2 { bottom: 20px; left: 48%; }
-.lx { left: 20px; top: 50%; }
-.ly { right: 20px; top: 50%; }
-.lz { top: 50%; left: 48%; color: yellow; }
+.top { top: 20px; left: 50%; transform: translateX(-50%); }
+.bottom { bottom: 20px; left: 50%; transform: translateX(-50%); }
+.x { left: 20px; top: 50%; transform: translateY(-50%); }
+.y { right: 20px; top: 50%; transform: translateY(-50%); }
+.z { top: 50%; left: 50%; transform: translate(-50%,-50%); color: yellow; }
