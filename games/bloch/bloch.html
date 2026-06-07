@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Quantum Bloch Sphere</title>
+<title>Quantum Bloch Sphere Trainer</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -11,37 +11,99 @@
 <div class="bg"></div>
 
 <header>
-  <h1>⚛️ Bloch Sphere Quantum State Simulator</h1>
-  <p>Correct 3D Bloch Sphere Representation (Quantum Physics Model)</p>
+  <h1>⚛️ Quantum Bloch Sphere Training Simulator</h1>
+  <p>Learn quantum states through visualization + interaction</p>
 </header>
 
 <div class="layout">
 
-  <div class="panel">
+<!-- LEFT PANEL -->
+<div class="panel">
 
-    <h2>🎮 Controls</h2>
+  <h2>🎮 Game Panel</h2>
 
-    <label>Theta (θ)</label>
-    <input type="range" id="theta" min="0" max="3.1415" step="0.01">
-
-    <label>Phi (φ)</label>
-    <input type="range" id="phi" min="0" max="6.283" step="0.01">
-
-    <button onclick="reset()">Reset State</button>
-
-    <div id="info">Move sliders to rotate quantum state</div>
-
+  <div class="section">
+    <h3>📘 Description</h3>
+    <p>This simulator visualizes a single qubit on Bloch Sphere. Adjust θ and φ to control quantum state.</p>
   </div>
 
-  <div class="scene">
-    <canvas id="c"></canvas>
+  <div class="section">
+    <h3>🧠 How to Play</h3>
+    <ul>
+      <li>Move θ and φ sliders</li>
+      <li>Observe Bloch vector movement</li>
+      <li>Try to match target state</li>
+      <li>Press Measure to collapse state</li>
+    </ul>
+  </div>
 
-    <div class="label top">|0⟩</div>
-    <div class="label bottom">|1⟩</div>
-    <div class="label x">X</div>
-    <div class="label y">Y</div>
-    <div class="label z">Z</div>
+  <div class="section">
+    <h3>📜 Rules</h3>
+    <p>State match is based on vector distance in Bloch space.</p>
+  </div>
 
+  <div class="section">
+    <h3>🏆 Win / Loss</h3>
+    <p><b>WIN:</b> Distance < 0.12 from target</p>
+    <p><b>LOSS:</b> Otherwise collapse fails</p>
+  </div>
+
+  <hr>
+
+  <label>Theta (θ)</label>
+  <input type="range" id="theta" min="0" max="3.1415" step="0.01">
+
+  <label>Phi (φ)</label>
+  <input type="range" id="phi" min="0" max="6.283" step="0.01">
+
+  <button onclick="measure()">⚡ Measure Qubit</button>
+  <button onclick="reset()">🔄 Reset</button>
+
+  <div class="output">
+    <p><b>Current Bloch Coordinates:</b></p>
+    <p id="coords">x=0 y=0 z=1</p>
+  </div>
+
+  <div id="resultBox">Result: Not measured</div>
+
+</div>
+
+<!-- BLOCH SPHERE -->
+<div class="scene">
+  <canvas id="c"></canvas>
+
+  <div class="labels">
+    <div>|0⟩</div>
+    <div>|1⟩</div>
+  </div>
+</div>
+
+</div>
+
+<!-- QISKIT SECTION -->
+<div class="bottom">
+
+  <div class="card">
+    <h2>🧪 Qiskit Reference Code</h2>
+    <pre>
+from qiskit import QuantumCircuit
+import numpy as np
+
+qc = QuantumCircuit(1)
+
+theta = np.pi/3
+phi = np.pi/4
+
+qc.u(theta, phi, 0, 0)
+
+qc.measure_all()
+
+print(qc)
+    </pre>
+
+    <div class="circuit">
+      ── U(θ,φ) ── M ──
+    </div>
   </div>
 
 </div>
