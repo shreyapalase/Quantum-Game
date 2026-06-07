@@ -2,14 +2,12 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Segoe UI;
+font-family:Segoe UI,sans-serif;
 }
 
 body{
 background:
-radial-gradient(circle at top,
-#190030,
-#020010);
+radial-gradient(circle at top,#220044,#020012);
 color:white;
 overflow-x:hidden;
 }
@@ -19,90 +17,99 @@ text-align:center;
 padding:40px;
 }
 
-h1{
-font-size:4rem;
+header h1{
+font-size:3.5rem;
 color:cyan;
 text-shadow:
-0 0 20px cyan,
+0 0 10px cyan,
+0 0 30px cyan,
 0 0 60px cyan;
 }
 
 .container{
 width:90%;
+max-width:1400px;
 margin:auto;
 }
 
 .panel{
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(20px);
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
 padding:25px;
 margin:20px 0;
 border-radius:20px;
-border:1px solid rgba(255,255,255,.1);
+border:1px solid rgba(255,255,255,0.1);
 }
 
 .panel h2{
 margin-bottom:15px;
-color:cyan;
+color:#00ffff;
 }
 
 .game-panel{
 text-align:center;
-padding:30px;
+margin:40px 0;
 }
 
-#sphereContainer{
-width:100%;
-height:600px;
-border-radius:30px;
-overflow:hidden;
+#blochCanvas{
+width:700px;
+max-width:100%;
+height:500px;
 background:black;
+border-radius:25px;
 box-shadow:
 0 0 50px cyan;
 }
 
 .controls{
-margin-top:30px;
+margin-top:20px;
 }
 
 button{
-padding:15px 25px;
-margin:10px;
+padding:14px 25px;
+margin:8px;
 border:none;
-border-radius:40px;
-font-weight:bold;
 cursor:pointer;
-background:
-linear-gradient(
-45deg,
-cyan,
-magenta
-);
+font-weight:bold;
+border-radius:50px;
 color:white;
+background:
+linear-gradient(45deg,
+cyan,
+magenta);
 }
 
-#resultBox{
-padding:25px;
-font-size:2rem;
-margin-top:20px;
-border-radius:20px;
-background:rgba(255,255,255,.05);
-}
-
-.winResult{
-background:#00ff8850;
-color:#00ff88;
-}
-
-.loseResult{
-background:#ff335550;
-color:#ff6666;
+button:hover{
+transform:scale(1.08);
 }
 
 #stateDisplay{
 font-size:2rem;
 text-align:center;
 color:#00ffff;
+font-weight:bold;
+}
+
+.result-panel{
+text-align:center;
+margin:30px 0;
+}
+
+#resultBox{
+padding:30px;
+font-size:2rem;
+border-radius:20px;
+background:rgba(255,255,255,.05);
+}
+
+.winResult{
+background:#00ff8840 !important;
+color:#00ff88;
+}
+
+.loseResult{
+background:#ff003340 !important;
+color:#ff6666;
 }
 
 .condition{
@@ -113,11 +120,11 @@ font-weight:bold;
 }
 
 .win{
-background:#00ff8850;
+background:#00ff8840;
 }
 
 .lose{
-background:#ff225550;
+background:#ff335540;
 }
 
 pre{
@@ -128,28 +135,20 @@ color:#00ff88;
 overflow:auto;
 }
 
-.circuit{
-font-size:2rem;
-text-align:center;
-font-family:monospace;
-}
-
 .particles{
 position:fixed;
 width:100%;
 height:100%;
+pointer-events:none;
 background:
-radial-gradient(
-white 1px,
-transparent 1px
-);
-background-size:40px 40px;
+radial-gradient(circle,#ffffff80 1px,transparent 1px);
+background-size:50px 50px;
 opacity:.15;
-animation:moveStars 50s linear infinite;
+animation:stars 60s linear infinite;
 }
 
-@keyframes moveStars{
+@keyframes stars{
 100%{
-transform:translateY(-1000px);
+transform:translateY(-1200px);
 }
 }
