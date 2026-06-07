@@ -1,145 +1,91 @@
-const canvas =
-document.getElementById("blochCanvas");
+const canvas = document.getElementById("bloch");
+const ctx = canvas.getContext("2d");
 
-const ctx =
-canvas.getContext("2d");
+canvas.width = 500;
+canvas.height = 300;
 
-canvas.width = 700;
-canvas.height = 500;
+let thetaInput = document.getElementById("theta");
+let phiInput = document.getElementById("phi");
+let resultBox = document.getElementById("resultBox");
+let targetStateBox = document.getElementById("targetState");
 
-let angle = -90;
-let currentState = "|0⟩";
+// Target quantum state
+let targetTheta = Math.random() * Math.PI;
+let targetPhi = Math.random() * 2 * Math.PI;
 
-function drawSphere(){
+targetStateBox.innerText =
+  `θ=${targetTheta.toFixed(2)}, φ=${targetPhi.toFixed(2)}`;
 
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
+// Draw Bloch sphere
+function drawBloch(theta, phi) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-const cx = 350;
-const cy = 250;
-const r = 150;
+  // sphere
+  ctx.beginPath();
+  ctx.arc(250, 150, 100, 0, Math.PI * 2);
+  ctx.strokeStyle = "cyan";
+  ctx.stroke();
 
-ctx.strokeStyle = "#00ffff";
-ctx.lineWidth = 3;
+  // vector projection
+  let x = 250 + 100 * Math.sin(theta) * Math.cos(phi);
+  let y = 150 - 100 * Math.cos(theta);
 
-ctx.beginPath();
-ctx.arc(cx,cy,r,0,Math.PI*2);
-ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(250, 150);
+  ctx.lineTo(x, y);
+  ctx.strokeStyle = "magenta";
+  ctx.shadowBlur = 20;
+  ctx.shadowColor = "magenta";
+  ctx.stroke();
 
-ctx.beginPath();
-ctx.ellipse(
-cx,
-cy,
-r,
-r/3,
-0,
-0,
-Math.PI*2
-);
-ctx.stroke();
-
-ctx.beginPath();
-ctx.moveTo(cx-r,cy);
-ctx.lineTo(cx+r,cy);
-ctx.stroke();
-
-ctx.beginPath();
-ctx.moveTo(cx,cy-r);
-ctx.lineTo(cx,cy+r);
-ctx.stroke();
-
-const rad =
-angle * Math.PI / 180;
-
-const x =
-cx + Math.cos(rad)*r;
-
-const y =
-cy + Math.sin(rad)*r;
-
-ctx.strokeStyle="#ff00ff";
-ctx.lineWidth=6;
-
-ctx.beginPath();
-ctx.moveTo(cx,cy);
-ctx.lineTo(x,y);
-ctx.stroke();
-
-ctx.fillStyle="#ff00ff";
-
-ctx.beginPath();
-ctx.arc(x,y,10,0,Math.PI*2);
-ctx.fill();
-
-requestAnimationFrame(drawSphere);
+  ctx.beginPath();
+  ctx.arc(x, y, 5, 0, Math.PI * 2);
+  ctx.fillStyle = "white";
+  ctx.fill();
 }
 
-drawSphere();
+// fidelity calculation
+function fidelity(t1, p1, t2, p2) {
+  let cos =
+    Math.cos(t1 / 2) * Math.cos(t2 / 2) +
+    Math.sin(t1 / 2) * Math.sin(t2 / 2) * Math.cos(p1 - p2);
 
-function applyGate(gate){
-
-switch(gate){
-
-case "X":
-angle = 90;
-currentState="|1⟩";
-break;
-
-case "Y":
-angle = 0;
-currentState="|+i⟩";
-break;
-
-case "Z":
-angle = -90;
-currentState="|0⟩";
-break;
-
-case "H":
-angle = -45;
-currentState="|+⟩";
-break;
+  return cos * cos;
 }
 
-document.getElementById(
-"stateDisplay"
-).innerHTML=currentState;
+// measurement simulation
+function measureQubit() {
+  let theta = parseFloat(thetaInput.value);
+  let phi = parseFloat(phiInput.value);
+
+  let prob0 = Math.cos(theta / 2) ** 2;
+  let outcome = Math.random() < prob0 ? 0 : 1;
+
+  let fid = fidelity(theta, phi, targetTheta, targetPhi);
+
+  let win = fid > 0.92 || outcome === 0;
+
+  resultBox.innerHTML = `
+    🎲 Outcome: <b>${outcome}</b><br>
+    📊 Fidelity: <b>${fid.toFixed(3)}</b><br>
+    ${win ? "🟢 YOU WIN!" : "🔴 YOU LOSE"}
+  `;
+
+  resultBox.style.boxShadow = win
+    ? "0 0 20px lime"
+    : "0 0 20px red";
 }
 
-function measure(){
-
-const result =
-Math.random() > 0.5
-? "|1⟩"
-: "|0⟩";
-
-const box =
-document.getElementById(
-"resultBox"
-);
-
-box.className="";
-
-if(result==="|1⟩"){
-
-box.innerHTML=
-"🏆 QUANTUM COLLAPSE → YOU WIN";
-
-box.classList.add(
-"winResult"
-);
-
-}else{
-
-box.innerHTML=
-"💀 QUANTUM COLLAPSE → YOU LOSE";
-
-box.classList.add(
-"loseResult"
-);
+// animation loop
+function animate() {
+  drawBloch(
+    parseFloat(thetaInput.value),
+    parseFloat(phiInput.value)
+  );
+  requestAnimationFrame(animate);
 }
-}
+
+thetaInput.value = 1;
+phiInput.value = 1;
+
+animate();
