@@ -1,121 +1,87 @@
 body {
   margin: 0;
+  background: radial-gradient(circle at top, #020314, #000);
+  color: cyan;
   font-family: Arial;
-  background: radial-gradient(circle at top, #050816, #000);
-  color: #00f7ff;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
-/* MAGIC BACKGROUND */
-.magic-bg {
+.glow {
   position: fixed;
   width: 100%;
   height: 100%;
   background: radial-gradient(circle, rgba(0,255,255,0.08), transparent 60%);
-  animation: glow 6s infinite;
-  pointer-events: none;
+  animation: pulse 6s infinite;
 }
 
-@keyframes glow {
+@keyframes pulse {
   0% { transform: scale(1); opacity: 0.3; }
-  50% { transform: scale(1.3); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 0.6; }
   100% { transform: scale(1); opacity: 0.3; }
 }
 
-/* HEADER */
 header {
   text-align: center;
-  padding: 15px;
-  text-shadow: 0 0 20px cyan;
+  padding: 10px;
 }
 
-/* LAYOUT */
 .layout {
   display: flex;
   gap: 20px;
   padding: 10px;
 }
 
-/* PANEL */
 .panel {
-  width: 300px;
+  width: 280px;
   padding: 15px;
-  background: rgba(0,255,255,0.05);
   border: 1px solid cyan;
-  border-radius: 12px;
+  background: rgba(0,255,255,0.05);
   box-shadow: 0 0 20px cyan;
 }
 
-/* SLIDERS */
-input[type="range"] {
+input {
   width: 100%;
 }
 
-/* BUTTONS */
 button {
   width: 100%;
   margin-top: 10px;
   padding: 10px;
   background: cyan;
   border: none;
-  cursor: pointer;
-  font-weight: bold;
 }
 
-/* RESULT */
-#resultBox {
-  margin-top: 10px;
-  padding: 10px;
-  border: 1px solid cyan;
-}
-
-/* SPHERE */
-.sphere-wrap {
+.scene {
   flex: 1;
+  position: relative;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
 canvas {
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
+  width: 520px;
+  height: 520px;
   background: radial-gradient(circle, #001, #000);
-  box-shadow: 0 0 50px cyan;
+  border-radius: 50%;
+  box-shadow: 0 0 60px cyan;
 }
 
-.hint {
-  margin-top: 10px;
+.labels {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  pointer-events: none;
 }
 
-/* INFO CARDS */
-.bottom {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
+.l1, .l2, .lx, .ly, .lz {
+  position: absolute;
+  font-weight: bold;
+  text-shadow: 0 0 10px cyan;
 }
 
-.card {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid cyan;
-  background: rgba(0,255,255,0.04);
-}
-
-/* 📱 MOBILE RESPONSIVE */
-@media (max-width: 900px) {
-  .layout {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  canvas {
-    width: 90vw;
-    height: 90vw;
-  }
-
-  .bottom {
-    flex-direction: column;
-  }
-}
+.l1 { top: 20px; left: 48%; }
+.l2 { bottom: 20px; left: 48%; }
+.lx { left: 20px; top: 50%; }
+.ly { right: 20px; top: 50%; }
+.lz { top: 50%; left: 48%; color: yellow; }
