@@ -1,83 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Quantum Bloch Sphere Game</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="stars"></div>
+<div class="background-glow"></div>
 
-<header>
-  <h1>⚛️ Quantum Bloch Sphere Game</h1>
-  <p class="subtitle">Control a quantum state in a simulated universe</p>
-</header>
+<div class="app">
 
-<div class="container">
-
-  <div class="panel">
-    <h2>📘 Game Description</h2>
-    <p>
-      You are manipulating a single qubit on a Bloch Sphere.
-      Adjust angles to match a hidden quantum target state.
-    </p>
-
-    <h2>🎮 How to Play</h2>
-    <ul>
-      <li>Move θ (theta) and φ (phi) sliders</li>
-      <li>Align with target quantum state</li>
-      <li>Click Measure</li>
-    </ul>
-
-    <h2>🏁 Win / Loss</h2>
-    <p>
-      ✔ Win: Fidelity > 0.92 OR lucky measurement match<br>
-      ✖ Lose: Otherwise
-    </p>
+  <div class="header">
+    <h1>⚛️ Quantum Bloch Sphere Game Simulator</h1>
+    <p>Manipulate quantum state | Match the target | Collapse reality</p>
   </div>
 
-  <div class="game-box">
+  <div class="main-grid">
 
-    <canvas id="bloch"></canvas>
+    <!-- GAME PANEL -->
+    <div class="panel">
 
-    <div class="controls">
-      <label>θ
+      <h2>🎮 Game Panel</h2>
+
+      <div class="stat-box">
+        <p>Target State</p>
+        <div id="targetState">|ψ⟩ = loading...</div>
+      </div>
+
+      <div class="controls">
+        <label>Theta (θ)</label>
         <input type="range" id="theta" min="0" max="3.14" step="0.01">
-      </label>
 
-      <label>φ
+        <label>Phi (φ)</label>
         <input type="range" id="phi" min="0" max="6.28" step="0.01">
-      </label>
 
-      <button onclick="measureQubit()">⚛ Measure</button>
+        <button onclick="measure()">⚡ Measure Qubit</button>
+        <button onclick="resetGame()">🔄 Reset Universe</button>
+      </div>
+
+      <div id="resultBox" class="result-box">
+        Awaiting quantum collapse...
+      </div>
+
     </div>
 
-    <div class="target">
-      🎯 Target State: <span id="targetState"></span>
+    <!-- BLOCH SPHERE -->
+    <div class="sphere-container">
+      <canvas id="blochCanvas"></canvas>
+      <div class="sphere-label">Bloch Sphere Quantum Visualization</div>
     </div>
 
-    <div id="resultBox">Awaiting quantum collapse...</div>
   </div>
 
-</div>
+  <!-- INFO SECTION -->
+  <div class="info">
 
-<div class="panel wide">
-  <h2>💻 Qiskit Reference</h2>
-  <pre>
-from qiskit import QuantumCircuit
+    <div class="card">
+      <h2>📘 Game Description</h2>
+      <p>
+        This simulation visualizes a single qubit on the Bloch Sphere.
+        Your goal is to rotate the quantum state (θ, φ) until it matches the hidden target state.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>🧠 How to Play</h2>
+      <ul>
+        <li>Adjust θ (latitude) and φ (longitude)</li>
+        <li>Try to match the hidden quantum state</li>
+        <li>Press “Measure Qubit” to collapse wavefunction</li>
+        <li>Precision determines success</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🏆 Win / Loss Conditions</h2>
+      <p><b>WIN:</b> Your state matches target within tolerance (±0.15)</p>
+      <p><b>LOSS:</b> Measurement collapses to incorrect basis state</p>
+    </div>
+
+  </div>
+
+  <!-- QISKIT SECTION -->
+  <div class="qiskit">
+
+    <h2>🧪 Qiskit Reference (Quantum Circuit)</h2>
+
+    <pre>
+from qiskit import QuantumCircuit, Aer, execute
+import numpy as np
 
 qc = QuantumCircuit(1, 1)
 
-qc.ry(theta, 0)
-qc.rz(phi, 0)
+# Prepare state
+theta = np.pi / 3
+phi = np.pi / 4
+
+qc.u(theta, phi, 0, 0)
 
 qc.measure(0, 0)
-  </pre>
 
-  <pre>
-q0: ──Ry(θ)──Rz(φ)──M──
-  </pre>
+backend = Aer.get_backend('qasm_simulator')
+result = execute(qc, backend, shots=1024).result()
+
+print(result.get_counts())
+    </pre>
+
+    <div class="circuit">
+      ──[U(θ,φ)]───M──
+    </div>
+
+  </div>
+
 </div>
 
 <script src="script.js"></script>
