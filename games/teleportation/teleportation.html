@@ -1,105 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Quantum Teleportation AAA Simulator</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Teleportation Simulator</title>
 
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
 
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
 <body>
 
-<canvas id="galaxy"></canvas>
+<div id="stars"></div>
 
 <header>
-  <h1>⚛ Quantum Teleportation Simulator</h1>
-  <p>AAA Educational Sci-Fi Quantum Mission</p>
+    <h1>⚛ Quantum Teleportation Simulator ⚛</h1>
+    <p>Transfer a Quantum State Across Universes</p>
 </header>
-
-<div class="hud">
-  <div>
-    Mission Progress
-    <div class="bar">
-      <div id="fill"></div>
-    </div>
-  </div>
-
-  <div id="score">Score: 0</div>
-</div>
 
 <div class="container">
 
-  <div class="panel">
-    <h2>🌌 Universe A</h2>
+    <div class="panel">
+        <h2>🌌 Universe A</h2>
+        <div id="sourceQubit" class="qubit">
+            ψ
+        </div>
 
-    <div id="sourceQubit" class="qubit">?</div>
-    <div id="stateInfoA" class="info"></div>
-
-    <button id="gen">Generate State</button>
-  </div>
-
-  <div class="center">
-
-    <div class="wormhole">
-      <div class="ring"></div>
-      <div class="ring r2"></div>
-      <div class="ring r3"></div>
+        <button id="createState">
+            Generate Quantum State
+        </button>
     </div>
 
-    <div id="beam"></div>
+    <div class="panel centerPanel">
 
-    <button id="next">Run Teleport Step</button>
-  </div>
+        <h2>🚀 Teleportation Portal</h2>
 
-  <div class="panel">
-    <h2>🌌 Universe B</h2>
+        <div class="portal"></div>
 
-    <div id="targetQubit" class="qubit">?</div>
-    <div id="stateInfoB" class="info"></div>
+        <button id="teleportBtn">
+            TELEPORT
+        </button>
 
-  </div>
+    </div>
+
+    <div class="panel">
+        <h2>🌌 Universe B</h2>
+
+        <div id="targetQubit" class="qubit">
+            ?
+        </div>
+
+    </div>
 
 </div>
 
-<div class="mission">
-  <h3>Mission AI</h3>
-  <p id="ai">Initialize quantum system...</p>
-</div>
+<div class="infoGrid">
 
-<div class="phases">
-  <div class="p" id="p0">Prepare</div>
-  <div class="p" id="p1">Entangle</div>
-  <div class="p" id="p2">Bell Measure</div>
-  <div class="p" id="p3">Transmit</div>
-  <div class="p" id="p4">Reconstruct</div>
-</div>
+    <div class="infoBox">
+        <h3>📖 Game Description</h3>
+        <p>
+            Understand Quantum Teleportation by sending a quantum state
+            from Universe A to Universe B using entanglement.
+        </p>
+    </div>
 
-<div class="box">
+    <div class="infoBox">
+        <h3>🎮 How To Play</h3>
+        <ul>
+            <li>Create quantum state.</li>
+            <li>Press TELEPORT.</li>
+            <li>Observe state transfer.</li>
+            <li>Match final state correctly.</li>
+        </ul>
+    </div>
+
+    <div class="infoBox">
+        <h3>🏆 Win Condition</h3>
+        <p>
+            Teleported state arrives correctly.
+        </p>
+
+        <h3>❌ Loss Condition</h3>
+        <p>
+            State corruption during transfer.
+        </p>
+    </div>
+
+    <div class="infoBox">
+        <h3>⚛ Qiskit Algorithm</h3>
+
 <pre>
-Qiskit Reference:
-
 qc.h(1)
 qc.cx(1,2)
 
 qc.cx(0,1)
 qc.h(0)
 
-qc.measure([0,1],[0,1])
+qc.measure(0,0)
+qc.measure(1,1)
 
 qc.cx(1,2)
 qc.cz(0,2)
 </pre>
+
+    </div>
+
+</div>
+
+<div class="circuitBox">
+
+<h2>Quantum Circuit</h2>
+
+<pre>
+q0 ──■──H──M──────■──
+      │           │
+q1 ──X──■──M──■───┼──
+         │     │   │
+q2 ──────X─────X───Z──
+</pre>
+
 </div>
 
 <div id="popup" class="popup hidden">
-  <div class="popupBox">
-    <h1 id="title"></h1>
-    <button onclick="location.reload()">Restart</button>
-  </div>
+    <div class="popupContent">
+        <h2 id="resultTitle"></h2>
+        <button onclick="closePopup()">
+            Play Again
+        </button>
+    </div>
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
