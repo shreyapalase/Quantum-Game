@@ -147,36 +147,17 @@ flex-wrap:wrap;
 padding:12px;
 background:#111;
 border-radius:12px;
+transition:0.3s;
 }
 
 .active{
 background:cyan;
 color:black;
+transform:scale(1.1);
+box-shadow:0 0 20px cyan;
 }
 
-.educationGrid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:20px;
-padding:25px;
-}
-
-.card{
-background:rgba(255,255,255,.08);
-padding:20px;
-border-radius:20px;
-backdrop-filter:blur(15px);
-}
-
-.circuitPanel{
-margin:20px;
-padding:20px;
-background:rgba(255,255,255,.08);
-border-radius:20px;
-}
-
-pre{color:#00ffcc;}
-
+/* POPUP */
 .popup{
 position:fixed;
 inset:0;
@@ -196,19 +177,33 @@ text-align:center;
 
 .hidden{display:none;}
 
-/* TELEPORT EFFECT */
-@keyframes teleportOut{
-0%{transform:scale(1);opacity:1;}
-100%{transform:scale(0.2) rotate(720deg);opacity:0;}
+/* QUANTUM ANIMATIONS */
+
+@keyframes preparePulse{
+0%{transform:scale(1);filter:brightness(1);}
+50%{transform:scale(1.3);filter:brightness(2);}
+100%{transform:scale(1);filter:brightness(1);}
+}
+
+@keyframes entangleLink{
+0%{box-shadow:0 0 20px cyan;}
+50%{box-shadow:0 0 80px purple;}
+100%{box-shadow:0 0 20px cyan;}
+}
+
+@keyframes bellCollapse{
+0%{transform:scale(1);}
+50%{transform:scale(0.5) rotate(180deg);}
+100%{transform:scale(1);}
+}
+
+@keyframes classicalWave{
+0%{filter:blur(0);}
+50%{filter:blur(4px) hue-rotate(180deg);}
+100%{filter:blur(0);}
 }
 
 @keyframes teleportIn{
-0%{transform:scale(0.2) rotate(-720deg);opacity:0;}
+0%{transform:scale(0.2);opacity:0;}
 100%{transform:scale(1);opacity:1;}
-}
-
-@keyframes teleportPulse{
-0%{transform:scale(1);box-shadow:0 0 50px cyan;}
-50%{transform:scale(1.3);box-shadow:0 0 120px purple;}
-100%{transform:scale(1);box-shadow:0 0 50px cyan;}
 }
