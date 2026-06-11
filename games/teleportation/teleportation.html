@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Teleportation Simulator</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="stars"></div>
+
+<header>
+    <h1>⚛ Quantum Teleportation Simulator ⚛</h1>
+    <p>Transfer a Quantum State Across Universes</p>
+</header>
+
+<div class="container">
+
+    <div class="panel">
+        <h2>🌌 Universe A</h2>
+        <div id="sourceQubit" class="qubit">
+            ψ
+        </div>
+
+        <button id="createState">
+            Generate Quantum State
+        </button>
+    </div>
+
+    <div class="panel centerPanel">
+
+        <h2>🚀 Teleportation Portal</h2>
+
+        <div class="portal"></div>
+
+        <button id="teleportBtn">
+            TELEPORT
+        </button>
+
+    </div>
+
+    <div class="panel">
+        <h2>🌌 Universe B</h2>
+
+        <div id="targetQubit" class="qubit">
+            ?
+        </div>
+
+    </div>
+
+</div>
+
+<div class="infoGrid">
+
+    <div class="infoBox">
+        <h3>📖 Game Description</h3>
+        <p>
+            Understand Quantum Teleportation by sending a quantum state
+            from Universe A to Universe B using entanglement.
+        </p>
+    </div>
+
+    <div class="infoBox">
+        <h3>🎮 How To Play</h3>
+        <ul>
+            <li>Create quantum state.</li>
+            <li>Press TELEPORT.</li>
+            <li>Observe state transfer.</li>
+            <li>Match final state correctly.</li>
+        </ul>
+    </div>
+
+    <div class="infoBox">
+        <h3>🏆 Win Condition</h3>
+        <p>
+            Teleported state arrives correctly.
+        </p>
+
+        <h3>❌ Loss Condition</h3>
+        <p>
+            State corruption during transfer.
+        </p>
+    </div>
+
+    <div class="infoBox">
+        <h3>⚛ Qiskit Algorithm</h3>
+
+<pre>
+qc.h(1)
+qc.cx(1,2)
+
+qc.cx(0,1)
+qc.h(0)
+
+qc.measure(0,0)
+qc.measure(1,1)
+
+qc.cx(1,2)
+qc.cz(0,2)
+</pre>
+
+    </div>
+
+</div>
+
+<div class="circuitBox">
+
+<h2>Quantum Circuit</h2>
+
+<pre>
+q0 ──■──H──M──────■──
+      │           │
+q1 ──X──■──M──■───┼──
+         │     │   │
+q2 ──────X─────X───Z──
+</pre>
+
+</div>
+
+<div id="popup" class="popup hidden">
+    <div class="popupContent">
+        <h2 id="resultTitle"></h2>
+        <button onclick="closePopup()">
+            Play Again
+        </button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
