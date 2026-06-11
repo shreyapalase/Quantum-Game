@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quantum Circuit Builder Game</title>
+<title>Quantum Circuit Lab AAA</title>
 
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
@@ -11,82 +11,82 @@
 
 <body>
 
-<canvas id="bg"></canvas>
-<div class="overlay"></div>
+<canvas id="bg3d"></canvas>
+<div class="glowOverlay"></div>
 
 <header>
-<h1>⚛ QUANTUM CIRCUIT BUILDER GAME</h1>
-<p>Build circuits. Create entanglement. Solve missions.</p>
+<h1>⚛ QUANTUM CIRCUIT LAB AAA</h1>
+<p>Advanced 3D Quantum Simulation Environment</p>
 </header>
 
 <div class="hud">
-<div>Mission Progress
-<div class="bar"><div id="fill"></div></div>
-</div>
+<div>Mission Progress <div class="bar"><div id="fill"></div></div></div>
 <div id="score">Score: 0</div>
 </div>
 
-<div class="main">
+<div class="lab">
 
-<!-- LEFT PANEL -->
+<!-- LEFT: INFO -->
 <div class="panel">
-<h2>📘 Game Description</h2>
-<p>Build correct quantum circuits using gates to complete teleportation missions.</p>
+<h2>📘 Lab Instructions</h2>
+<p>Build quantum circuits using gates to complete missions.</p>
 
 <h2>📜 Rules</h2>
 <ul>
-<li>Choose correct quantum gates</li>
-<li>Follow circuit order</li>
-<li>Complete all steps</li>
-<li>Higher accuracy = higher score</li>
+<li>Follow circuit sequence</li>
+<li>Use correct gates</li>
+<li>Complete all 10 missions</li>
 </ul>
 
 <h2>⚛ Qiskit Reference</h2>
 <pre>
 qc.h(0)
 qc.cx(0,1)
-qc.cx(1,2)
+qc.x(1)
 qc.measure_all()
 </pre>
 </div>
 
-<!-- CENTER GAME -->
-<div class="game">
+<!-- CENTER: CIRCUIT BUILDER -->
+<div class="core">
 
-<h2>🧪 Circuit Builder</h2>
+<h2 id="missionTitle">Mission 1</h2>
+<p id="missionText">Create Hadamard superposition on q0</p>
 
-<div class="circuit">
-<div class="wire">q0: <span id="q0">— — —</span></div>
-<div class="wire">q1: <span id="q1">— — —</span></div>
-<div class="wire">q2: <span id="q2">— — —</span></div>
+<div class="circuitBox">
+<div>q0 → <span id="q0">— — —</span></div>
+<div>q1 → <span id="q1">— — —</span></div>
+<div>q2 → <span id="q2">— — —</span></div>
 </div>
 
-<div class="buttons">
+<div class="controls">
 <button onclick="addGate('H')">H Gate</button>
 <button onclick="addGate('X')">X Gate</button>
 <button onclick="addGate('CX')">CNOT</button>
+<button onclick="resetCircuit()">RESET</button>
 </div>
 
-<button id="checkBtn">CHECK CIRCUIT</button>
+<button id="checkBtn">RUN CIRCUIT</button>
 
 </div>
 
 <!-- RIGHT PANEL -->
 <div class="panel">
-<h2>🎯 Mission</h2>
-<p id="mission">Create entanglement between q0 and q1.</p>
+<h2>🎯 Lab Status</h2>
+<p id="status">Initializing quantum field...</p>
 
 <h2>🏆 Goal</h2>
-<p>Match target quantum circuit pattern.</p>
+<p>Complete all 10 quantum circuit experiments</p>
 </div>
 
 </div>
 
+<!-- POPUP -->
 <div id="popup" class="popup hidden">
 <div class="box">
 <h1 id="title"></h1>
 <p id="text"></p>
-<button onclick="location.reload()">Restart</button>
+<button onclick="nextMission()">NEXT</button>
 </div>
 </div>
 
