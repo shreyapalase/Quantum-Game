@@ -1,90 +1,222 @@
-let currentState = "";
+const canvas =
+document.getElementById("galaxy");
 
-const states = [
+const ctx =
+canvas.getContext("2d");
+
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
+let stars=[];
+
+for(let i=0;i<700;i++){
+
+stars.push({
+
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2
+
+});
+
+}
+
+function animateGalaxy(){
+
+ctx.fillStyle="#000";
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+ctx.fillStyle="white";
+
+stars.forEach(star=>{
+
+ctx.beginPath();
+
+ctx.arc(
+star.x,
+star.y,
+star.r,
+0,
+Math.PI*2
+);
+
+ctx.fill();
+
+star.y+=0.2;
+
+if(star.y>canvas.height){
+
+star.y=0;
+
+}
+
+});
+
+requestAnimationFrame(
+animateGalaxy
+);
+
+}
+
+animateGalaxy();
+
+const states=[
 "|0⟩",
 "|1⟩",
 "|+⟩",
 "|-⟩"
 ];
 
-const source =
-document.getElementById("sourceQubit");
+let currentState="";
+let phase=0;
+let score=0;
 
-const target =
-document.getElementById("targetQubit");
+const commander=
+document.getElementById(
+"commander"
+);
+
+const messages=[
+
+"Prepare unknown quantum state.",
+
+"Create entanglement pair.",
+
+"Perform Bell measurement.",
+
+"Transmit classical bits.",
+
+"Reconstruct target state."
+
+];
 
 document
-.getElementById("createState")
-.addEventListener("click",()=>{
+.getElementById(
+"generateBtn"
+)
+.onclick=()=>{
 
-currentState =
-states[Math.floor(Math.random()*states.length)];
-
-source.innerHTML=currentState;
-
-target.innerHTML="?";
-});
+currentState=
+states[
+Math.floor(
+Math.random()*4
+)
+];
 
 document
-.getElementById("teleportBtn")
-.addEventListener("click",()=>{
+.getElementById(
+"sourceQubit"
+)
+innerHTML=currentState;
+
+phase=0;
+score=0;
+
+};
+
+document
+.getElementById(
+"nextStep"
+)
+.onclick=()=>{
 
 if(currentState===""){
-alert("Generate Quantum State First");
+alert(
+"Generate state first."
+);
 return;
 }
 
-source.animate([
-{
-transform:"scale(1)"
-},
-{
-transform:"scale(0)"
-}
-],{
-duration:1000
-});
-
-setTimeout(()=>{
-
-let success =
-Math.random() > 0.25;
-
-if(success){
-
-target.innerHTML=currentState;
-
-showPopup(
-"🏆 TELEPORTATION SUCCESS"
+document
+.getElementById(
+`p${phase}`
+)
+.classList.add(
+"active"
 );
 
+commander.innerHTML=
+messages[phase];
+
+score+=20;
+
+document
+.getElementById(
+"score"
+)
+.innerHTML=
+"Score: "+score;
+
+document
+.getElementById(
+"progressFill"
+)
+.style.width=
+(score)+"%";
+
+if(phase===3){
+
+document
+.getElementById(
+"beam"
+)
+.style.width=
+"300px";
+
 }
-else{
 
-target.innerHTML="ERROR";
+phase++;
 
-showPopup(
-"❌ QUANTUM DECOHERENCE"
+if(phase===5){
+
+document
+.getElementById(
+"targetQubit"
+)
+.innerHTML=
+currentState;
+
+showWin();
+
+}
+
+};
+
+function showWin(){
+
+document
+.getElementById(
+"popup"
+)
+.classList.remove(
+"hidden"
 );
 
-}
-
-},1500);
-
-});
-
-function showPopup(msg){
+document
+.getElementById(
+"popupTitle"
+)
+.innerHTML=
+"MISSION SUCCESS";
 
 document
-.getElementById("resultTitle")
-.innerHTML=msg;
-
-document
-.getElementById("popup")
-.classList.remove("hidden");
+.getElementById(
+"popupText"
+)
+.innerHTML=
+"Quantum State Teleported Successfully";
 }
 
-function closePopup(){
+function restartMission(){
 
 location.reload();
+
 }
