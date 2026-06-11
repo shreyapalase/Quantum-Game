@@ -15,50 +15,54 @@
 
 <header>
 <h1>⚛ QUANTUM CIRCUIT LAB AAA</h1>
-<p>Select a mission to begin simulation</p>
+<p>Select a mission and build the correct quantum circuit</p>
 </header>
 
-<!-- MAIN MENU (ALL MISSIONS) -->
+<!-- MENU -->
 <div id="menu" class="menu">
-
-<h2>🧪 Quantum Missions (10)</h2>
+<h2>🧪 Missions (10)</h2>
 <div id="missionList"></div>
-
 </div>
 
-<!-- GAME VIEW -->
+<!-- GAME -->
 <div id="game" class="game hidden">
 
 <div class="topBar">
-<button onclick="backToMenu()">⬅ BACK</button>
-<button onclick="quitGame()">⛔ QUIT</button>
+<button onclick="backToMenu()">⬅ Back</button>
+<button onclick="quitGame()">⛔ Quit</button>
 <div id="score">Score: 0</div>
 </div>
 
-<h2 id="missionTitle">Mission</h2>
+<h2 id="missionTitle"></h2>
 <p id="missionText"></p>
 
+<div class="targetBox">
+<h3>🎯 Target Circuit</h3>
+<div id="target"></div>
+</div>
+
 <div class="circuitBox">
-<div>q0 → <span id="q0">— — —</span></div>
+<h3>🧪 Your Circuit</h3>
+<div id="q0">— — —</div>
 </div>
 
 <div class="controls">
 <button onclick="addGate('H')">H</button>
 <button onclick="addGate('X')">X</button>
 <button onclick="addGate('CX')">CX</button>
-<button onclick="resetCircuit()">RESET</button>
+<button onclick="resetCircuit()">Reset</button>
 </div>
 
-<button id="runBtn">RUN CIRCUIT</button>
+<button id="runBtn">RUN CIRCUIT ⚛</button>
 
 </div>
 
 <!-- POPUP -->
 <div id="popup" class="popup hidden">
 <div class="box">
-<h1 id="title"></h1>
+<h2 id="title"></h2>
 <p id="text"></p>
-<button onclick="next()">NEXT</button>
+<button onclick="nextMission()">NEXT</button>
 </div>
 </div>
 
