@@ -94,8 +94,8 @@ document.getElementById("nextStep").onclick = () => {
   }
 
   if (phase === 1) {
-    a.style.animation = "entangleLink 1s";
-  }
+  bellStateAnimation();
+}
 
   if (phase === 2) {
     a.style.animation = "bellCollapse 0.8s";
