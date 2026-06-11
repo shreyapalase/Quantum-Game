@@ -11,73 +11,45 @@
 
 <body>
 
-<canvas id="bg3d"></canvas>
-<div class="glowOverlay"></div>
+<canvas id="bg"></canvas>
 
 <header>
 <h1>⚛ QUANTUM CIRCUIT LAB AAA</h1>
-<p>Advanced 3D Quantum Simulation Environment</p>
+<p>Select a mission to begin simulation</p>
 </header>
 
-<div class="hud">
-<div>Mission Progress <div class="bar"><div id="fill"></div></div></div>
+<!-- MAIN MENU (ALL MISSIONS) -->
+<div id="menu" class="menu">
+
+<h2>🧪 Quantum Missions (10)</h2>
+<div id="missionList"></div>
+
+</div>
+
+<!-- GAME VIEW -->
+<div id="game" class="game hidden">
+
+<div class="topBar">
+<button onclick="backToMenu()">⬅ BACK</button>
+<button onclick="quitGame()">⛔ QUIT</button>
 <div id="score">Score: 0</div>
 </div>
 
-<div class="lab">
-
-<!-- LEFT: INFO -->
-<div class="panel">
-<h2>📘 Lab Instructions</h2>
-<p>Build quantum circuits using gates to complete missions.</p>
-
-<h2>📜 Rules</h2>
-<ul>
-<li>Follow circuit sequence</li>
-<li>Use correct gates</li>
-<li>Complete all 10 missions</li>
-</ul>
-
-<h2>⚛ Qiskit Reference</h2>
-<pre>
-qc.h(0)
-qc.cx(0,1)
-qc.x(1)
-qc.measure_all()
-</pre>
-</div>
-
-<!-- CENTER: CIRCUIT BUILDER -->
-<div class="core">
-
-<h2 id="missionTitle">Mission 1</h2>
-<p id="missionText">Create Hadamard superposition on q0</p>
+<h2 id="missionTitle">Mission</h2>
+<p id="missionText"></p>
 
 <div class="circuitBox">
 <div>q0 → <span id="q0">— — —</span></div>
-<div>q1 → <span id="q1">— — —</span></div>
-<div>q2 → <span id="q2">— — —</span></div>
 </div>
 
 <div class="controls">
-<button onclick="addGate('H')">H Gate</button>
-<button onclick="addGate('X')">X Gate</button>
-<button onclick="addGate('CX')">CNOT</button>
+<button onclick="addGate('H')">H</button>
+<button onclick="addGate('X')">X</button>
+<button onclick="addGate('CX')">CX</button>
 <button onclick="resetCircuit()">RESET</button>
 </div>
 
-<button id="checkBtn">RUN CIRCUIT</button>
-
-</div>
-
-<!-- RIGHT PANEL -->
-<div class="panel">
-<h2>🎯 Lab Status</h2>
-<p id="status">Initializing quantum field...</p>
-
-<h2>🏆 Goal</h2>
-<p>Complete all 10 quantum circuit experiments</p>
-</div>
+<button id="runBtn">RUN CIRCUIT</button>
 
 </div>
 
@@ -86,7 +58,7 @@ qc.measure_all()
 <div class="box">
 <h1 id="title"></h1>
 <p id="text"></p>
-<button onclick="nextMission()">NEXT</button>
+<button onclick="next()">NEXT</button>
 </div>
 </div>
 
