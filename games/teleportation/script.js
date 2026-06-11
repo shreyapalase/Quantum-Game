@@ -131,3 +131,26 @@ function showWin() {
 function restartMission() {
   location.reload();
 }
+function bellStateAnimation() {
+  const a = document.getElementById("sourceQubit");
+  const b = document.getElementById("targetQubit");
+  const center = document.querySelector(".centerArea");
+
+  // create link beam
+  const link = document.createElement("div");
+  link.className = "bell-link";
+  center.appendChild(link);
+
+  // entangle both qubits visually
+  a.classList.add("entangled");
+  b.classList.add("entangled");
+
+  commander.innerHTML = "Bell State formed: |Φ⁺⟩ Entanglement achieved";
+
+  // remove after animation
+  setTimeout(() => {
+    link.remove();
+    a.classList.remove("entangled");
+    b.classList.remove("entangled");
+  }, 1200);
+}
