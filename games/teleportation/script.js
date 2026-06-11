@@ -1,103 +1,90 @@
-const states = ["|0⟩","|1⟩","|+⟩","|-⟩"];
+let currentState = "";
 
-const desc = {
-"|0⟩":"Ground state",
-"|1⟩":"Excited state",
-"|+⟩":"Superposition state",
-"|-⟩":"Phase flipped state"
-};
-
-let current = "";
-let step = 0;
-let score = 0;
-
-const ai = document.getElementById("ai");
-
-const messages = [
-"Prepare qubit in Universe A",
-"Creating entanglement pair",
-"Performing Bell measurement",
-"Sending classical bits",
-"Reconstructing quantum state"
+const states = [
+"|0⟩",
+"|1⟩",
+"|+⟩",
+"|-⟩"
 ];
 
-// Galaxy background
-const canvas = document.getElementById("galaxy");
-const ctx = canvas.getContext("2d");
+const source =
+document.getElementById("sourceQubit");
 
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+const target =
+document.getElementById("targetQubit");
 
-let stars = Array.from({length:400}, ()=>({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-r:Math.random()*2
-}));
+document
+.getElementById("createState")
+.addEventListener("click",()=>{
 
-function draw(){
-ctx.fillStyle="black";
-ctx.fillRect(0,0,canvas.width,canvas.height);
+currentState =
+states[Math.floor(Math.random()*states.length)];
 
-ctx.fillStyle="white";
-stars.forEach(s=>{
-ctx.beginPath();
-ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-ctx.fill();
-s.y+=0.3;
-if(s.y>canvas.height) s.y=0;
+source.innerHTML=currentState;
+
+target.innerHTML="?";
 });
 
-requestAnimationFrame(draw);
-}
-draw();
+document
+.getElementById("teleportBtn")
+.addEventListener("click",()=>{
 
-// Generate state
-document.getElementById("gen").onclick=()=>{
-current = states[Math.floor(Math.random()*states.length)];
-
-document.getElementById("sourceQubit").innerText = current;
-document.getElementById("stateInfoA").innerText = desc[current];
-
-document.getElementById("targetQubit").innerText = "?";
-document.getElementById("stateInfoB").innerText = "";
-
-step = 0;
-score = 0;
-document.getElementById("fill").style.width="0%";
-
-ai.innerText = "Quantum state initialized: " + current;
-};
-
-// Next step
-document.getElementById("next").onclick=()=>{
-
-if(!current){
-alert("Generate state first!");
+if(currentState===""){
+alert("Generate Quantum State First");
 return;
 }
 
-document.getElementById(`p${step}`).classList.add("active");
+source.animate([
+{
+transform:"scale(1)"
+},
+{
+transform:"scale(0)"
+}
+],{
+duration:1000
+});
 
-ai.innerText = messages[step];
+setTimeout(()=>{
 
-score += 20;
-document.getElementById("score").innerText = "Score: "+score;
-document.getElementById("fill").style.width = (score)+"%";
+let success =
+Math.random() > 0.25;
 
-if(step===3){
-document.getElementById("beam").style.width="300px";
+if(success){
+
+target.innerHTML=currentState;
+
+showPopup(
+"🏆 TELEPORTATION SUCCESS"
+);
+
+}
+else{
+
+target.innerHTML="ERROR";
+
+showPopup(
+"❌ QUANTUM DECOHERENCE"
+);
+
 }
 
-step++;
+},1500);
 
-if(step===5){
+});
 
-document.getElementById("targetQubit").innerText = current;
-document.getElementById("stateInfoB").innerText = desc[current];
+function showPopup(msg){
 
-document.getElementById("popup").classList.remove("hidden");
-document.getElementById("title").innerText =
-"MISSION SUCCESS: STATE TELEPORTED";
+document
+.getElementById("resultTitle")
+.innerHTML=msg;
+
+document
+.getElementById("popup")
+.classList.remove("hidden");
 }
 
-};
+function closePopup(){
+
+location.reload();
+}
