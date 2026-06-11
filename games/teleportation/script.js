@@ -34,7 +34,7 @@ function animateGalaxy() {
 
 animateGalaxy();
 
-/* QUANTUM CORE */
+/* CORE */
 const states = ["|0⟩", "|1⟩", "|+⟩", "|-⟩"];
 
 let currentState = "";
@@ -58,7 +58,7 @@ document.getElementById("generateBtn").onclick = () => {
   const q = document.getElementById("sourceQubit");
   q.innerHTML = currentState;
 
-  q.style.transform = "scale(1.3)";
+  q.style.transform = "scale(1.2)";
   q.style.boxShadow = "0 0 80px cyan, 0 0 120px purple";
 
   setTimeout(() => q.style.transform = "scale(1)", 300);
@@ -66,8 +66,12 @@ document.getElementById("generateBtn").onclick = () => {
   phase = 0;
   score = 0;
 
+  document.getElementById("targetQubit").innerHTML = "?";
   document.getElementById("progressFill").style.width = "0%";
+
   document.querySelectorAll(".phase").forEach(p => p.classList.remove("active"));
+
+  commander.innerHTML = "State locked in Universe A.";
 };
 
 /* START MISSION */
@@ -103,7 +107,7 @@ function teleportEffect() {
   const a = document.getElementById("sourceQubit");
   const b = document.getElementById("targetQubit");
 
-  a.style.animation = "teleportOut 0.6s forwards";
+  a.style.animation = "teleportPulse 0.6s forwards";
   b.style.animation = "teleportIn 0.8s forwards";
 
   document.body.style.filter = "blur(2px) brightness(2)";
