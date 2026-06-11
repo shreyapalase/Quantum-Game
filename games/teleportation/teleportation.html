@@ -2,92 +2,157 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quantum Teleportation Simulator</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Quantum Teleportation Simulator AAA</title>
 
 <link rel="stylesheet" href="style.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-<div id="stars"></div>
+<canvas id="galaxy"></canvas>
+
+<div class="overlay"></div>
 
 <header>
-    <h1>⚛ Quantum Teleportation Simulator ⚛</h1>
-    <p>Transfer a Quantum State Across Universes</p>
+
+<h1>⚛ QUANTUM TELEPORTATION SIMULATOR</h1>
+
+<p>
+AAA Educational Sci-Fi Experience
+</p>
+
 </header>
 
-<div class="container">
+<div class="hud">
 
-    <div class="panel">
-        <h2>🌌 Universe A</h2>
-        <div id="sourceQubit" class="qubit">
-            ψ
-        </div>
+<div>
+Mission Progress
+<div class="progressBar">
+<div id="progressFill"></div>
+</div>
+</div>
 
-        <button id="createState">
-            Generate Quantum State
-        </button>
-    </div>
-
-    <div class="panel centerPanel">
-
-        <h2>🚀 Teleportation Portal</h2>
-
-        <div class="portal"></div>
-
-        <button id="teleportBtn">
-            TELEPORT
-        </button>
-
-    </div>
-
-    <div class="panel">
-        <h2>🌌 Universe B</h2>
-
-        <div id="targetQubit" class="qubit">
-            ?
-        </div>
-
-    </div>
+<div id="score">
+Score: 0
+</div>
 
 </div>
 
-<div class="infoGrid">
+<div class="mainGrid">
 
-    <div class="infoBox">
-        <h3>📖 Game Description</h3>
-        <p>
-            Understand Quantum Teleportation by sending a quantum state
-            from Universe A to Universe B using entanglement.
-        </p>
-    </div>
+<div class="universe">
 
-    <div class="infoBox">
-        <h3>🎮 How To Play</h3>
-        <ul>
-            <li>Create quantum state.</li>
-            <li>Press TELEPORT.</li>
-            <li>Observe state transfer.</li>
-            <li>Match final state correctly.</li>
-        </ul>
-    </div>
+<h2>🌌 Universe A</h2>
 
-    <div class="infoBox">
-        <h3>🏆 Win Condition</h3>
-        <p>
-            Teleported state arrives correctly.
-        </p>
+<div id="sourceQubit" class="qubit">
+?
+</div>
 
-        <h3>❌ Loss Condition</h3>
-        <p>
-            State corruption during transfer.
-        </p>
-    </div>
+<button id="generateBtn">
+Generate State
+</button>
 
-    <div class="infoBox">
-        <h3>⚛ Qiskit Algorithm</h3>
+</div>
+
+<div class="centerArea">
+
+<div class="wormhole">
+
+<div class="ring r1"></div>
+<div class="ring r2"></div>
+<div class="ring r3"></div>
+<div class="ring r4"></div>
+
+</div>
+
+<div id="beam"></div>
+
+<button id="nextStep">
+START MISSION
+</button>
+
+</div>
+
+<div class="universe">
+
+<h2>🌌 Universe B</h2>
+
+<div id="targetQubit" class="qubit">
+?
+</div>
+
+</div>
+
+</div>
+
+<div class="missionPanel">
+
+<h2>🤖 Mission Commander</h2>
+
+<p id="commander">
+
+Generate a quantum state.
+
+</p>
+
+</div>
+
+<div class="phasePanel">
+
+<div class="phase" id="p0">Prepare State</div>
+<div class="phase" id="p1">Entanglement</div>
+<div class="phase" id="p2">Bell Measurement</div>
+<div class="phase" id="p3">Classical Transfer</div>
+<div class="phase" id="p4">Reconstruction</div>
+
+</div>
+
+<div class="educationGrid">
+
+<div class="card">
+
+<h3>Game Description</h3>
+
+<p>
+Experience quantum teleportation across
+two universes through an interactive mission.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>How To Play</h3>
+
+<p>
+Generate state and complete all
+teleportation phases.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Win Condition</h3>
+
+<p>
+State successfully reconstructed.
+</p>
+
+<h3>Loss Condition</h3>
+
+<p>
+Incorrect phase order.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Qiskit Teleportation Algorithm</h3>
 
 <pre>
 qc.h(1)
@@ -103,31 +168,40 @@ qc.cx(1,2)
 qc.cz(0,2)
 </pre>
 
-    </div>
+</div>
 
 </div>
 
-<div class="circuitBox">
+<div class="circuitPanel">
 
 <h2>Quantum Circuit</h2>
 
 <pre>
-q0 ──■──H──M──────■──
-      │           │
-q1 ──X──■──M──■───┼──
-         │     │   │
-q2 ──────X─────X───Z──
+q0 ──■──H──M────────■────
+      │            │
+q1 ──X──■──M──■────┼────
+         │     │    │
+q2 ──────X─────X────Z────
 </pre>
 
 </div>
 
 <div id="popup" class="popup hidden">
-    <div class="popupContent">
-        <h2 id="resultTitle"></h2>
-        <button onclick="closePopup()">
-            Play Again
-        </button>
-    </div>
+
+<div class="popupBox">
+
+<h1 id="popupTitle"></h1>
+
+<p id="popupText"></p>
+
+<button onclick="restartMission()">
+
+Restart Mission
+
+</button>
+
+</div>
+
 </div>
 
 <script src="script.js"></script>
