@@ -22,10 +22,7 @@ z-index:-3;
 .overlay{
 position:fixed;
 inset:0;
-background:
-radial-gradient(circle at center,
-rgba(0,255,255,.08),
-transparent 60%);
+background:radial-gradient(circle at center, rgba(0,255,255,.08), transparent 60%);
 z-index:-2;
 }
 
@@ -57,10 +54,7 @@ overflow:hidden;
 #progressFill{
 width:0%;
 height:100%;
-background:
-linear-gradient(90deg,
-cyan,
-purple);
+background:linear-gradient(90deg,cyan,purple);
 transition:.5s;
 }
 
@@ -90,12 +84,9 @@ display:flex;
 justify-content:center;
 align-items:center;
 font-size:3rem;
-background:
-radial-gradient(circle,
-cyan,
-black);
-box-shadow:
-0 0 50px cyan;
+background:radial-gradient(circle,cyan,black);
+box-shadow:0 0 50px cyan;
+transition:0.3s;
 }
 
 .centerArea{
@@ -117,30 +108,13 @@ inset:0;
 animation:warp 5s linear infinite;
 }
 
-.r2{
-animation-delay:1s;
-}
-
-.r3{
-animation-delay:2s;
-}
-
-.r4{
-animation-delay:3s;
-}
+.r2{animation-delay:1s;}
+.r3{animation-delay:2s;}
+.r4{animation-delay:3s;}
 
 @keyframes warp{
-
-0%{
-transform:scale(.2);
-opacity:0;
-}
-
-100%{
-transform:scale(2);
-opacity:1;
-}
-
+0%{transform:scale(.2);opacity:0;}
+100%{transform:scale(2);opacity:1;}
 }
 
 #beam{
@@ -148,17 +122,8 @@ width:0;
 height:10px;
 margin:auto;
 margin-top:15px;
-background:
-linear-gradient(
-90deg,
-transparent,
-cyan,
-white,
-cyan,
-transparent
-);
-box-shadow:
-0 0 40px cyan;
+background:linear-gradient(90deg,transparent,cyan,white,cyan,transparent);
+box-shadow:0 0 40px cyan;
 transition:1s;
 }
 
@@ -212,10 +177,7 @@ background:rgba(255,255,255,.08);
 border-radius:20px;
 }
 
-pre{
-color:#00ffcc;
-overflow:auto;
-}
+pre{color:#00ffcc;}
 
 .popup{
 position:fixed;
@@ -230,11 +192,18 @@ background:rgba(0,0,0,.85);
 background:#07121f;
 padding:40px;
 border-radius:25px;
+box-shadow:0 0 60px cyan;
 text-align:center;
-box-shadow:
-0 0 60px cyan;
 }
 
-.hidden{
-display:none;
+.hidden{display:none;}
+
+@keyframes teleportOut{
+0%{transform:scale(1);opacity:1;filter:blur(0);}
+100%{transform:scale(0.2) rotate(720deg);opacity:0;filter:blur(10px);}
+}
+
+@keyframes teleportIn{
+0%{transform:scale(0.2) rotate(-720deg);opacity:0;filter:blur(10px);}
+100%{transform:scale(1);opacity:1;filter:blur(0);}
 }
