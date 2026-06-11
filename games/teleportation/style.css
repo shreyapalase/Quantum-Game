@@ -207,3 +207,47 @@ text-align:center;
 0%{transform:scale(0.2);opacity:0;}
 100%{transform:scale(1);opacity:1;}
 }
+/* 🌟 Bell State Quantum Link */
+.bell-link {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 4px;
+  background: linear-gradient(90deg, cyan, purple, cyan);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px cyan;
+  animation: bellExpand 1.2s forwards;
+  z-index: 2;
+}
+
+@keyframes bellExpand {
+  0% {
+    width: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 40px purple;
+  }
+  100% {
+    width: 400px;
+    opacity: 0.8;
+  }
+}
+
+/* synchronized entangled qubits */
+.entangled {
+  animation: entanglePulse 0.8s infinite alternate;
+}
+
+@keyframes entanglePulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 40px cyan;
+  }
+  100% {
+    transform: scale(1.15);
+    box-shadow: 0 0 80px purple;
+  }
+}
