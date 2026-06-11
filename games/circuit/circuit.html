@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Circuit Builder Game</title>
+
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+<div class="overlay"></div>
+
+<header>
+<h1>⚛ QUANTUM CIRCUIT BUILDER GAME</h1>
+<p>Build circuits. Create entanglement. Solve missions.</p>
+</header>
+
+<div class="hud">
+<div>Mission Progress
+<div class="bar"><div id="fill"></div></div>
+</div>
+<div id="score">Score: 0</div>
+</div>
+
+<div class="main">
+
+<!-- LEFT PANEL -->
+<div class="panel">
+<h2>📘 Game Description</h2>
+<p>Build correct quantum circuits using gates to complete teleportation missions.</p>
+
+<h2>📜 Rules</h2>
+<ul>
+<li>Choose correct quantum gates</li>
+<li>Follow circuit order</li>
+<li>Complete all steps</li>
+<li>Higher accuracy = higher score</li>
+</ul>
+
+<h2>⚛ Qiskit Reference</h2>
+<pre>
+qc.h(0)
+qc.cx(0,1)
+qc.cx(1,2)
+qc.measure_all()
+</pre>
+</div>
+
+<!-- CENTER GAME -->
+<div class="game">
+
+<h2>🧪 Circuit Builder</h2>
+
+<div class="circuit">
+<div class="wire">q0: <span id="q0">— — —</span></div>
+<div class="wire">q1: <span id="q1">— — —</span></div>
+<div class="wire">q2: <span id="q2">— — —</span></div>
+</div>
+
+<div class="buttons">
+<button onclick="addGate('H')">H Gate</button>
+<button onclick="addGate('X')">X Gate</button>
+<button onclick="addGate('CX')">CNOT</button>
+</div>
+
+<button id="checkBtn">CHECK CIRCUIT</button>
+
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="panel">
+<h2>🎯 Mission</h2>
+<p id="mission">Create entanglement between q0 and q1.</p>
+
+<h2>🏆 Goal</h2>
+<p>Match target quantum circuit pattern.</p>
+</div>
+
+</div>
+
+<div id="popup" class="popup hidden">
+<div class="box">
+<h1 id="title"></h1>
+<p id="text"></p>
+<button onclick="location.reload()">Restart</button>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
