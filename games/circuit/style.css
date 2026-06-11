@@ -11,6 +11,7 @@ color:white;
 overflow:hidden;
 }
 
+/* BACKGROUND */
 canvas{
 position:fixed;
 width:100%;
@@ -34,20 +35,20 @@ text-align:center;
 
 #missionList{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
 gap:10px;
 margin-top:20px;
 }
 
-.mission{
+.missionItem{
+padding:12px;
 background:rgba(255,255,255,0.08);
-padding:15px;
-border-radius:12px;
+border-radius:10px;
 cursor:pointer;
 transition:0.3s;
 }
 
-.mission:hover{
+.missionItem:hover{
 background:cyan;
 color:black;
 transform:scale(1.05);
@@ -64,7 +65,7 @@ text-align:center;
 .topBar{
 display:flex;
 justify-content:space-between;
-padding:10px;
+margin-bottom:10px;
 }
 
 button{
@@ -73,31 +74,35 @@ background:cyan;
 border:none;
 cursor:pointer;
 border-radius:8px;
+font-weight:bold;
 }
 
-.circuitBox{
-margin:20px;
-padding:15px;
+.targetBox,.circuitBox{
+margin:15px auto;
+padding:10px;
 background:#111;
 border-radius:10px;
+width:300px;
+box-shadow:0 0 15px cyan;
 }
 
 .controls button{
 margin:5px;
 }
 
+/* POPUP */
 .popup{
 position:fixed;
 inset:0;
 display:flex;
 justify-content:center;
 align-items:center;
-background:rgba(0,0,0,0.8);
+background:rgba(0,0,0,0.85);
 }
 
 .box{
 background:#06121f;
-padding:30px;
-border-radius:20px;
+padding:25px;
+border-radius:15px;
 box-shadow:0 0 40px cyan;
 }
