@@ -34,8 +34,8 @@ function animateGalaxy() {
 
 animateGalaxy();
 
-/* CORE */
-const states = ["|0⟩", "|1⟩", "|+⟩", "|-⟩"];
+/* QUANTUM CORE */
+const states = ["|0⟩", "|1⟩", "|+⟩", "|-|"];
 
 let currentState = "";
 let phase = 0;
@@ -44,11 +44,11 @@ let score = 0;
 const commander = document.getElementById("commander");
 
 const messages = [
-  "Prepare unknown quantum state.",
-  "Create entanglement pair.",
-  "Perform Bell measurement.",
-  "Transmit classical bits.",
-  "Reconstruct target state."
+  "Preparing quantum state...",
+  "Entangling qubits...",
+  "Performing Bell measurement...",
+  "Sending classical bits...",
+  "Reconstructing state..."
 ];
 
 /* GENERATE STATE */
@@ -58,10 +58,9 @@ document.getElementById("generateBtn").onclick = () => {
   const q = document.getElementById("sourceQubit");
   q.innerHTML = currentState;
 
-  q.style.transform = "scale(1.2)";
-  q.style.boxShadow = "0 0 80px cyan, 0 0 120px purple";
+  q.style.animation = "preparePulse 0.6s";
 
-  setTimeout(() => q.style.transform = "scale(1)", 300);
+  setTimeout(() => q.style.animation = "", 600);
 
   phase = 0;
   score = 0;
@@ -71,12 +70,15 @@ document.getElementById("generateBtn").onclick = () => {
 
   document.querySelectorAll(".phase").forEach(p => p.classList.remove("active"));
 
-  commander.innerHTML = "State locked in Universe A.";
+  commander.innerHTML = "State initialized in Universe A.";
 };
 
 /* START MISSION */
 document.getElementById("nextStep").onclick = () => {
   if (!currentState) return alert("Generate state first.");
+
+  const a = document.getElementById("sourceQubit");
+  const b = document.getElementById("targetQubit");
 
   document.getElementById(`p${phase}`).classList.add("active");
   commander.innerHTML = messages[phase];
@@ -85,40 +87,45 @@ document.getElementById("nextStep").onclick = () => {
   document.getElementById("score").innerHTML = "Score: " + score;
   document.getElementById("progressFill").style.width = score + "%";
 
+  /* STEP ANIMATIONS */
+
+  if (phase === 0) {
+    a.style.animation = "preparePulse 0.6s";
+  }
+
+  if (phase === 1) {
+    a.style.animation = "entangleLink 1s";
+  }
+
+  if (phase === 2) {
+    a.style.animation = "bellCollapse 0.8s";
+  }
+
   if (phase === 3) {
     document.getElementById("beam").style.width = "300px";
     document.body.style.filter = "hue-rotate(180deg) brightness(1.5)";
     setTimeout(() => document.body.style.filter = "none", 600);
+    a.style.animation = "classicalWave 1s";
   }
 
   if (phase === 4) {
-    teleportEffect();
+    b.innerHTML = currentState;
+    b.style.animation = "teleportIn 0.8s";
   }
 
   phase++;
 
   if (phase === 5) {
-    document.getElementById("targetQubit").innerHTML = currentState;
     showWin();
   }
 };
 
-function teleportEffect() {
-  const a = document.getElementById("sourceQubit");
-  const b = document.getElementById("targetQubit");
-
-  a.style.animation = "teleportPulse 0.6s forwards";
-  b.style.animation = "teleportIn 0.8s forwards";
-
-  document.body.style.filter = "blur(2px) brightness(2)";
-  setTimeout(() => document.body.style.filter = "none", 500);
-}
-
+/* WIN POPUP */
 function showWin() {
   document.getElementById("popup").classList.remove("hidden");
   document.getElementById("popupTitle").innerHTML = "MISSION SUCCESS";
   document.getElementById("popupText").innerHTML =
-    "Quantum State Teleported Successfully ⚛";
+    "Quantum state successfully teleported ⚛";
 }
 
 function restartMission() {
