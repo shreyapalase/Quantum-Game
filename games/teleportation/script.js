@@ -1,222 +1,103 @@
-const canvas =
-document.getElementById("galaxy");
+const states = ["|0⟩","|1⟩","|+⟩","|-⟩"];
 
-const ctx =
-canvas.getContext("2d");
+const desc = {
+"|0⟩":"Ground state",
+"|1⟩":"Excited state",
+"|+⟩":"Superposition state",
+"|-⟩":"Phase flipped state"
+};
 
-canvas.width =
-window.innerWidth;
+let current = "";
+let step = 0;
+let score = 0;
 
-canvas.height =
-window.innerHeight;
+const ai = document.getElementById("ai");
 
-let stars=[];
+const messages = [
+"Prepare qubit in Universe A",
+"Creating entanglement pair",
+"Performing Bell measurement",
+"Sending classical bits",
+"Reconstructing quantum state"
+];
 
-for(let i=0;i<700;i++){
+// Galaxy background
+const canvas = document.getElementById("galaxy");
+const ctx = canvas.getContext("2d");
 
-stars.push({
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
+let stars = Array.from({length:400}, ()=>({
 x:Math.random()*canvas.width,
 y:Math.random()*canvas.height,
 r:Math.random()*2
+}));
 
-});
-
-}
-
-function animateGalaxy(){
-
-ctx.fillStyle="#000";
-ctx.fillRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
+function draw(){
+ctx.fillStyle="black";
+ctx.fillRect(0,0,canvas.width,canvas.height);
 
 ctx.fillStyle="white";
-
-stars.forEach(star=>{
-
+stars.forEach(s=>{
 ctx.beginPath();
-
-ctx.arc(
-star.x,
-star.y,
-star.r,
-0,
-Math.PI*2
-);
-
+ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
 ctx.fill();
-
-star.y+=0.2;
-
-if(star.y>canvas.height){
-
-star.y=0;
-
-}
-
+s.y+=0.3;
+if(s.y>canvas.height) s.y=0;
 });
 
-requestAnimationFrame(
-animateGalaxy
-);
-
+requestAnimationFrame(draw);
 }
+draw();
 
-animateGalaxy();
+// Generate state
+document.getElementById("gen").onclick=()=>{
+current = states[Math.floor(Math.random()*states.length)];
 
-const states=[
-"|0⟩",
-"|1⟩",
-"|+⟩",
-"|-⟩"
-];
+document.getElementById("sourceQubit").innerText = current;
+document.getElementById("stateInfoA").innerText = desc[current];
 
-let currentState="";
-let phase=0;
-let score=0;
+document.getElementById("targetQubit").innerText = "?";
+document.getElementById("stateInfoB").innerText = "";
 
-const commander=
-document.getElementById(
-"commander"
-);
+step = 0;
+score = 0;
+document.getElementById("fill").style.width="0%";
 
-const messages=[
-
-"Prepare unknown quantum state.",
-
-"Create entanglement pair.",
-
-"Perform Bell measurement.",
-
-"Transmit classical bits.",
-
-"Reconstruct target state."
-
-];
-
-document
-.getElementById(
-"generateBtn"
-)
-.onclick=()=>{
-
-currentState=
-states[
-Math.floor(
-Math.random()*4
-)
-];
-
-document
-.getElementById(
-"sourceQubit"
-)
-innerHTML=currentState;
-
-phase=0;
-score=0;
-
+ai.innerText = "Quantum state initialized: " + current;
 };
 
-document
-.getElementById(
-"nextStep"
-)
-.onclick=()=>{
+// Next step
+document.getElementById("next").onclick=()=>{
 
-if(currentState===""){
-alert(
-"Generate state first."
-);
+if(!current){
+alert("Generate state first!");
 return;
 }
 
-document
-.getElementById(
-`p${phase}`
-)
-.classList.add(
-"active"
-);
+document.getElementById(`p${step}`).classList.add("active");
 
-commander.innerHTML=
-messages[phase];
+ai.innerText = messages[step];
 
-score+=20;
+score += 20;
+document.getElementById("score").innerText = "Score: "+score;
+document.getElementById("fill").style.width = (score)+"%";
 
-document
-.getElementById(
-"score"
-)
-.innerHTML=
-"Score: "+score;
-
-document
-.getElementById(
-"progressFill"
-)
-.style.width=
-(score)+"%";
-
-if(phase===3){
-
-document
-.getElementById(
-"beam"
-)
-.style.width=
-"300px";
-
+if(step===3){
+document.getElementById("beam").style.width="300px";
 }
 
-phase++;
+step++;
 
-if(phase===5){
+if(step===5){
 
-document
-.getElementById(
-"targetQubit"
-)
-.innerHTML=
-currentState;
+document.getElementById("targetQubit").innerText = current;
+document.getElementById("stateInfoB").innerText = desc[current];
 
-showWin();
-
+document.getElementById("popup").classList.remove("hidden");
+document.getElementById("title").innerText =
+"MISSION SUCCESS: STATE TELEPORTED";
 }
 
 };
-
-function showWin(){
-
-document
-.getElementById(
-"popup"
-)
-.classList.remove(
-"hidden"
-);
-
-document
-.getElementById(
-"popupTitle"
-)
-.innerHTML=
-"MISSION SUCCESS";
-
-document
-.getElementById(
-"popupText"
-)
-.innerHTML=
-"Quantum State Teleported Successfully";
-}
-
-function restartMission(){
-
-location.reload();
-
-}
