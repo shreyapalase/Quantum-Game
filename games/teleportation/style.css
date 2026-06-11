@@ -6,59 +6,32 @@ font-family:'Orbitron',sans-serif;
 }
 
 body{
-overflow-x:hidden;
-background:#02040f;
+background:#000;
 color:white;
+overflow-x:hidden;
 min-height:100vh;
 }
 
-#stars{
+#galaxy{
 position:fixed;
 width:100%;
 height:100%;
-background:
-radial-gradient(circle,#fff 1px,transparent 1px);
-background-size:40px 40px;
-animation:moveStars 100s linear infinite;
-z-index:-2;
+z-index:-3;
 }
 
-@keyframes moveStars{
-from{
-transform:translateY(0);
-}
-to{
-transform:translateY(1000px);
-}
-}
-
-body::before{
-content:'';
+.overlay{
 position:fixed;
-width:200%;
-height:200%;
-left:-50%;
-top:-50%;
+inset:0;
 background:
 radial-gradient(circle at center,
-rgba(100,0,255,.4),
+rgba(0,255,255,.08),
 transparent 60%);
-animation:galaxy 25s linear infinite;
-z-index:-1;
-}
-
-@keyframes galaxy{
-from{
-transform:rotate(0deg);
-}
-to{
-transform:rotate(360deg);
-}
+z-index:-2;
 }
 
 header{
 text-align:center;
-padding:30px;
+padding:20px;
 }
 
 header h1{
@@ -67,31 +40,51 @@ color:#00ffff;
 text-shadow:0 0 30px cyan;
 }
 
-.container{
+.hud{
+display:flex;
+justify-content:space-between;
+padding:20px;
+}
+
+.progressBar{
+width:300px;
+height:18px;
+background:#111;
+border-radius:20px;
+overflow:hidden;
+}
+
+#progressFill{
+width:0%;
+height:100%;
+background:
+linear-gradient(90deg,
+cyan,
+purple);
+transition:.5s;
+}
+
+.mainGrid{
 display:flex;
 justify-content:center;
-gap:40px;
+gap:50px;
 padding:30px;
 flex-wrap:wrap;
 }
 
-.panel{
-width:350px;
-min-height:350px;
-padding:25px;
-border-radius:25px;
-backdrop-filter:blur(20px);
+.universe{
+width:320px;
+padding:20px;
 background:rgba(255,255,255,.08);
-box-shadow:
-0 0 30px rgba(0,255,255,.3);
+backdrop-filter:blur(15px);
+border-radius:25px;
 text-align:center;
 }
 
 .qubit{
-width:140px;
-height:140px;
-margin:auto;
-margin-top:30px;
+width:150px;
+height:150px;
+margin:25px auto;
 border-radius:50%;
 display:flex;
 justify-content:center;
@@ -99,90 +92,147 @@ align-items:center;
 font-size:3rem;
 background:
 radial-gradient(circle,
-#00ffff,
-#000);
+cyan,
+black);
+box-shadow:
+0 0 50px cyan;
+}
+
+.centerArea{
+text-align:center;
+}
+
+.wormhole{
+position:relative;
+width:250px;
+height:250px;
+margin:auto;
+}
+
+.ring{
+position:absolute;
+border-radius:50%;
+border:3px solid cyan;
+inset:0;
+animation:warp 5s linear infinite;
+}
+
+.r2{
+animation-delay:1s;
+}
+
+.r3{
+animation-delay:2s;
+}
+
+.r4{
+animation-delay:3s;
+}
+
+@keyframes warp{
+
+0%{
+transform:scale(.2);
+opacity:0;
+}
+
+100%{
+transform:scale(2);
+opacity:1;
+}
+
+}
+
+#beam{
+width:0;
+height:10px;
+margin:auto;
+margin-top:15px;
+background:
+linear-gradient(
+90deg,
+transparent,
+cyan,
+white,
+cyan,
+transparent
+);
 box-shadow:
 0 0 40px cyan;
-}
-
-.portal{
-width:180px;
-height:180px;
-margin:auto;
-border-radius:50%;
-background:
-conic-gradient(
-cyan,
-purple,
-cyan
-);
-animation:spin 3s linear infinite;
-box-shadow:
-0 0 60px cyan;
-}
-
-@keyframes spin{
-to{
-transform:rotate(360deg);
-}
+transition:1s;
 }
 
 button{
-margin-top:30px;
-padding:15px 35px;
+margin-top:20px;
+padding:14px 30px;
 border:none;
-border-radius:15px;
+border-radius:12px;
 cursor:pointer;
-font-size:1rem;
-background:#00ffff;
 font-weight:bold;
+background:cyan;
 }
 
-.infoGrid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
-padding:30px;
-}
-
-.infoBox{
+.phasePanel{
+display:flex;
+justify-content:center;
+gap:10px;
 padding:20px;
-background:rgba(255,255,255,.07);
+flex-wrap:wrap;
+}
+
+.phase{
+padding:12px;
+background:#111;
+border-radius:12px;
+}
+
+.active{
+background:cyan;
+color:black;
+}
+
+.educationGrid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+padding:25px;
+}
+
+.card{
+background:rgba(255,255,255,.08);
+padding:20px;
 border-radius:20px;
 backdrop-filter:blur(15px);
 }
 
-.circuitBox{
-margin:30px;
-padding:25px;
-border-radius:20px;
+.circuitPanel{
+margin:20px;
+padding:20px;
 background:rgba(255,255,255,.08);
+border-radius:20px;
 }
 
 pre{
-overflow:auto;
 color:#00ffcc;
+overflow:auto;
 }
 
 .popup{
 position:fixed;
-width:100%;
-height:100%;
-top:0;
-left:0;
+inset:0;
 display:flex;
 justify-content:center;
 align-items:center;
-background:rgba(0,0,0,.8);
+background:rgba(0,0,0,.85);
 }
 
-.popupContent{
+.popupBox{
+background:#07121f;
 padding:40px;
-background:#09111f;
 border-radius:25px;
 text-align:center;
 box-shadow:
-0 0 50px cyan;
+0 0 60px cyan;
 }
 
 .hidden{
