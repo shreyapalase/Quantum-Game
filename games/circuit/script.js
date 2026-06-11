@@ -1,48 +1,54 @@
 let score = 0;
 let step = 0;
+let mission = 0;
 
-// circuit state
-let circuit = {
-  q0: [],
-  q1: [],
-  q2: []
-};
+const missions = [
+  { title: "Mission 1", text: "Create Hadamard superposition", pattern: ["H"] },
+  { title: "Mission 2", text: "Create entanglement", pattern: ["H","CX"] },
+  { title: "Mission 3", text: "Apply X gate", pattern: ["X"] },
+  { title: "Mission 4", text: "Bell preparation", pattern: ["H","CX"] },
+  { title: "Mission 5", text: "Mixed circuit", pattern: ["H","X"] },
+  { title: "Mission 6", text: "Double entanglement", pattern: ["CX","CX"] },
+  { title: "Mission 7", text: "Superposition chain", pattern: ["H","H"] },
+  { title: "Mission 8", text: "X then entangle", pattern: ["X","CX"] },
+  { title: "Mission 9", text: "Full teleport base", pattern: ["H","CX","X"] },
+  { title: "Mission 10", text: "Final quantum circuit", pattern: ["H","CX","H"] }
+];
 
-// mission target (entanglement task)
-const target = ["H", "CX"];
+let circuit = [];
 
 function addGate(g) {
   if (step >= 3) return;
 
-  if (step === 0) circuit.q0.push(g);
-  if (step === 1) circuit.q1.push(g);
-  if (step === 2) circuit.q2.push(g);
-
+  circuit.push(g);
   step++;
 
-  updateUI();
-}
-
-function updateUI() {
-  document.getElementById("q0").innerText = circuit.q0.join(" ");
-  document.getElementById("q1").innerText = circuit.q1.join(" ");
-  document.getElementById("q2").innerText = circuit.q2.join(" ");
+  document.getElementById("q0").innerText = circuit.join(" ");
+  document.getElementById("q1").innerText = " ";
+  document.getElementById("q2").innerText = " ";
 
   document.getElementById("fill").style.width = (step / 3) * 100 + "%";
 }
 
+function resetCircuit() {
+  circuit = [];
+  step = 0;
+  document.getElementById("q0").innerText = "— — —";
+  document.getElementById("fill").style.width = "0%";
+}
+
 document.getElementById("checkBtn").onclick = () => {
 
-  let flat = circuit.q0.concat(circuit.q1, circuit.q2);
+  let target = missions[mission].pattern;
 
-  let success = flat.includes("H") && flat.includes("CX");
+  let success = JSON.stringify(target) === JSON.stringify(circuit);
 
   if (success) {
-    score = 100;
-    showPopup("MISSION SUCCESS ⚛", "Entanglement circuit built correctly!");
+    score += 100;
+    showPopup("SUCCESS ⚛", "Correct quantum circuit built!");
   } else {
-    score = 40;
-    showPopup("MISSION FAILED", "Circuit incorrect. Try again.");
+    score += 20;
+    showPopup("FAILED", "Circuit mismatch detected.");
   }
 
   document.getElementById("score").innerText = "Score: " + score;
@@ -54,20 +60,40 @@ function showPopup(t, m) {
   document.getElementById("text").innerText = m;
 }
 
-/* simple galaxy background */
-const canvas = document.querySelector("canvas");
+function nextMission() {
+  mission++;
+
+  if (mission >= missions.length) {
+    showPopup("LAB COMPLETE 🏆", "All quantum circuits completed!");
+    return;
+  }
+
+  circuit = [];
+  step = 0;
+
+  document.getElementById("q0").innerText = "— — —";
+  document.getElementById("fill").style.width = "0%";
+
+  document.getElementById("missionTitle").innerText = missions[mission].title;
+  document.getElementById("missionText").innerText = missions[mission].text;
+
+  document.getElementById("popup").classList.add("hidden");
+}
+
+/* AAA 3D BACKGROUND EFFECT */
+const canvas = document.getElementById("bg3d");
 const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let stars = [];
+let particles = [];
 
-for (let i = 0; i < 400; i++) {
-  stars.push({
+for (let i = 0; i < 300; i++) {
+  particles.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: Math.random() * 2
+    z: Math.random() * 2
   });
 }
 
@@ -75,14 +101,15 @@ function animate() {
   ctx.fillStyle = "#000";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  ctx.fillStyle = "#fff";
+  ctx.fillStyle = "cyan";
 
-  stars.forEach(s=>{
+  particles.forEach(p => {
     ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.arc(p.x, p.y, p.z * 2, 0, Math.PI*2);
     ctx.fill();
-    s.y += 0.2;
-    if(s.y > canvas.height) s.y = 0;
+
+    p.y += p.z * 0.5;
+    if (p.y > canvas.height) p.y = 0;
   });
 
   requestAnimationFrame(animate);
