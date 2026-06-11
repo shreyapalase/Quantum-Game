@@ -1,14 +1,14 @@
 const missions = [
-  { title:"H Superposition", text:"Apply H gate on q0", pattern:["H"] },
-  { title:"Entanglement", text:"Apply H then CX", pattern:["H","CX"] },
-  { title:"X Operation", text:"Apply X gate", pattern:["X"] },
-  { title:"Bell State", text:"H + CX entanglement", pattern:["H","CX"] },
-  { title:"Mix Circuit", text:"H + X combination", pattern:["H","X"] },
-  { title:"Double CX", text:"Two entanglements", pattern:["CX","CX"] },
-  { title:"Superposition Chain", text:"Two H gates", pattern:["H","H"] },
-  { title:"X + Entangle", text:"X then CX", pattern:["X","CX"] },
-  { title:"Teleport Base", text:"H + CX + X", pattern:["H","CX","X"] },
-  { title:"Final Circuit", text:"Full quantum circuit", pattern:["H","CX","H"] }
+  { title:"H Gate", text:"Apply H gate", pattern:["H"] },
+  { title:"X Gate", text:"Apply X gate", pattern:["X"] },
+  { title:"Entanglement", text:"H then CX", pattern:["H","CX"] },
+  { title:"Bell State", text:"Create Bell state", pattern:["H","CX"] },
+  { title:"Mix 1", text:"H + X", pattern:["H","X"] },
+  { title:"Mix 2", text:"CX + X", pattern:["CX","X"] },
+  { title:"Double H", text:"H then H", pattern:["H","H"] },
+  { title:"Teleport Base", text:"H CX X", pattern:["H","CX","X"] },
+  { title:"Quantum Chain", text:"CX CX", pattern:["CX","CX"] },
+  { title:"Final Circuit", text:"H CX H", pattern:["H","CX","H"] }
 ];
 
 let current = null;
@@ -22,15 +22,12 @@ function buildMenu(){
 
   missions.forEach((m,i)=>{
     let div = document.createElement("div");
-    div.className = "mission";
-    div.innerHTML = `${i+1}. ${m.title}`;
-
-    div.onclick = () => startMission(i);
-
+    div.className = "missionItem";
+    div.innerText = (i+1)+". "+m.title;
+    div.onclick = ()=>startMission(i);
     list.appendChild(div);
   });
 }
-
 buildMenu();
 
 /* START MISSION */
@@ -43,6 +40,9 @@ function startMission(i){
 
   document.getElementById("missionTitle").innerText = missions[i].title;
   document.getElementById("missionText").innerText = missions[i].text;
+
+  document.getElementById("target").innerText =
+    missions[i].pattern.join(" → ");
 
   document.getElementById("q0").innerText = "— — —";
 }
@@ -65,20 +65,22 @@ function addGate(g){
   document.getElementById("q0").innerText = circuit.join(" ");
 }
 
+/* RESET */
 function resetCircuit(){
   circuit = [];
   document.getElementById("q0").innerText = "— — —";
 }
 
-/* RUN */
+/* RUN CIRCUIT */
 document.getElementById("runBtn").onclick = () => {
+
   let target = missions[current].pattern;
 
   let ok = JSON.stringify(target) === JSON.stringify(circuit);
 
   if(ok){
     score += 100;
-    showPopup("SUCCESS ⚛","Correct quantum circuit!");
+    showPopup("SUCCESS ⚛","Correct quantum circuit built!");
   } else {
     score += 20;
     showPopup("FAILED","Circuit mismatch!");
@@ -94,7 +96,7 @@ function showPopup(t,m){
   document.getElementById("text").innerText = m;
 }
 
-function next(){
+function nextMission(){
   document.getElementById("popup").classList.add("hidden");
   backToMenu();
 }
