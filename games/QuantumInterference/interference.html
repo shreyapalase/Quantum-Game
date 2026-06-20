@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Quantum Wave Interference Simulator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="header">
+<h1>⚛ QUANTUM WAVE INTERFERENCE SIMULATOR</h1>
+<p>Single Player Quantum Computing Learning Game</p>
+</div>
+
+
+<div class="main">
+
+
+<section class="panel intro">
+
+<h2>Game Introduction</h2>
+
+<p>
+You are a Quantum Navigator controlling wave particles.
+Your mission is to manipulate quantum interference patterns
+and achieve the highest probability state.
+</p>
+
+<p>
+Learn how quantum computers use superposition,
+phase and interference to calculate results.
+</p>
+
+
+<h2>How To Play</h2>
+
+<ul>
+
+<li>Select quantum gates</li>
+<li>Create interference patterns</li>
+<li>Run quantum simulation</li>
+<li>Match target probability</li>
+<li>Defeat Quantum AI</li>
+
+</ul>
+
+
+<h2>Win Condition</h2>
+
+<p>
+Player wins if your quantum probability score
+is higher than Quantum AI.
+</p>
+
+
+<h2>Loss Condition</h2>
+
+<p>
+Quantum AI wins if your interference pattern
+fails to create the required state.
+</p>
+
+
+</section>
+
+
+
+
+<section class="panel game">
+
+
+<h2>Quantum Control Console</h2>
+
+
+<div id="circuit">
+
+<div class="qubit">
+Q0 :
+<button onclick="addGate('H')">H</button>
+<button onclick="addGate('X')">X</button>
+<button onclick="addGate('Z')">Z</button>
+
+</div>
+
+
+<div class="qubit">
+Q1 :
+<button onclick="addGate('H')">H</button>
+<button onclick="addGate('X')">X</button>
+<button onclick="addGate('Z')">Z</button>
+
+</div>
+
+
+</div>
+
+
+<h3>Qiskit Inspired Circuit</h3>
+
+
+<div id="visualCircuit">
+
+</div>
+
+
+
+<button class="run" onclick="runQuantum()">
+RUN QUANTUM SIMULATION
+</button>
+
+
+<div class="result">
+
+
+<h2>Probability Histogram</h2>
+
+<canvas id="histogram"></canvas>
+
+
+<h3 id="score">
+Waiting quantum execution...
+</h3>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+<section class="panel theory">
+
+
+<h2>Quantum Algorithm</h2>
+
+
+<p>
+
+Concept:
+
+Hadamard Gate →
+Superposition →
+Phase Shift →
+Interference →
+Measurement
+
+
+</p>
+
+
+<pre>
+
+
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+
+qc.h(0)
+
+qc.h(1)
+
+qc.cx(0,1)
+
+qc.measure_all()
+
+
+</pre>
+
+
+
+<h2>Quantum Learning Module</h2>
+
+
+<p>
+
+Quantum computers do not test every answer
+like classical computers.
+
+They use probability waves.
+
+When waves combine:
+
+Constructive interference =
+higher chance
+
+Destructive interference =
+lower chance
+
+</p>
+
+
+</section>
+
+
+
+</div>
+
+
+
+<div id="popup">
+
+<div class="box">
+
+<h1 id="winner"></h1>
+
+<button onclick="restart()">
+PLAY AGAIN
+</button>
+
+</div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
