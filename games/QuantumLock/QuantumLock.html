@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quantum Lock Simulator</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="background"></div>
+
+<header>
+    <h1>QUANTUM LOCK</h1>
+    <div class="subtitle">
+        Ultra Realistic Quantum Computing Learning Simulator
+    </div>
+</header>
+
+<div class="container">
+
+    <aside class="panel left-panel">
+
+        <h2>Game Introduction</h2>
+
+        <p>
+            A futuristic security vault is protected using quantum states.
+            Your objective is to discover the hidden quantum key before your
+            measurement budget expires.
+        </p>
+
+        <h2>User Guide</h2>
+
+        <ul>
+            <li>Initialize Qubits</li>
+            <li>Apply Quantum Gates</li>
+            <li>Observe Probability Distribution</li>
+            <li>Measure Quantum Lock</li>
+            <li>Find Correct Quantum State</li>
+        </ul>
+
+        <h2>Win Condition</h2>
+
+        <p>
+            Reach probability > 80% for hidden target state and measure correctly.
+        </p>
+
+        <h2>Loss Condition</h2>
+
+        <p>
+            Measurements exhausted or probability collapses incorrectly.
+        </p>
+
+    </aside>
+
+    <main class="panel center-panel">
+
+        <div class="game-screen">
+
+            <div class="vault">
+                <div id="lockCore"></div>
+            </div>
+
+            <div class="controls">
+
+                <button onclick="applyGate('H')">Hadamard</button>
+
+                <button onclick="applyGate('X')">Pauli-X</button>
+
+                <button onclick="applyGate('Z')">Pauli-Z</button>
+
+                <button onclick="measureState()">
+                    Measure
+                </button>
+
+                <button onclick="resetGame()">
+                    Reset
+                </button>
+
+            </div>
+
+            <div class="status">
+
+                <div>Score: <span id="score">0</span></div>
+
+                <div>Measurements:
+                    <span id="moves">5</span>
+                </div>
+
+                <div>
+                    State:
+                    <span id="stateText">|0⟩</span>
+                </div>
+
+            </div>
+
+            <canvas id="histogram" width="650" height="260"></canvas>
+
+        </div>
+
+    </main>
+
+    <aside class="panel right-panel">
+
+        <h2>Quantum Concepts</h2>
+
+        <p>
+            Hadamard Gate creates superposition.
+        </p>
+
+        <p>
+            Pauli-X acts like a quantum NOT gate.
+        </p>
+
+        <p>
+            Measurement collapses the wave function.
+        </p>
+
+        <h2>Qiskit Circuit</h2>
+
+<pre>
+from qiskit import *
+
+qc = QuantumCircuit(1,1)
+
+qc.h(0)
+
+qc.measure(0,0)
+</pre>
+
+        <h2>Qiskit Reference</h2>
+
+<pre>
+|0> --H--M--
+
+P(0)=50%
+P(1)=50%
+</pre>
+
+    </aside>
+
+</div>
+
+<div id="endModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2 id="resultTitle"></h2>
+
+        <p id="resultText"></p>
+
+        <button onclick="resetGame()">
+            Play Again
+        </button>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
