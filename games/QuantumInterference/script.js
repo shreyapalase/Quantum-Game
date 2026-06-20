@@ -9,7 +9,10 @@ let aiScore=0;
 
 function addGate(g){
 
+
 gates.push(g);
+
+
 
 document.getElementById(
 "visualCircuit"
@@ -18,8 +21,11 @@ document.getElementById(
 gates.join(" → ");
 
 
-}
 
+showWave(gates);
+
+
+}
 
 
 function runQuantum(){
@@ -208,5 +214,230 @@ document
 
 
 }
+function showWave(gates){
 
+
+let canvas =
+document.getElementById("waveCanvas");
+
+
+let ctx =
+canvas.getContext("2d");
+
+
+canvas.width =
+canvas.clientWidth;
+
+
+canvas.height =
+canvas.clientHeight;
+
+
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+
+let constructive =
+gates.includes("H")
+&&
+gates.length%2==0;
+
+
+
+let destructive =
+gates.includes("Z");
+
+
+
+let status =
+document.getElementById("waveStatus");
+
+
+
+if(constructive){
+
+
+status.innerHTML =
+"🌊 CONSTRUCTIVE INTERFERENCE : Waves Amplified";
+
+
+
+drawWave(
+ctx,
+true
+);
+
+
+
+}
+
+else if(destructive){
+
+
+status.innerHTML =
+"🌑 DESTRUCTIVE INTERFERENCE : Waves Cancelled";
+
+
+
+drawWave(
+ctx,
+false
+);
+
+
+}
+
+else{
+
+
+status.innerHTML =
+"Quantum waves waiting for phase interaction";
+
+drawWave(
+ctx,
+true
+);
+
+
+}
+
+
+}
+
+
+
+
+function drawWave(ctx,positive){
+
+
+let width =
+ctx.canvas.width;
+
+
+let height =
+ctx.canvas.height;
+
+
+
+ctx.lineWidth=3;
+
+
+
+for(let wave=0;wave<2;wave++){
+
+
+ctx.beginPath();
+
+
+for(let x=0;x<width;x++){
+
+
+
+let phase =
+positive ?
+
+wave*Math.PI/2 :
+
+wave*Math.PI;
+
+
+
+let y =
+
+height/2 +
+
+Math.sin(
+x*0.05+phase
+)
+*
+40;
+
+
+
+ctx.lineTo(
+x,
+y
+);
+
+
+}
+
+
+
+ctx.strokeStyle =
+wave==0?
+
+"#00ffff":
+
+positive?
+
+"#00ff88":
+
+"#ff0055";
+
+
+
+ctx.stroke();
+
+
+}
+
+
+
+
+// combined wave
+
+
+ctx.beginPath();
+
+
+
+for(let x=0;x<width;x++){
+
+
+let amp =
+positive?
+
+80:
+
+10;
+
+
+
+let y=
+
+height/2+
+
+Math.sin(
+x*0.05
+)
+*
+amp;
+
+
+
+ctx.lineTo(
+x,
+y
+);
+
+
+}
+
+
+ctx.strokeStyle="#ffffff";
+
+ctx.lineWidth=5;
+
+ctx.stroke();
+
+
+
+}
 
