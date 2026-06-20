@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Quantum Memory Simulator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<header>
+<h1>⚛ QUANTUM MEMORY // AI SIMULATOR</h1>
+<p>Quantum Computing Learning Game</p>
+</header>
+
+
+<div class="container">
+
+
+<section class="panel intro">
+
+<h2>GAME INTRODUCTION</h2>
+
+<p>
+You are controlling a quantum memory core.
+Your mission is to restore quantum information
+before decoherence destroys the system.
+</p>
+
+<p>
+This simulation teaches:
+</p>
+
+<ul>
+<li>Quantum bits (Qubits)</li>
+<li>Superposition</li>
+<li>Quantum gates</li>
+<li>Measurement probability</li>
+<li>Quantum circuits</li>
+</ul>
+
+</section>
+
+
+
+<section class="panel game">
+
+
+<h2>QUANTUM MEMORY CORE</h2>
+
+
+<div id="core">
+
+<div id="qbit">
+|0⟩
+</div>
+
+</div>
+
+
+<div class="controls">
+
+<button onclick="applyGate('H')">
+Hadamard Gate
+</button>
+
+
+<button onclick="applyGate('X')">
+Pauli X Gate
+</button>
+
+
+<button onclick="applyGate('MEASURE')">
+Measure Qubit
+</button>
+
+
+<button onclick="startGame()">
+Restart Simulation
+</button>
+
+
+</div>
+
+
+<div class="status">
+
+<h3>Status</h3>
+
+<p id="message">
+Waiting for quantum operation...
+</p>
+
+
+<p>
+Energy:
+<span id="energy">
+100
+</span>%
+</p>
+
+
+<p>
+Score:
+<span id="score">
+0
+</span>
+</p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+<section class="panel">
+
+<h2>HOW TO PLAY</h2>
+
+<p>
+1. Apply quantum gates to manipulate the qubit.
+</p>
+
+<p>
+2. Create the correct quantum state.
+</p>
+
+<p>
+3. Measure before memory decay reaches zero.
+</p>
+
+<p>
+4. Higher probability = better quantum memory.
+</p>
+
+</section>
+
+
+
+
+
+<section class="panel">
+
+<h2>QISKIT STYLE CIRCUIT</h2>
+
+
+<pre id="circuit">
+
+q0 ───|0>───
+
+</pre>
+
+
+<p>
+Example Qiskit idea:
+
+</p>
+
+<pre>
+
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1)
+
+qc.h(0)
+
+qc.measure_all()
+
+</pre>
+
+
+</section>
+
+
+
+
+
+
+<section class="panel">
+
+<h2>PROBABILITY HISTOGRAM</h2>
+
+
+<canvas id="chart"></canvas>
+
+
+</section>
+
+
+
+
+</div>
+
+
+
+
+<div id="popup">
+
+
+<div class="popupBox">
+
+
+<h1 id="result">
+
+</h1>
+
+
+<p id="details">
+
+</p>
+
+
+<button onclick="closePopup()">
+Continue Learning
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
