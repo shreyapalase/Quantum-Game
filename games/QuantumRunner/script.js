@@ -1,94 +1,165 @@
-body {
-  margin:0;
-  background:black;
-  color:#00ffe5;
-  font-family:Arial;
-  overflow:hidden;
+let player, ai;
+
+window.onload = function () {
+  player = [1,0,0,0];
+  ai = [1,0,0,0];
+
+  initCanvas();
+  update();
+  draw();
+};
+
+/* ===== STAR BACKGROUND ===== */
+let ctx, bg, stars = [];
+
+function initCanvas() {
+  bg = document.getElementById("bg");
+  ctx = bg.getContext("2d");
+
+  bg.width = window.innerWidth;
+  bg.height = window.innerHeight;
+
+  stars = Array.from({length:150}, () => ({
+    x: Math.random()*bg.width,
+    y: Math.random()*bg.height,
+    z: Math.random()*2+0.5
+  }));
+
+  animate();
 }
 
-#bg {
-  position:fixed;
-  width:100%;
-  height:100%;
+function animate() {
+  ctx.fillStyle="black";
+  ctx.fillRect(0,0,bg.width,bg.height);
+
+  ctx.fillStyle="#00ffe5";
+
+  stars.forEach(s=>{
+    s.y += s.z;
+    if(s.y > bg.height) s.y = 0;
+    ctx.fillRect(s.x,s.y,2,2);
+  });
+
+  requestAnimationFrame(animate);
 }
 
-.ui {
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:grid;
-  grid-template-columns: 1fr 1.3fr 1fr;
+/* ===== QUANTUM MATH ===== */
+
+function H(s){
+  let [a,b,c,d]=s;
+  return [
+    (a+b)/Math.SQRT2,
+    (a-b)/Math.SQRT2,
+    (c+d)/Math.SQRT2,
+    (c-d)/Math.SQRT2
+  ];
 }
 
-.panel {
-  margin:10px;
-  padding:10px;
-  border:1px solid #00ffe5;
-  background:rgba(0,255,229,0.05);
-  backdrop-filter: blur(8px);
+function X(s){
+  return [s[2],s[3],s[0],s[1]];
 }
 
-button {
-  background:black;
-  border:1px solid #00ffe5;
-  color:#00ffe5;
-  padding:6px;
-  margin:4px;
-  cursor:pointer;
+function CX(s){
+  let out=[...s];
+  if(s[2]||s[3]){
+    [out[2],out[3]]=[out[3],out[2]];
+  }
+  return out;
 }
 
-button:hover {
-  box-shadow:0 0 15px #00ffe5;
+function gate(s,g){
+  if(g==="H") return H(s);
+  if(g==="X") return X(s);
+  if(g==="CX") return CX(s);
+  return s;
 }
 
-.card {
-  border:1px solid #00ffe5;
-  margin:8px 0;
-  padding:8px;
+/* ===== GAME ACTIONS (GLOBAL FIXED) ===== */
+
+window.startBattle = function(){
+  player=[1,0,0,0];
+  ai=[1,0,0,0];
+  log("RESET");
+  update();
+  draw();
+};
+
+window.applyGate = function(g){
+  player = gate(player,g);
+  ai = gate(ai, random());
+
+  log("Gate: "+g);
+  update();
+  draw();
+  pulse();
+};
+
+window.measure = function(){
+  let p = prob(player);
+  let a = prob(ai);
+
+  pulse();
+
+  if(p>a){
+    show("PLAYER WINS");
+  } else {
+    show("AI WINS");
+  }
+};
+
+window.resetGame = function(){
+  document.getElementById("popup").classList.add("hidden");
+  startBattle();
+};
+
+/* ===== CORE ===== */
+
+function prob(s){
+  return s.reduce((x,v)=>x+v*v,0);
 }
 
-#arena {
-  margin-top:20px;
-  border:1px solid #00ffe5;
-  height:120px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  animation:pulse 2s infinite;
+function random(){
+  return ["H","X","CX"][Math.floor(Math.random()*3)];
 }
 
-@keyframes pulse {
-  0%{box-shadow:0 0 10px #00ffe5;}
-  50%{box-shadow:0 0 30px #ff00ff;}
-  100%{box-shadow:0 0 10px #00ffe5;}
+/* ===== UI ===== */
+
+function update(){
+  document.getElementById("p").innerText = player.map(v=>v.toFixed(2));
+  document.getElementById("a").innerText = ai.map(v=>v.toFixed(2));
 }
 
-canvas#chart {
-  width:100%;
-  height:180px;
-  background:black;
+function draw(){
+  let c=document.getElementById("chart");
+  let cx=c.getContext("2d");
+
+  c.width=350;
+  c.height=180;
+
+  let p=prob(player);
+  let a=prob(ai);
+
+  cx.clearRect(0,0,400,200);
+
+  cx.fillStyle="#00ffe5";
+  cx.fillRect(50,180-p*180,60,p*180);
+
+  cx.fillStyle="#ff00ff";
+  cx.fillRect(180,180-a*180,60,a*180);
 }
 
-.log {
-  height:80px;
-  overflow:auto;
-  font-size:12px;
+function log(t){
+  let l=document.getElementById("log");
+  if(l) l.innerHTML += "<div>"+t+"</div>";
 }
 
-.popup {
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.9);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+function pulse(){
+  let a=document.getElementById("arena");
+  a.style.transform="scale(1.1)";
+  setTimeout(()=>a.style.transform="scale(1)",150);
 }
 
-.hidden {display:none;}
-
-.box {
-  padding:20px;
-  border:2px solid #00ffe5;
+function show(t){
+  document.getElementById("popup").classList.remove("hidden");
+  document.getElementById("msg").innerText=t;
 }
