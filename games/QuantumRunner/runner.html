@@ -2,86 +2,67 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Quantum Uncertainty War</title>
+<title>Quantum Uncertainty War — AAA Edition</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="grid">
+<canvas id="bg"></canvas>
 
-  <!-- LEFT PANEL -->
+<div class="ui">
+
   <div class="panel left">
-    <h1>⚛️ Quantum Uncertainty War</h1>
+    <h1>⚛ QUANTUM UNCERTAINTY WAR</h1>
 
-    <div class="box">
-      <h2>📘 Introduction</h2>
-      <p>
-        A sci-fi quantum simulation where probability collapses into reality.
-        You fight using quantum states instead of fixed actions.
-      </p>
+    <div class="card">
+      <h2>MISSION</h2>
+      <p>Dominate quantum probability space before AI collapses reality.</p>
     </div>
 
-    <div class="box">
-      <h2>📖 How to Play</h2>
-      <ul>
-        <li>Select quantum gate sequence</li>
-        <li>Run circuit simulation</li>
-        <li>Observe probability collapse</li>
-        <li>Outperform enemy quantum AI</li>
-      </ul>
+    <div class="card">
+      <h2>HOW IT WORKS</h2>
+      <p>Qubits exist in superposition. Gates manipulate probability amplitudes.</p>
     </div>
 
-    <div class="box">
-      <h2>🏁 Win / Loss</h2>
-      <p><b>Win:</b> Your collapse probability > AI</p>
-      <p><b>Loss:</b> AI probability dominates</p>
+    <div class="card">
+      <h2>WIN CONDITION</h2>
+      <p>Higher measurement probability wins collapse battle.</p>
     </div>
 
-    <button onclick="startGame()" class="glow-btn">▶ START BATTLE</button>
+    <button onclick="startBattle()">START SIMULATION</button>
   </div>
 
-  <!-- CENTER PANEL -->
   <div class="panel center">
+    <h2>QUANTUM CIRCUIT ENGINE (QISKIT-STYLE)</h2>
 
-    <h2>🧪 Quantum Circuit (Qiskit Simulator)</h2>
-
-    <div class="circuit" id="circuit">
-      H → X → H → MEASURE
+    <div class="row">
+      <button onclick="applyGate('H')">H Gate</button>
+      <button onclick="applyGate('X')">X Gate</button>
+      <button onclick="applyGate('CX')">CX Gate</button>
+      <button onclick="measure()">MEASURE</button>
     </div>
 
-    <button onclick="runCircuit()" class="glow-btn">RUN Q-CIRCUIT</button>
+    <div class="circuit" id="circuitLog"></div>
 
-    <canvas id="histogram"></canvas>
-
+    <canvas id="chart"></canvas>
   </div>
 
-  <!-- RIGHT PANEL -->
   <div class="panel right">
+    <h2>REALTIME QUANTUM STATE</h2>
 
-    <h2>📊 Quantum Battle Stats</h2>
+    <div class="stat">PLAYER | |ψ⟩ = <span id="pState"></span></div>
+    <div class="stat">AI | |ψ⟩ = <span id="aState"></span></div>
 
-    <div class="stat">
-      Player Probability: <span id="pProb">0</span>
-    </div>
-
-    <div class="stat">
-      AI Probability: <span id="aProb">0</span>
-    </div>
-
-    <div class="arena" id="arena">
-      ⚡ Quantum Battle Arena ⚡
-    </div>
-
+    <div class="battle" id="battleField">QUANTUM FIELD STABLE</div>
   </div>
 
 </div>
 
-<!-- POPUP -->
 <div id="popup" class="popup hidden">
-  <div class="popup-content">
-    <h1 id="resultText"></h1>
-    <button onclick="resetGame()">RESTART</button>
+  <div class="popupBox">
+    <h1 id="winnerText"></h1>
+    <button onclick="reset()">RESTART SIMULATION</button>
   </div>
 </div>
 
