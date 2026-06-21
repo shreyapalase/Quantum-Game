@@ -1,114 +1,94 @@
 body {
   margin:0;
-  overflow:hidden;
-  font-family: Arial;
   background:black;
-  color:#00ffe1;
+  color:#00ffe5;
+  font-family:Arial;
+  overflow:hidden;
 }
 
-/* STAR BACKGROUND CANVAS */
 #bg {
   position:fixed;
-  top:0;
-  left:0;
   width:100%;
   height:100%;
 }
 
-/* UI GRID */
 .ui {
   position:absolute;
-  display:grid;
-  grid-template-columns: 1fr 1.3fr 1fr;
   width:100%;
   height:100%;
+  display:grid;
+  grid-template-columns: 1fr 1.3fr 1fr;
 }
 
-/* PANELS */
 .panel {
   margin:10px;
   padding:10px;
-  background: rgba(0,255,225,0.05);
-  border:1px solid #00ffe1;
-  backdrop-filter: blur(10px);
-  box-shadow:0 0 30px #00ffe155;
-}
-
-h1 {
-  font-size:20px;
-}
-
-.card {
-  border:1px solid #00ffe1;
-  margin:10px 0;
-  padding:10px;
-  animation: glow 2s infinite;
-}
-
-@keyframes glow {
-  0% {box-shadow:0 0 5px #00ffe1;}
-  50% {box-shadow:0 0 20px #ff00ff;}
-  100% {box-shadow:0 0 5px #00ffe1;}
+  border:1px solid #00ffe5;
+  background:rgba(0,255,229,0.05);
+  backdrop-filter: blur(8px);
 }
 
 button {
   background:black;
-  color:#00ffe1;
-  border:1px solid #00ffe1;
-  padding:8px;
-  margin:5px;
+  border:1px solid #00ffe5;
+  color:#00ffe5;
+  padding:6px;
+  margin:4px;
   cursor:pointer;
-  transition:0.2s;
 }
 
 button:hover {
-  transform:scale(1.05);
-  box-shadow:0 0 20px #00ffe1;
+  box-shadow:0 0 15px #00ffe5;
 }
 
-.circuit {
-  height:80px;
-  border:1px dashed #00ffe1;
-  margin-top:10px;
-  padding:5px;
+.card {
+  border:1px solid #00ffe5;
+  margin:8px 0;
+  padding:8px;
 }
 
-.battle {
+#arena {
   margin-top:20px;
-  height:150px;
-  border:1px solid #00ffe1;
+  border:1px solid #00ffe5;
+  height:120px;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
   animation:pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0% {box-shadow:0 0 10px #00ffe1;}
-  50% {box-shadow:0 0 40px #ff00ff;}
-  100% {box-shadow:0 0 10px #00ffe1;}
+  0%{box-shadow:0 0 10px #00ffe5;}
+  50%{box-shadow:0 0 30px #ff00ff;}
+  100%{box-shadow:0 0 10px #00ffe5;}
 }
 
 canvas#chart {
   width:100%;
-  height:200px;
+  height:180px;
   background:black;
 }
 
-/* POPUP */
+.log {
+  height:80px;
+  overflow:auto;
+  font-size:12px;
+}
+
 .popup {
-  position:absolute;
+  position:fixed;
   top:0;left:0;
-  width:100%;height:100%;
+  width:100%;
+  height:100%;
   background:rgba(0,0,0,0.9);
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-.popupBox {
-  padding:30px;
-  border:2px solid #00ffe1;
-}
-
 .hidden {display:none;}
+
+.box {
+  padding:20px;
+  border:2px solid #00ffe5;
+}
