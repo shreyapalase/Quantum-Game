@@ -1,75 +1,83 @@
-let score = 0;
-let history = [];
+let playerScore = 0;
+let aiScore = 0;
 
 function startGame() {
-    document.getElementById("gamePanel").classList.remove("hidden");
-    window.scrollTo(0, document.body.scrollHeight);
+  playerScore = 0;
+  aiScore = 0;
+  updateUI();
+  alert("Quantum Battle Started!");
 }
 
-function generateState() {
-    let p0 = Math.random();
-    let p1 = 1 - p0;
+function runCircuit() {
 
-    document.getElementById("p0").innerText = p0.toFixed(2);
-    document.getElementById("p1").innerText = p1.toFixed(2);
+  // MOCK QISKIT LOGIC (quantum probability simulation)
+  let player = Math.random();
+  let ai = Math.random();
 
-    document.getElementById("state").innerText =
-        `√${p0.toFixed(2)}|0⟩ + √${p1.toFixed(2)}|1⟩`;
+  // normalize like quantum collapse
+  let sum = player + ai;
+  player /= sum;
+  ai /= sum;
 
-    document.getElementById("orb").style.filter =
-        `hue-rotate(${p0 * 360}deg)`;
+  playerScore = player;
+  aiScore = ai;
 
-    drawHistogram(p0, p1);
+  updateUI();
+  drawHistogram(player, ai);
+  animateArena();
+
+  checkWinner();
 }
 
-function measure() {
-    let p0 = parseFloat(document.getElementById("p0").innerText);
-
-    let result = Math.random() < p0 ? 0 : 1;
-
-    history.push(result);
-
-    if (result === 0) score += 10;
-    else score -= 5;
-
-    document.getElementById("score").innerText = score;
-
-    if (history.length >= 10) endGame();
+function updateUI() {
+  document.getElementById("pProb").innerText = playerScore.toFixed(3);
+  document.getElementById("aProb").innerText = aiScore.toFixed(3);
 }
 
-function drawHistogram(p0, p1) {
-    let canvas = document.getElementById("hist");
-    let ctx = canvas.getContext("2d");
+function drawHistogram(p, a) {
+  let canvas = document.getElementById("histogram");
+  let ctx = canvas.getContext("2d");
 
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+  canvas.width = 400;
+  canvas.height = 200;
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0,0,400,200);
 
-    ctx.fillStyle = "cyan";
-    ctx.fillRect(50, 50, p0 * 200, 30);
+  ctx.fillStyle = "#00ffe5";
+  ctx.fillRect(50, 200 - p*200, 80, p*200);
 
-    ctx.fillStyle = "magenta";
-    ctx.fillRect(50, 100, p1 * 200, 30);
-
-    ctx.fillStyle = "white";
-    ctx.fillText("|0⟩", 10, 70);
-    ctx.fillText("|1⟩", 10, 120);
+  ctx.fillStyle = "#ff00ff";
+  ctx.fillRect(200, 200 - a*200, 80, a*200);
 }
 
-function endGame() {
-    let win = score > 30 ? "PLAYER WINS QUANTUM WAR" : "PLAYER LOST IN UNCERTAINTY";
-
-    document.getElementById("winnerText").innerText = win;
-    document.getElementById("popup").classList.remove("hidden");
+function animateArena() {
+  let arena = document.getElementById("arena");
+  arena.style.transform = "scale(1.05)";
+  setTimeout(()=> arena.style.transform="scale(1)", 200);
 }
 
-function closePopup() {
-    location.reload();
+function checkWinner() {
+  if (playerScore > 0.6) {
+    showPopup("🏆 PLAYER WINS QUANTUM WAR");
+  } else if (aiScore > 0.6) {
+    showPopup("💀 AI WINS QUANTUM WAR");
+  }
+}
+
+/* popup */
+function showPopup(text) {
+  document.getElementById("popup").classList.remove("hidden");
+  document.getElementById("resultText").innerText = text;
 }
 
 function resetGame() {
-    history = [];
-    score = 0;
-    document.getElementById("score").innerText = 0;
+  document.getElementById("popup").classList.add("hidden");
+}
+
+/* fake quantum circuit concept (Qiskit-like reference model) */
+function quantumCircuitModel() {
+  return {
+    gates: ["H", "X", "H", "MEASURE"],
+    amplitudes: [Math.random(), Math.random()]
+  };
 }
