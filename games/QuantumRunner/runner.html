@@ -3,101 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quantum Uncertainty War</title>
+  <title>Quantum Uncertainty War Simulator</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<div class="grid">
+<div class="bg"></div>
+
+<header>
+  <h1>⚛ QUANTUM UNCERTAINTY WAR SIMULATOR</h1>
+  <p class="subtitle">A Qiskit-inspired probabilistic battle engine</p>
+</header>
+
+<main class="grid">
 
   <!-- LEFT PANEL -->
-  <div class="panel left">
-    <h1>⚛ Quantum Uncertainty War</h1>
+  <section class="panel">
+    <h2>📖 Introduction</h2>
+    <p>
+      Enter a quantum battlefield where outcomes are not deterministic.
+      Every attack collapses a probability wave into reality.
+    </p>
 
-    <div class="card">
-      <h2>📖 Introduction</h2>
-      <p>
-        You are a quantum commander controlling unstable qubits in a probabilistic war zone.
-        Every decision collapses reality into uncertain outcomes.
-      </p>
-    </div>
+    <h2>🎮 How to Play</h2>
+    <ul>
+      <li>Click <b>Run Quantum Attack</b></li>
+      <li>System generates probabilistic outcome</li>
+      <li>AI enemy responds with quantum defense</li>
+      <li>HP drops based on wave collapse</li>
+    </ul>
 
-    <div class="card">
-      <h2>📘 How to Play</h2>
-      <ul>
-        <li>Choose quantum strategy (Superposition / Entangle / Collapse Attack)</li>
-        <li>System simulates probabilistic battle</li>
-        <li>AI responds with quantum noise defense</li>
-        <li>Score depends on measurement outcomes</li>
-      </ul>
-    </div>
+    <h2>🏆 Win / Loss Condition</h2>
+    <p>
+      Win: Enemy HP = 0<br/>
+      Lose: Your HP = 0
+    </p>
 
-    <div class="card">
-      <h2>🏆 Win / Loss Condition</h2>
-      <p>
-        Win: Your quantum coherence score > AI stability score<br/>
-        Lose: AI stabilizes reality better than you<br/>
-        Draw: wavefunction collapse equilibrium
-      </p>
-    </div>
-  </div>
+    <button id="startBtn">INIT QUANTUM WAR</button>
+  </section>
 
-  <!-- CENTER GAME -->
-  <div class="panel center">
+  <!-- CENTER PANEL -->
+  <section class="panel center">
+    <h2>⚔ Battle Field</h2>
 
-    <div class="battlefield">
-      <h2>🧪 Quantum Battlefield</h2>
-
-      <div class="controls">
-        <button onclick="play('superposition')">Superposition ⚡</button>
-        <button onclick="play('entangle')">Entangle 🔗</button>
-        <button onclick="play('collapse')">Collapse Attack 💥</button>
+    <div class="stats">
+      <div>
+        <h3>PLAYER</h3>
+        <div class="bar"><div id="pHP"></div></div>
       </div>
 
-      <div class="stats">
-        <div>Your Score: <span id="playerScore">0</span></div>
-        <div>AI Score: <span id="aiScore">0</span></div>
+      <div>
+        <h3>ENEMY AI</h3>
+        <div class="bar enemy"><div id="eHP"></div></div>
       </div>
-
-      <canvas id="waveCanvas"></canvas>
     </div>
 
-    <div class="histogram">
-      <h3>📊 Quantum Probability Histogram</h3>
-      <canvas id="histCanvas"></canvas>
-    </div>
+    <button id="attackBtn" disabled>RUN QUANTUM ATTACK</button>
 
-  </div>
+    <div class="console" id="console"></div>
+  </section>
 
   <!-- RIGHT PANEL -->
-  <div class="panel right">
-
-    <div class="card">
-      <h2>🧠 Qiskit Circuit Reference</h2>
-      <pre>
+  <section class="panel">
+    <h2>⚛ Qiskit Reference</h2>
+<pre>
 from qiskit import QuantumCircuit
 
-qc = QuantumCircuit(2, 2)
+qc = QuantumCircuit(1,1)
 qc.h(0)
-qc.cx(0, 1)
-qc.measure([0,1],[0,1])
-      </pre>
-    </div>
+qc.measure(0,0)
 
-    <div class="card">
-      <h2>⚙ Quantum Strategy Output</h2>
-      <div id="log"></div>
-    </div>
+# Result = superposition collapse:
+# P(0)=50%, P(1)=50%
+    </pre>
 
-  </div>
+    <h2>📊 Probability Output</h2>
+    <canvas id="chart"></canvas>
+  </section>
 
-</div>
+</main>
 
-<!-- WIN/LOSE MODAL -->
-<div id="modal" class="modal hidden">
-  <div class="modal-content">
+<!-- POPUP -->
+<div id="popup" class="popup hidden">
+  <div class="popup-content">
     <h2 id="resultText"></h2>
-    <button onclick="resetGame()">Restart Simulation</button>
+    <button onclick="location.reload()">RESTART SIMULATION</button>
   </div>
 </div>
 
