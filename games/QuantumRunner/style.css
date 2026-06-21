@@ -1,101 +1,114 @@
 body {
-  margin: 0;
+  margin:0;
+  overflow:hidden;
   font-family: Arial;
-  background: radial-gradient(#050816, #000);
-  color: #00ffe5;
-  overflow: hidden;
+  background:black;
+  color:#00ffe1;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  height: 100vh;
+/* STAR BACKGROUND CANVAS */
+#bg {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
 }
 
+/* UI GRID */
+.ui {
+  position:absolute;
+  display:grid;
+  grid-template-columns: 1fr 1.3fr 1fr;
+  width:100%;
+  height:100%;
+}
+
+/* PANELS */
 .panel {
-  padding: 15px;
-  border: 1px solid #00ffe5;
-  box-shadow: 0 0 20px #00ffe5;
-  transform: perspective(800px) rotateY(2deg);
+  margin:10px;
+  padding:10px;
+  background: rgba(0,255,225,0.05);
+  border:1px solid #00ffe1;
+  backdrop-filter: blur(10px);
+  box-shadow:0 0 30px #00ffe155;
 }
 
-.center {
-  transform: perspective(800px) rotateY(0deg);
+h1 {
+  font-size:20px;
 }
 
-.box {
-  background: rgba(0,255,229,0.05);
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #00ffe5;
+.card {
+  border:1px solid #00ffe1;
+  margin:10px 0;
+  padding:10px;
+  animation: glow 2s infinite;
 }
 
-.glow-btn {
-  background: black;
-  color: #00ffe5;
-  border: 1px solid #00ffe5;
-  padding: 10px;
-  cursor: pointer;
-  transition: 0.3s;
+@keyframes glow {
+  0% {box-shadow:0 0 5px #00ffe1;}
+  50% {box-shadow:0 0 20px #ff00ff;}
+  100% {box-shadow:0 0 5px #00ffe1;}
 }
 
-.glow-btn:hover {
-  box-shadow: 0 0 20px #00ffe5;
-  transform: scale(1.05);
+button {
+  background:black;
+  color:#00ffe1;
+  border:1px solid #00ffe1;
+  padding:8px;
+  margin:5px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+button:hover {
+  transform:scale(1.05);
+  box-shadow:0 0 20px #00ffe1;
 }
 
 .circuit {
-  padding: 15px;
-  margin: 10px 0;
-  border: 1px dashed #00ffe5;
-  animation: flicker 1s infinite;
+  height:80px;
+  border:1px dashed #00ffe1;
+  margin-top:10px;
+  padding:5px;
 }
 
-@keyframes flicker {
-  0% {opacity: 1;}
-  50% {opacity: 0.6;}
-  100% {opacity: 1;}
-}
-
-.arena {
-  height: 200px;
-  border: 1px solid #00ffe5;
-  margin-top: 20px;
+.battle {
+  margin-top:20px;
+  height:150px;
+  border:1px solid #00ffe1;
   display:flex;
   align-items:center;
   justify-content:center;
-  animation: pulse 2s infinite;
+  animation:pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0% {box-shadow: 0 0 10px #00ffe5;}
-  50% {box-shadow: 0 0 40px #ff00ff;}
-  100% {box-shadow: 0 0 10px #00ffe5;}
+  0% {box-shadow:0 0 10px #00ffe1;}
+  50% {box-shadow:0 0 40px #ff00ff;}
+  100% {box-shadow:0 0 10px #00ffe1;}
 }
 
-canvas {
-  width: 100%;
-  height: 200px;
-  background: black;
-  border: 1px solid #00ffe5;
+canvas#chart {
+  width:100%;
+  height:200px;
+  background:black;
 }
 
+/* POPUP */
 .popup {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.9);
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.9);
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-.popup-content {
-  padding: 30px;
-  border: 2px solid #00ffe5;
-  text-align:center;
+.popupBox {
+  padding:30px;
+  border:2px solid #00ffe1;
 }
 
-.hidden {
-  display:none;
-}
+.hidden {display:none;}
