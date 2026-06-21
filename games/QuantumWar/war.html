@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quantum Probability War</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="bg-grid"></div>
+
+<header>
+  <h1>⚛ QUANTUM PROBABILITY WAR</h1>
+  <p class="sub">Sci-Fi Quantum Simulation Arena (Single Player)</p>
+</header>
+
+<div class="container">
+
+  <!-- LEFT PANEL -->
+  <div class="panel left">
+    <h2>📘 Game Introduction</h2>
+    <p>
+      You enter a quantum battlefield where outcomes are governed by probability amplitudes.
+      Your mission: defeat the Quantum AI by manipulating probability states.
+    </p>
+
+    <h2>📜 How to Play</h2>
+    <ul>
+      <li>Choose Quantum Strategy</li>
+      <li>Run Simulation Round</li>
+      <li>Observe Probability Collapse</li>
+      <li>Win 5 rounds to dominate AI</li>
+    </ul>
+
+    <h2>🏁 Win / Loss</h2>
+    <p>
+      Win = You reach 5 successful quantum collapses first.<br>
+      Lose = AI reaches 5 first.
+    </p>
+  </div>
+
+  <!-- CENTER GAME -->
+  <div class="panel center">
+
+    <div class="hud">
+      <div>Player Score: <span id="ps">0</span></div>
+      <div>AI Score: <span id="as">0</span></div>
+    </div>
+
+    <div class="controls">
+      <button onclick="setMode('stable')">Stable Qubit</button>
+      <button onclick="setMode('chaos')">Quantum Chaos</button>
+      <button onclick="setMode('entangle')">Entangle Boost</button>
+    </div>
+
+    <button class="big" onclick="runRound()">RUN QUANTUM COLLAPSE</button>
+
+    <canvas id="chart"></canvas>
+
+    <div class="log" id="log"></div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="panel right">
+
+    <h2>🧠 Quantum AI (Qiskit Logic)</h2>
+    <pre>
+from qiskit import QuantumCircuit
+qc = QuantumCircuit(1,1)
+qc.h(0)
+qc.measure(0,0)
+
+# probability collapse → 50/50 base state
+    </pre>
+
+    <h2>📊 Probability Engine</h2>
+    <p>State Vector Simulation (JS Approximation)</p>
+
+    <div id="stateBox">|ψ⟩ = α|0⟩ + β|1⟩</div>
+
+  </div>
+
+</div>
+
+<!-- WIN POPUP -->
+<div id="popup">
+  <div class="popup-box">
+    <h1 id="resultText"></h1>
+    <button onclick="location.reload()">RESTART SIMULATION</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
