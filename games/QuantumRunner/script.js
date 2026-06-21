@@ -1,165 +1,107 @@
-let player, ai;
+let playerScore = 0;
+let aiScore = 0;
 
-window.onload = function () {
-  player = [1,0,0,0];
-  ai = [1,0,0,0];
+const log = document.getElementById("log");
+const modal = document.getElementById("modal");
+const resultText = document.getElementById("resultText");
 
-  initCanvas();
-  update();
-  draw();
-};
+const histData = Array(10).fill(0);
 
-/* ===== STAR BACKGROUND ===== */
-let ctx, bg, stars = [];
+function play(mode) {
 
-function initCanvas() {
-  bg = document.getElementById("bg");
-  ctx = bg.getContext("2d");
+  let p = quantumProbability(mode);
+  let ai = Math.random();
 
-  bg.width = window.innerWidth;
-  bg.height = window.innerHeight;
+  let result = "";
 
-  stars = Array.from({length:150}, () => ({
-    x: Math.random()*bg.width,
-    y: Math.random()*bg.height,
-    z: Math.random()*2+0.5
-  }));
-
-  animate();
-}
-
-function animate() {
-  ctx.fillStyle="black";
-  ctx.fillRect(0,0,bg.width,bg.height);
-
-  ctx.fillStyle="#00ffe5";
-
-  stars.forEach(s=>{
-    s.y += s.z;
-    if(s.y > bg.height) s.y = 0;
-    ctx.fillRect(s.x,s.y,2,2);
-  });
-
-  requestAnimationFrame(animate);
-}
-
-/* ===== QUANTUM MATH ===== */
-
-function H(s){
-  let [a,b,c,d]=s;
-  return [
-    (a+b)/Math.SQRT2,
-    (a-b)/Math.SQRT2,
-    (c+d)/Math.SQRT2,
-    (c-d)/Math.SQRT2
-  ];
-}
-
-function X(s){
-  return [s[2],s[3],s[0],s[1]];
-}
-
-function CX(s){
-  let out=[...s];
-  if(s[2]||s[3]){
-    [out[2],out[3]]=[out[3],out[2]];
-  }
-  return out;
-}
-
-function gate(s,g){
-  if(g==="H") return H(s);
-  if(g==="X") return X(s);
-  if(g==="CX") return CX(s);
-  return s;
-}
-
-/* ===== GAME ACTIONS (GLOBAL FIXED) ===== */
-
-window.startBattle = function(){
-  player=[1,0,0,0];
-  ai=[1,0,0,0];
-  log("RESET");
-  update();
-  draw();
-};
-
-window.applyGate = function(g){
-  player = gate(player,g);
-  ai = gate(ai, random());
-
-  log("Gate: "+g);
-  update();
-  draw();
-  pulse();
-};
-
-window.measure = function(){
-  let p = prob(player);
-  let a = prob(ai);
-
-  pulse();
-
-  if(p>a){
-    show("PLAYER WINS");
+  if (p > ai) {
+    playerScore++;
+    result = "PLAYER WINS THIS ROUND ⚛";
   } else {
-    show("AI WINS");
+    aiScore++;
+    result = "AI WINS THIS ROUND 🧠";
   }
-};
 
-window.resetGame = function(){
-  document.getElementById("popup").classList.add("hidden");
-  startBattle();
-};
+  updateUI(result, p, ai);
+  drawWave();
+  updateHistogram(p);
 
-/* ===== CORE ===== */
-
-function prob(s){
-  return s.reduce((x,v)=>x+v*v,0);
+  checkEnd();
 }
 
-function random(){
-  return ["H","X","CX"][Math.floor(Math.random()*3)];
+function quantumProbability(mode) {
+  if (mode === "superposition") return Math.random() * 0.9 + 0.1;
+  if (mode === "entangle") return Math.random() * 0.8 + 0.2;
+  if (mode === "collapse") return Math.random();
 }
 
-/* ===== UI ===== */
+function updateUI(result, p, ai) {
+  document.getElementById("playerScore").innerText = playerScore;
+  document.getElementById("aiScore").innerText = aiScore;
 
-function update(){
-  document.getElementById("p").innerText = player.map(v=>v.toFixed(2));
-  document.getElementById("a").innerText = ai.map(v=>v.toFixed(2));
+  log.innerHTML += `
+    <div>⚡ ${result}</div>
+    <div>Player Prob: ${p.toFixed(2)} | AI Prob: ${ai.toFixed(2)}</div>
+    <hr/>
+  `;
 }
 
-function draw(){
-  let c=document.getElementById("chart");
-  let cx=c.getContext("2d");
+function checkEnd() {
+  if (playerScore >= 5 || aiScore >= 5) {
+    let winner =
+      playerScore > aiScore ? "PLAYER WINS THE QUANTUM WAR 🏆"
+      : "AI WINS AND COLLAPSES REALITY 🤖";
 
-  c.width=350;
-  c.height=180;
-
-  let p=prob(player);
-  let a=prob(ai);
-
-  cx.clearRect(0,0,400,200);
-
-  cx.fillStyle="#00ffe5";
-  cx.fillRect(50,180-p*180,60,p*180);
-
-  cx.fillStyle="#ff00ff";
-  cx.fillRect(180,180-a*180,60,a*180);
+    resultText.innerText = winner;
+    modal.classList.remove("hidden");
+  }
 }
 
-function log(t){
-  let l=document.getElementById("log");
-  if(l) l.innerHTML += "<div>"+t+"</div>";
+function resetGame() {
+  playerScore = 0;
+  aiScore = 0;
+  log.innerHTML = "";
+  modal.classList.add("hidden");
+  document.getElementById("playerScore").innerText = 0;
+  document.getElementById("aiScore").innerText = 0;
 }
 
-function pulse(){
-  let a=document.getElementById("arena");
-  a.style.transform="scale(1.1)";
-  setTimeout(()=>a.style.transform="scale(1)",150);
+/* WAVE ANIMATION */
+const canvas = document.getElementById("waveCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = 300;
+canvas.height = 150;
+
+function drawWave() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+
+  for (let x = 0; x < canvas.width; x++) {
+    let y = 75 + Math.sin(x * 0.05 + Date.now() * 0.005) * 30;
+    ctx.lineTo(x, y);
+  }
+
+  ctx.strokeStyle = "#0ff";
+  ctx.stroke();
 }
 
-function show(t){
-  document.getElementById("popup").classList.remove("hidden");
-  document.getElementById("msg").innerText=t;
+/* HISTOGRAM */
+const histCanvas = document.getElementById("histCanvas");
+const hctx = histCanvas.getContext("2d");
+histCanvas.width = 300;
+histCanvas.height = 150;
+
+function updateHistogram(val) {
+  let index = Math.floor(val * 10);
+  histData[index]++;
+
+  hctx.clearRect(0,0,300,150);
+
+  histData.forEach((v,i)=>{
+    hctx.fillStyle = "#0ff";
+    hctx.fillRect(i*30, 150 - v*5, 20, v*5);
+  });
 }
+
+/* INIT */
+drawWave();
