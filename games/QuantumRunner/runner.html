@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quantum Uncertainty War</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>⚛ Quantum Uncertainty War</h1>
+        <p>AAA Sci-Fi Quantum Simulation Arena</p>
+    </div>
+
+    <!-- PANELS -->
+    <div class="panel-grid">
+
+        <!-- INTRO -->
+        <div class="panel" id="introPanel">
+            <h2>Game Introduction</h2>
+            <p>
+                You are inside a quantum battlefield where particles exist in superposition.
+                Your mission: collapse quantum states strategically and win probabilistic war rounds.
+            </p>
+            <button onclick="startGame()">Start Simulation</button>
+        </div>
+
+        <!-- GUIDE -->
+        <div class="panel">
+            <h2>How to Play</h2>
+            <ul>
+                <li>Click “Generate Quantum State”</li>
+                <li>System creates superposition |0⟩ + |1⟩</li>
+                <li>Measurement collapses probability</li>
+                <li>Higher probability wins the round</li>
+            </ul>
+        </div>
+
+        <!-- QISKIT -->
+        <div class="panel">
+            <h2>Qiskit Reference Circuit</h2>
+<pre id="qiskitCode">
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1,1)
+qc.h(0)          # superposition
+qc.measure(0,0)  # collapse
+</pre>
+        </div>
+
+    </div>
+
+    <!-- GAME AREA -->
+    <div class="game-panel hidden" id="gamePanel">
+
+        <div class="controls">
+            <button onclick="generateState()">Generate Quantum State</button>
+            <button onclick="measure()">Measure Collapse</button>
+            <button onclick="resetGame()">Reset</button>
+        </div>
+
+        <div class="status">
+            <div>Qubit State: <span id="state">|0⟩</span></div>
+            <div>Probability |0⟩: <span id="p0">0.50</span></div>
+            <div>Probability |1⟩: <span id="p1">0.50</span></div>
+        </div>
+
+        <div class="quantum-core">
+            <div class="orb" id="orb"></div>
+        </div>
+
+        <canvas id="hist"></canvas>
+
+        <div class="score">
+            Player Score: <span id="score">0</span>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- POPUP -->
+<div id="popup" class="popup hidden">
+    <div class="popup-box">
+        <h2 id="winnerText"></h2>
+        <button onclick="closePopup()">OK</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
