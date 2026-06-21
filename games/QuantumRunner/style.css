@@ -1,126 +1,101 @@
 body {
-    margin: 0;
-    font-family: Arial;
-    background: radial-gradient(circle, #050816, #000);
-    color: white;
-    overflow-x: hidden;
+  margin: 0;
+  font-family: Arial;
+  background: radial-gradient(#050816, #000);
+  color: #00ffe5;
+  overflow: hidden;
 }
 
-/* animated stars background */
-#bg {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: url("https://raw.githubusercontent.com/JulianLaval/canvas-particle-network/master/img/bg.png");
-    opacity: 0.15;
-    animation: moveBg 20s linear infinite;
-}
-
-@keyframes moveBg {
-    0% { transform: translateY(0px); }
-    100% { transform: translateY(-200px); }
-}
-
-.container {
-    position: relative;
-    padding: 20px;
-}
-
-.header {
-    text-align: center;
-    text-shadow: 0 0 20px cyan;
-}
-
-/* panels */
-.panel-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  height: 100vh;
 }
 
 .panel {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(0,255,255,0.3);
-    padding: 15px;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 15px rgba(0,255,255,0.2);
+  padding: 15px;
+  border: 1px solid #00ffe5;
+  box-shadow: 0 0 20px #00ffe5;
+  transform: perspective(800px) rotateY(2deg);
 }
 
-button {
-    padding: 10px;
-    background: cyan;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
+.center {
+  transform: perspective(800px) rotateY(0deg);
 }
 
-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px cyan;
+.box {
+  background: rgba(0,255,229,0.05);
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #00ffe5;
 }
 
-/* GAME PANEL */
-.game-panel {
-    margin-top: 20px;
-    padding: 20px;
-    border: 2px solid cyan;
-    border-radius: 15px;
-    background: rgba(0,0,0,0.4);
+.glow-btn {
+  background: black;
+  color: #00ffe5;
+  border: 1px solid #00ffe5;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.hidden { display: none; }
-
-.controls {
-    display: flex;
-    gap: 10px;
+.glow-btn:hover {
+  box-shadow: 0 0 20px #00ffe5;
+  transform: scale(1.05);
 }
 
-/* quantum orb */
-.quantum-core {
-    margin: 20px auto;
-    width: 200px;
-    height: 200px;
-    perspective: 800px;
+.circuit {
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px dashed #00ffe5;
+  animation: flicker 1s infinite;
 }
 
-.orb {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: radial-gradient(circle, cyan, blue, black);
-    animation: spin 4s linear infinite;
-    box-shadow: 0 0 40px cyan;
+@keyframes flicker {
+  0% {opacity: 1;}
+  50% {opacity: 0.6;}
+  100% {opacity: 1;}
 }
 
-@keyframes spin {
-    0% { transform: rotateY(0deg) rotateX(0deg); }
-    100% { transform: rotateY(360deg) rotateX(360deg); }
+.arena {
+  height: 200px;
+  border: 1px solid #00ffe5;
+  margin-top: 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {box-shadow: 0 0 10px #00ffe5;}
+  50% {box-shadow: 0 0 40px #ff00ff;}
+  100% {box-shadow: 0 0 10px #00ffe5;}
 }
 
 canvas {
-    width: 100%;
-    height: 200px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
+  width: 100%;
+  height: 200px;
+  background: black;
+  border: 1px solid #00ffe5;
 }
 
-/* popup */
 .popup {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.popup-box {
-    background: black;
-    padding: 30px;
-    border: 2px solid cyan;
-    box-shadow: 0 0 30px cyan;
-    text-align: center;
+.popup-content {
+  padding: 30px;
+  border: 2px solid #00ffe5;
+  text-align:center;
+}
+
+.hidden {
+  display:none;
 }
