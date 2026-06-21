@@ -8,89 +8,81 @@
 
 <body>
 
-<div id="bg"></div>
+<div class="grid">
 
-<div class="container">
+  <!-- LEFT PANEL -->
+  <div class="panel left">
+    <h1>⚛️ Quantum Uncertainty War</h1>
 
-    <!-- HEADER -->
-    <div class="header">
-        <h1>⚛ Quantum Uncertainty War</h1>
-        <p>AAA Sci-Fi Quantum Simulation Arena</p>
+    <div class="box">
+      <h2>📘 Introduction</h2>
+      <p>
+        A sci-fi quantum simulation where probability collapses into reality.
+        You fight using quantum states instead of fixed actions.
+      </p>
     </div>
 
-    <!-- PANELS -->
-    <div class="panel-grid">
-
-        <!-- INTRO -->
-        <div class="panel" id="introPanel">
-            <h2>Game Introduction</h2>
-            <p>
-                You are inside a quantum battlefield where particles exist in superposition.
-                Your mission: collapse quantum states strategically and win probabilistic war rounds.
-            </p>
-            <button onclick="startGame()">Start Simulation</button>
-        </div>
-
-        <!-- GUIDE -->
-        <div class="panel">
-            <h2>How to Play</h2>
-            <ul>
-                <li>Click “Generate Quantum State”</li>
-                <li>System creates superposition |0⟩ + |1⟩</li>
-                <li>Measurement collapses probability</li>
-                <li>Higher probability wins the round</li>
-            </ul>
-        </div>
-
-        <!-- QISKIT -->
-        <div class="panel">
-            <h2>Qiskit Reference Circuit</h2>
-<pre id="qiskitCode">
-from qiskit import QuantumCircuit
-
-qc = QuantumCircuit(1,1)
-qc.h(0)          # superposition
-qc.measure(0,0)  # collapse
-</pre>
-        </div>
-
+    <div class="box">
+      <h2>📖 How to Play</h2>
+      <ul>
+        <li>Select quantum gate sequence</li>
+        <li>Run circuit simulation</li>
+        <li>Observe probability collapse</li>
+        <li>Outperform enemy quantum AI</li>
+      </ul>
     </div>
 
-    <!-- GAME AREA -->
-    <div class="game-panel hidden" id="gamePanel">
-
-        <div class="controls">
-            <button onclick="generateState()">Generate Quantum State</button>
-            <button onclick="measure()">Measure Collapse</button>
-            <button onclick="resetGame()">Reset</button>
-        </div>
-
-        <div class="status">
-            <div>Qubit State: <span id="state">|0⟩</span></div>
-            <div>Probability |0⟩: <span id="p0">0.50</span></div>
-            <div>Probability |1⟩: <span id="p1">0.50</span></div>
-        </div>
-
-        <div class="quantum-core">
-            <div class="orb" id="orb"></div>
-        </div>
-
-        <canvas id="hist"></canvas>
-
-        <div class="score">
-            Player Score: <span id="score">0</span>
-        </div>
-
+    <div class="box">
+      <h2>🏁 Win / Loss</h2>
+      <p><b>Win:</b> Your collapse probability > AI</p>
+      <p><b>Loss:</b> AI probability dominates</p>
     </div>
+
+    <button onclick="startGame()" class="glow-btn">▶ START BATTLE</button>
+  </div>
+
+  <!-- CENTER PANEL -->
+  <div class="panel center">
+
+    <h2>🧪 Quantum Circuit (Qiskit Simulator)</h2>
+
+    <div class="circuit" id="circuit">
+      H → X → H → MEASURE
+    </div>
+
+    <button onclick="runCircuit()" class="glow-btn">RUN Q-CIRCUIT</button>
+
+    <canvas id="histogram"></canvas>
+
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="panel right">
+
+    <h2>📊 Quantum Battle Stats</h2>
+
+    <div class="stat">
+      Player Probability: <span id="pProb">0</span>
+    </div>
+
+    <div class="stat">
+      AI Probability: <span id="aProb">0</span>
+    </div>
+
+    <div class="arena" id="arena">
+      ⚡ Quantum Battle Arena ⚡
+    </div>
+
+  </div>
 
 </div>
 
 <!-- POPUP -->
 <div id="popup" class="popup hidden">
-    <div class="popup-box">
-        <h2 id="winnerText"></h2>
-        <button onclick="closePopup()">OK</button>
-    </div>
+  <div class="popup-content">
+    <h1 id="resultText"></h1>
+    <button onclick="resetGame()">RESTART</button>
+  </div>
 </div>
 
 <script src="script.js"></script>
