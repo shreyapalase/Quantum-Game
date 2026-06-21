@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Quantum Uncertainty War — AAA Edition</title>
+<title>Quantum Uncertainty War AAA</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -16,53 +16,51 @@
     <h1>⚛ QUANTUM UNCERTAINTY WAR</h1>
 
     <div class="card">
-      <h2>MISSION</h2>
-      <p>Dominate quantum probability space before AI collapses reality.</p>
+      <h3>MISSION</h3>
+      <p>Control probability space before AI collapses reality.</p>
     </div>
 
     <div class="card">
-      <h2>HOW IT WORKS</h2>
-      <p>Qubits exist in superposition. Gates manipulate probability amplitudes.</p>
+      <h3>RULE</h3>
+      <p>Quantum gates modify statevector amplitudes.</p>
     </div>
 
     <div class="card">
-      <h2>WIN CONDITION</h2>
-      <p>Higher measurement probability wins collapse battle.</p>
+      <h3>WIN</h3>
+      <p>Higher probability at measurement wins.</p>
     </div>
 
-    <button onclick="startBattle()">START SIMULATION</button>
+    <button onclick="startBattle()">START</button>
   </div>
 
   <div class="panel center">
-    <h2>QUANTUM CIRCUIT ENGINE (QISKIT-STYLE)</h2>
+    <h2>QUANTUM CIRCUIT</h2>
 
-    <div class="row">
-      <button onclick="applyGate('H')">H Gate</button>
-      <button onclick="applyGate('X')">X Gate</button>
-      <button onclick="applyGate('CX')">CX Gate</button>
-      <button onclick="measure()">MEASURE</button>
-    </div>
+    <button onclick="applyGate('H')">H</button>
+    <button onclick="applyGate('X')">X</button>
+    <button onclick="applyGate('CX')">CX</button>
+    <button onclick="measure()">MEASURE</button>
 
-    <div class="circuit" id="circuitLog"></div>
+    <div id="log" class="log"></div>
 
     <canvas id="chart"></canvas>
   </div>
 
   <div class="panel right">
-    <h2>REALTIME QUANTUM STATE</h2>
+    <h2>STATE</h2>
 
-    <div class="stat">PLAYER | |ψ⟩ = <span id="pState"></span></div>
-    <div class="stat">AI | |ψ⟩ = <span id="aState"></span></div>
+    <div>PLAYER: <span id="p"></span></div>
+    <div>AI: <span id="a"></span></div>
 
-    <div class="battle" id="battleField">QUANTUM FIELD STABLE</div>
+    <div id="arena">QUANTUM FIELD</div>
   </div>
 
 </div>
 
 <div id="popup" class="popup hidden">
-  <div class="popupBox">
-    <h1 id="winnerText"></h1>
-    <button onclick="reset()">RESTART SIMULATION</button>
+  <div class="box">
+    <h1 id="msg"></h1>
+    <button onclick="resetGame()">RESTART</button>
   </div>
 </div>
 
